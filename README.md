@@ -34,7 +34,6 @@
   * [Running Scripts](#running-scripts)
 - [Running Scripts for All Tables](#running-scripts-for-all-tables)
 - [Configuring and Extending Pipewrench](#configuring-and-extending-pipewrench)
-  * [Generating tables.yml from Ingest Manager config](#generating-tablesyml-from-ingest-manager-config)
   * [Creating Templates](#creating-templates)
   * [Importing templates](#importing-templates)
   * [Mapping datatypes](#mapping-datatypes)
@@ -235,11 +234,6 @@ To update all tables in tables.yml run update-all:
 
 make update-all
 ## Configuring and Extending Pipewrench
-
-### Generating tables.yml from Ingest Manager config
-tables.yml can be generated from existing [ingest-manager]() configuration files (STM and Ingest.xml).
-See [here](examples/ingest-manager-config/generate-scripts) for an example
-
 
 ### Creating Templates
 Templates use the [Jinja2](http://jinja.pocoo.org/docs/2.9/) templating language.  Any file put in a pipeline
