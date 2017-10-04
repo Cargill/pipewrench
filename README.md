@@ -5,7 +5,7 @@
   <h3 align="center">Pipewrench</h3>
 
   <p align="center">
-    Hadoop data pipeline automation framework.
+    Data pipeline automation framework.
     <br>
 
   </p>
@@ -123,10 +123,6 @@ into Parquet
 See the documenation for the sqoop-to-parquet pipeline [here](./templates/sqoop-to-kudu/README.md) 
 
 ## Getting Started
-[Fork](https://help.github.com/articles/fork-a-repo/) the pipewrench repo in
-Github Enterprise: https://git.cglcloud.com/DataPlatform/pipewrench
-
-Then [clone](https://help.github.com/articles/cloning-a-repository/) the fork you created.
 
 ### Installation
 Install Pipewrench, its dependencies, and the `pipewrench-merge` script:
@@ -135,7 +131,7 @@ Install Pipewrench, its dependencies, and the `pipewrench-merge` script:
 $ python setup.py install
 ```
 
-now the `pipewrench-merge` command will be available on your `PATH`
+now the `pipewrench-merge` command will be available on your `$PATH`
 
 ### Generating a Pipeline
 Example project scripts are located in the `examples` directory. Each example will have a slightly different
@@ -221,7 +217,9 @@ Here is the dependency graph for `make first-run`
 
 To run a target from another directory, include the file path:
 
-make -n first run -C output/sqoop-to-kudu/first_imported_table
+```bash
+make -n first-run -C output/sqoop-to-kudu/first_imported_table
+```
 
 ## Running Scripts for All Tables
 

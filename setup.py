@@ -31,6 +31,5 @@ setup(name='pipewrench',
       install_requires=['jinja2', 'pyyaml', 'sdctool', 'pytest'],
       packages=['pipewrench'],
       test_suite='setup.pipewrench_test_suite',
-      scripts=['pipewrench-merge'],
-      download_url='https://git.cglcloud.com/tree/master/dist/pipewrench-{}.tar.gz'.format(version)
-     )
+      scripts=['pipewrench-merge']
+      )
