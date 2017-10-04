@@ -11,9 +11,13 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-
+"""
+Utilities for unit testing individual templates
+(like templates/sqoop-parquet-hdfs-impala/test/kudu-table-insert.sql)
+"""
 import yaml
 from pipewrench import merge
+
 
 def merge_single(conf_string, type_mappings, template_name):
     '''
@@ -27,11 +31,12 @@ def merge_single(conf_string, type_mappings, template_name):
 
     return merge.merge_single_template(template_name, type_mappings, conf)
 
-def read_file(f):
-    '''
+
+def read_file(path):
+    """
     Read a file and return the contents as string
     :param f: (str) The file to read
     :return:  (str) The file contents
-    '''
-    with open(f, 'r') as file:
+    """
+    with open(path, 'r') as file:
         return file.read()

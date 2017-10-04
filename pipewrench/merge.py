@@ -12,14 +12,21 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+"""
+Main application module responsible for
+- Parsing config file and environment
+- Merging environment into config file
+- Looping through config and templates, and outputting pipeline configuration
+"""
+import argparse
+import codecs
+import logging
+import os
+from json import dumps
 from jinja2 import Template
 import yaml
-import codecs
-import os
-import argparse
-import logging
-import sys
-from json import dumps
+
+
 
 OUT_DIR = "output"
 LOGGING_FORMAT = "[%(levelname) s:%(filename)s:%(lineno)s in %(funcName)20s() ] %(message)s"
@@ -33,15 +40,18 @@ def main():
     Main method
     :return: nothing, writes to file
     """
-    parser = argparse.ArgumentParser(description='pipewrench-merge pipeline automation tool')
+    parser = argparse.ArgumentParser(description='pipewrench-merge '
+                                                 'pipeline automation tool')
 
     parser.add_argument('--conf',
                         dest='conf',
-                        help='Yaml format configuration file. This file can be used as a template to be filled by '
+                        help='Yaml format configuration file.'
+                             ' This file can be used as a template to be filled by '
                              '\'env.yml\'')
     parser.add_argument('--env',
                         dest='env',
-                        help='Yaml format environment file. Key-value pairs in this file that are templated in '
+                        help='Yaml format environment file.'
+                             ' Key-value pairs in this file that are templated in '
                              '\'conf.yml\'')
     parser.add_argument('--pipeline-templates',
                         dest='pipeline_template_dir',
@@ -49,7 +59,8 @@ def main():
 
     parser.add_argument('--debug_level',
                         dest='debug_level',
-                        help='One of \'CRITICAL\', \'WARNING\', \'DEBUG\', \'INFO\', \'WARNING\'')
+                        help='One of \'CRITICAL\', \'WARNING\','
+                             ' \'DEBUG\', \'INFO\', \'WARNING\'')
 
     args = parser.parse_args()
 
@@ -62,7 +73,6 @@ def main():
 
 def merge(template_dir, env_path, conf_path):
     """
-    
     :param template_dir: The template directory
     :param env_path: Path to the environment yaml file
     :param conf_path: Path to the configuration yaml file
@@ -84,7 +94,7 @@ def merge_templates(template_dir, conf):
      - Place the result in the `output` directory
     :param template_dir: The directory containing Jinja2 templates
     :param conf: The configuration as dict|list from yaml
-    :return: 
+    :return: None
     """
     if not os.path.exists(OUT_DIR):
         os.mkdir(OUT_DIR)
@@ -96,29 +106,30 @@ def merge_templates(template_dir, conf):
     templates_symlink = os.path.join(os.path.abspath(pipeline_out_dir), "templates")
     if not os.path.exists(templates_symlink):
         templates_dir_abs = os.path.abspath(template_dir)
-        logging.debug('creating symlink from: "{}" to "{}"'.format(templates_dir_abs, templates_symlink))
+        logging.debug('creating symlink from: %s to %s', templates_dir_abs, templates_symlink)
 
         os.symlink(templates_dir_abs, templates_symlink)
     tables = conf['tables']
-    logging.info('loading {} table(s)'.format(len(tables)))
+    logging.info('loading %d table(s)', len(tables))
     # render jinja meta templates
     for template_name in os.listdir(template_dir):
         if template_name.endswith(".meta"):
             template_path = os.path.join(os.path.realpath(template_dir), template_name)
 
-            with codecs.open(template_path, 'r', 'UTF-8') as templateFile:
-                logging.debug('reading template: "{}"'.format(template_path))
-                template = templateFile.read()
+            with codecs.open(template_path, 'r', 'UTF-8') as template_file:
+                logging.debug('reading template: "%s"', template_path)
+                template = template_file.read()
                 # Remove the '.meta'  file extension from the name of the files
                 file_path = os.path.join(pipeline_out_dir, template_name)[:-5]
                 rendered = render_meta(template, conf, tables)
                 write(rendered, file_path)
+
     for table in tables:
         table_dir = os.path.join(pipeline_out_dir, table['id'])
         if not os.path.exists(table_dir):
             os.mkdir(table_dir)
 
-        logging.debug("type mappings loaded: \n{}", type_mappings)
+        logging.debug("type mappings loaded: \n%s", type_mappings)
 
         dir_templates = [os.path.realpath(os.path.join(template_dir, x))
                          for x in os.listdir(template_dir)]
@@ -154,10 +165,10 @@ def render_write_template(conf, table, table_dir, template_name, template_path):
     :param template_path: the path of the template in the tempaltes directory
     :return:
     """
-    with codecs.open(template_path, 'r', 'UTF-8') as templateFile:
-        logging.debug('Rendering template: "{}"'.format(template_path))
+    with codecs.open(template_path, 'r', 'UTF-8') as template_file:
+        logging.debug('Rendering template: "%s"', template_path)
 
-        template = templateFile.read()
+        template = template_file.read()
         file_path = os.path.join(table_dir, template_name)
         rendered = render_table(template, conf, table)
         write(rendered, file_path)
@@ -173,11 +184,12 @@ def load_mapping_file(mapping, templates_dir, conf):
     """
     try:
         with codecs.open(os.path.join(templates_dir, conf[mapping]), 'r', 'UTF-8') as mapping_file:
-            logging.debug('mapping file: {}'.format(mapping))
+            logging.debug('mapping file: %s', mapping)
             type_mappings[mapping] = yaml.load(mapping_file.read())
-            logging.debug("type mappings: {}".format(type_mappings))
-    except:
-        logging.warning("no mapping file found '{}', templates calling this mapping will error.", mapping)
+            logging.debug("type mappings: %s", type_mappings)
+    except KeyError:
+        logging.warning(
+            "no mapping file found '%s', templates calling this mapping will error.", mapping)
 
 
 def render(template, **kwargs):
@@ -202,18 +214,17 @@ def render_table(template, conf, table):
     :param template: The template to render
     :param conf: The configuration to be passed to the template
     :param table: The table to pass to the template
-    :return: 
+    :return: a rendered template
     """
     return render(template, conf=conf, table=table)
 
 
 def render_meta(template, conf, tables):
     """
-    
     :param template: The template to render
     :param conf: The configuration
     :param tables: A list of tables to render
-    :return: 
+    :return: A rendered template
     """
     return render(template, conf=conf, tables=tables)
 
@@ -233,7 +244,7 @@ def get_conf(path, env):
 
         # Load the conf yaml into Python data structures
         conf = yaml.load(env_applied)
-        logging.debug('conf: {}'.format(str(conf)))
+        logging.debug('conf: %s', conf)
 
         return conf
 
@@ -244,11 +255,11 @@ def get_env(path):
     :param path: Path to the environment file.
     :return: the environment (loaded yaml)
     """
-    with codecs.open(path, 'r', 'UTF-8') as envFile:
-        conf_string = envFile.read()
+    with codecs.open(path, 'r', 'UTF-8') as env_file:
+        conf_string = env_file.read()
 
         env = yaml.load(conf_string)
-        logging.debug('env: {}'.format(str(env)))
+        logging.debug('env: %s', env)
         return env
 
 
@@ -260,10 +271,10 @@ def write(string, fpath):
     :return:
     """
     with codecs.open(fpath, 'w', 'UTF-8') as file:
-        sys.stderr.write("{} {}".format(fpath, '\n'))
         file.write(string)
         if fpath.endswith('.sh'):
             os.chmod(fpath, 0o750)
+
 
 # Script entrypoint
 if __name__ == '__main__':
@@ -274,7 +285,8 @@ if __name__ == '__main__':
 # These functions are intended to be called from Jinja2 templates.
 def map_datatypes(conf, column):
     """
-    Given a column, extract its datatype and return possible mappings for it from a type-mappings.yml file.
+    Given a column, extract its datatype and return possible mappings
+     for it from a type-mappings.yml file.
      For example, a mapping with the datatype 'bigint' may look like:
 
     bigint:
@@ -296,22 +308,23 @@ def map_datatypes(conf, column):
     :return: The mapped datatype
     """
     datatype = column['datatype'].lower()
-    logging.debug('found datatype {}'.format(datatype))
+    logging.debug('found datatype %s', datatype)
     mapped_datatype = type_mappings['type_mapping'].get(datatype)
-    logging.debug('mapped {} to {}'.format(datatype, mapped_datatype))
+    logging.debug('mapped %s to %s', datatype, mapped_datatype)
     return mapped_datatype
 
+
 # Testing Functions
-def merge_single_template(template_file, type_mapping, conf):
+def merge_single_template(template_file_path, type_mapping, conf):
     """
     Merge a single template and return the result. Used for unit testing Jinja templates.
-    :param template_file: The template file to render
+    :param template_file_path: The template file to render
     :param type_mapping: The type mapping file
     :param conf: The configuration as str
     :return:
     """
     type_mappings['type_mapping'] = type_mapping
     table = conf['tables'][0]
-    with codecs.open(template_file, 'r', 'UTF-8') as templateFile:
-        template = templateFile.read()
+    with codecs.open(template_file_path, 'r', 'UTF-8') as template_file:
+        template = template_file.read()
         return render_table(template, conf, table)

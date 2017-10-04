@@ -11,21 +11,21 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-
+"""
+Tests for the merge module.
+"""
 import unittest
 import merge
 
 class MergeTest(unittest.TestCase):
-
     def test_throw_error_on_undefined(self):
-        vars = {'conf': 'value'}
+        values = {'conf': 'value'}
 
-        self.assertEquals('value', merge.render("{{ conf }}", **vars))
+        self.assertEquals('value', merge.render("{{ conf }}", **values))
 
     def test_render_with_type_mapping(self):
         global type_mappings
-        merge.type_mappings = {'type_mapping': { 'blob': {'kudu': 'string'} } }
-        vars = {'conf': 'nevermind', 'column': { 'datatype': 'blob'}}
+        merge.type_mappings = {'type_mapping': {'blob': {'kudu': 'string'}}}
+        values = {'conf': 'nevermind', 'column': {'datatype': 'blob'}}
 
-        self.assertEquals('string', merge.render("{{ map_datatypes(conf, column).kudu }}", **vars))
-
+        assert 'string' == merge.render("{{ map_datatypes(conf, column).kudu }}", **values)
