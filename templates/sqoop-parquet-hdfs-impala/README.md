@@ -21,6 +21,6 @@ This pipeline will sqoop data into a Parquet
 - Clean up _all_ data on HDFS and Impala DDL. This is non reversible.
 
 
-Dependency for graphs for all targets can be found [here](../../docs/pipelines/sqoop-to-parquet/png)
+Dependency for graphs for all targets can be found [here](../../docs/pipelines/sqoop-parquet-hdfs-impala/png)
 
 

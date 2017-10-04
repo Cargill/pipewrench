@@ -25,8 +25,8 @@
   * [pipewrench-merge](#pipewrench-merge)
   * [Workflow Orchestration with Make](#workflow-orchestration-with-make)
 - [Pipelines](#pipelines)
-  * [sqoop-to-kudu](#sqoop-to-kudu)
-  * [sqoop-to-parquet](#sqoop-to-parquet)
+  * [sqoop-parquet-hdfs-kudu-impala](#sqoop-parquet-hdfs-kudu-impala)
+  * [sqoop-parquet-hdfs-impala](#sqoop-parquet-hdfs-impala)
 - [Getting Started](#getting-started)
   * [Installation](#installation)
   * [Generating a Pipeline](#generating-a-pipeline)
@@ -73,10 +73,10 @@ configuration. [Tutorial](http://docs.ansible.com/ansible/latest/YAMLSyntax.html
 Pipewrench creates and executes pipelines based off of a global yaml configuration file (`tables.yml`). The 
 tables.yml file defines source database, tables, columns, and datatypes.
 
-See [here](examples/sqoop-to-kudu/tables.yml) for an example tables.yml with documentation
+See [here](examples/sqoop-parquet-hdfs-kudu-impala/tables.yml) for an example tables.yml with documentation
 ### env.yml
 The tables.yml file itself is a jinja template. Variables from the env.yml file are automatically added to the
- tables.yml file before any configuration is generated. See an example env.yml [here](examples/sqoop-to-kudu/env.yml)
+ tables.yml file before any configuration is generated. See an example env.yml [here](examples/sqoop-parquet-hdfs-kudu-impala/env.yml)
 
 ### Pipeline-template
 A pipeline is a directory of templates. When Pipewrench is executed with a pipeline-template directory and
@@ -90,7 +90,7 @@ of running the pipewrench-merge.
 pipewrench-merge --conf=tables.yml \
                  --debug_level DEBUG \
                  --env=env.yml \
-                 --pipeline-templates=../../templates/sqoop-to-kudu
+                 --pipeline-templates=../../templates/sqoop-parquet-hdfs-kudu-impala
 ```
 
 ### Pipeline
@@ -110,17 +110,17 @@ ensure that the the Kudu table is created before the data is pulled in from the 
 
 ## Pipelines
 
-### sqoop-to-kudu
-The [sqoop-to-kudu](./templates/sqoop-to-kudu) pipleline will use Sqoop job to pull data from a relational database 
+### sqoop-parquet-hdfs-kudu-impala
+The [sqoop-parquet-hdfs-kudu-impala](./templates/sqoop-parquet-hdfs-kudu-impala) pipleline will use Sqoop job to pull data from a relational database 
 into Parquet, then insert that data into Kudu.
 
-See the documenation for the sqoop-to-kudu pipeline [here](./templates/sqoop-to-kudu/README.md) 
+See the documenation for the sqoop-parquet-hdfs-kudu-impala pipeline [here](./templates/sqoop-parquet-hdfs-kudu-impala/README.md) 
 
-### sqoop-to-parquet
-The [sqoop-to-parquet](./templates/sqoop-to-parquet) pipleline will use Sqoop job to pull data from a relational database 
+### sqoop-parquet-hdfs-impala
+The [sqoop-parquet-hdfs-impala](./templates/sqoop-parquet-hdfs-impala) pipleline will use Sqoop job to pull data from a relational database 
 into Parquet
 
-See the documenation for the sqoop-to-parquet pipeline [here](./templates/sqoop-to-kudu/README.md) 
+See the documenation for the sqoop-parquet-hdfs-impala pipeline [here](./templates/sqoop-parquet-hdfs-kudu-impala/README.md) 
 
 ## Getting Started
 
@@ -142,11 +142,11 @@ yaml requirements. All examples include the following files:
 - generate-scripts: a helper script to build config with the `pipeline-merge` executable
 
 The pipeline will be generated from the `./templates` directory. It is is further divided into 'pipelines'.
-Here one pipeline is defined called 'sqoop-to-kudu'
+Here one pipeline is defined called 'sqoop-parquet-hdfs-kudu-impala'
 
 ```bash
 $ ls templates/
-sqoop-to-kudu/
+sqoop-parquet-hdfs-kudu-impala/
 ```
 
 ### Generating Config
@@ -167,18 +167,18 @@ Running `pipewrench-merge` from the `examples` directory manually would look lik
 pipewrench-merge --conf=tables.yml \
                  --debug_level DEBUG \
                  --env=env.yml \
-                 --pipeline-templates=../../templates/sqoop-to-kudu
+                 --pipeline-templates=../../templates/sqoop-parquet-hdfs-kudu-impala
 ```
 
 Now you should see files created in the `output` directory:
 
 ```bash
-$ ls output/sqoop-to-kudu/first_imported_table
+$ ls output/sqoop-parquet-hdfs-kudu-impala/first_imported_table
 Makefile        kudu-table-count.sql   kudu-table-drop.sql    parquet-table-create.sql  sqoop-create.sh  sqoop-exec.sh
 hdfs-delete.sh  kudu-table-create.sql  kudu-table-insert.sql  parquet-table-drop.sql    sqoop-delete.sh  test.sh
 ```
 
-The 'sqoop-to-kudu' pipeline has been created for one table 'first_imported_table'.
+The 'sqoop-parquet-hdfs-kudu-impala' pipeline has been created for one table 'first_imported_table'.
 
 
 ### Running Scripts
@@ -187,7 +187,7 @@ The scripts can be executed by themselves or using the included Makefile.
 Use `make help` to see all targets and documentation:
 
 ```bash
-$ cd output/sqoop-to-kudu/first_imported_table
+$ cd output/sqoop-parquet-hdfs-kudu-impala/first_imported_table
 $ make help
 ...
 sqoop-create: sqoop-create.sh ## Create Sqoop job
@@ -218,7 +218,7 @@ Here is the dependency graph for `make first-run`
 To run a target from another directory, include the file path:
 
 ```bash
-make -n first-run -C output/sqoop-to-kudu/first_imported_table
+make -n first-run -C output/sqoop-parquet-hdfs-kudu-impala/first_imported_table
 ```
 
 ## Running Scripts for All Tables

@@ -13,4 +13,4 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-pipewrench-merge --conf=tables.yml --debug_level INFO --env=env.yml --pipeline-templates=../../templates/sqoop-to-kudu
+pipewrench-merge --conf=tables.yml --debug_level INFO --env=env.yml --pipeline-templates=../../templates/sqoop-parquet-hdfs-kudu-impala
