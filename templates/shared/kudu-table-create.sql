@@ -17,7 +17,7 @@
 USE {{ conf.staging_database.name }};
 CREATE TABLE IF NOT EXISTS {{ table.destination.name }}_kudu
 ({% for column in table.columns %}
-{{ column.name }} {{ map_datatypes(conf, column).kudu }} COMMENT '{{ column.comment }}'
+{{ column.name }} {{ map_datatypes(column).kudu }} COMMENT '{{ column.comment }}'
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %},
 primary key ({{ table.primary_keys|join(', ') }}))

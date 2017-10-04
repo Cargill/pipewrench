@@ -284,8 +284,7 @@ if __name__ == '__main__':
 
 # Template functions.
 # These functions are intended to be called from Jinja2 templates.
-# pylint: disable=unused-argument
-def map_datatypes(conf, column):
+def map_datatypes(column):
     """
     Given a column, extract its datatype and return possible mappings
      for it from a type-mappings.yml file.

@@ -247,7 +247,7 @@ This example template creates a Parquet table through Impala::
 USE {{ conf.staging_database.name }};
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_parquet (
 {% for column in table.columns %}
-{{ column.name }} {{ map_datatypes(conf, column).parquet }} COMMENT '{{ column.comment }}'
+{{ column.name }} {{ map_datatypes(column).parquet }} COMMENT '{{ column.comment }}'
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 STORED AS Parquet
@@ -302,12 +302,12 @@ string:
 The mapping function can be used in a template to get a Kudu dataype:
 
 ```snakeyaml
-{{ map_datatypes(conf, column).kudu }}
+{{ map_datatypes(column).kudu }}
 ```
 
 or an Avro datatype
 ```snakeyaml
-{{ map_datatypes(conf, column).avro }}
+{{ map_datatypes(column).avro }}
 ```
 
 ## Using the Logging Script - run-with-logging.sh

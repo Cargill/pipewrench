@@ -12,7 +12,7 @@
     See the License for the specific language governing permissions and
     limitations under the License. -#}
 {% macro column_or_cast(conf, column) -%}
-    {% set mapped_type = map_datatypes(conf, column).impala %}
+    {% set mapped_type = map_datatypes(column).impala %}
     {%- if mapped_type == 'timestamp' %}
         cast({{ column.name }} as timestamp) COMMENT '{{ column.comment }}'
     {%- else %}

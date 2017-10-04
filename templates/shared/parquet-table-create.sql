@@ -16,7 +16,7 @@
 USE {{ conf.staging_database.name }};
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_parquet (
 {% for column in table.columns %}
-{{ column.name }} {{ map_datatypes(conf, column).parquet }} COMMENT '{{ column.comment }}'
+{{ column.name }} {{ map_datatypes(column).parquet }} COMMENT '{{ column.comment }}'
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 STORED AS Parquet
