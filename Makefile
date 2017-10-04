@@ -43,6 +43,8 @@ clean-render-templates: ## Clean rendered templates from test
 pylint: 
 	pylint pipewrench/merge.py
 
+build: pylint test 
+
 FORCE: ## Do nothing, always
 
 .PHONY: test
@@ -58,4 +60,6 @@ FORCE: ## Do nothing, always
 .PHONY: clean
 
 .PHONY: pylint
+
+.PHONY: build
 

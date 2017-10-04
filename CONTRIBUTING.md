@@ -16,5 +16,5 @@ To contribute features or bug fixes, create a [fork](https://help.github.com/art
 
 All tests should be passing when running `make test` from the root directory.
 
-
+Before making a pull request `make build` should exit successfully
 

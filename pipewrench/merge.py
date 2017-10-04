@@ -31,7 +31,8 @@ import yaml
 OUT_DIR = "output"
 LOGGING_FORMAT = "[%(levelname) s:%(filename)s:%(lineno)s in %(funcName)20s() ] %(message)s"
 
-# Type mappings are loaded globally so they can be used  from templates
+# Type mappings are loaded globally by `load_mapping_file` so they can be used from templates
+# pylint: disable=invalid-name
 type_mappings = {}
 
 
@@ -85,7 +86,7 @@ def merge(template_dir, env_path, conf_path):
 
     merge_templates(template_dir, conf)
 
-
+# pylint: disable=too-many-locals
 def merge_templates(template_dir, conf):
     """
      - Apply an `env.yml` to a configuration (`tables.yml`)
@@ -283,6 +284,7 @@ if __name__ == '__main__':
 
 # Template functions.
 # These functions are intended to be called from Jinja2 templates.
+# pylint: disable=unused-argument
 def map_datatypes(conf, column):
     """
     Given a column, extract its datatype and return possible mappings
