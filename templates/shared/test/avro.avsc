@@ -1,0 +1,18 @@
+{
+     "type": "record",
+     "namespace": "com.example",
+     "name": "mytable",
+     "fields": [
+      {
+        "name": "col1",
+        "type": "string"
+     },
+      {
+       "name": "col2",
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 4,
+        "scale": 2
+     }
+      ]
+}
