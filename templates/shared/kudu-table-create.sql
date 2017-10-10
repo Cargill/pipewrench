@@ -11,17 +11,18 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-#}
-
+-#}
 -- Create a Kudu table in Impala
 USE {{ conf.staging_database.name }};
 CREATE TABLE IF NOT EXISTS {{ table.destination.name }}_kudu
 ({% for column in table.columns %}
-{{ column.name }} {{ map_datatypes(column).kudu }} COMMENT '{{ column.comment }}'
-{%- if not loop.last -%}, {% endif %}
+{{ column.name }} {{ map_datatypes(column).kudu }}
+{%- if not loop.last -%},{% endif %}
 {%- endfor %},
 primary key ({{ table.primary_keys|join(', ') }}))
 PARTITION BY HASH({{ table.kudu.hash_by|join(', ') }}) PARTITIONS {{ table.kudu.num_partitions }}
+TBLPROPERTIES(
+{% for column in table.columns -%}
+  '{{ column.name|lower }}','{{ column.comment }}'{%- if not loop.last -%},{% endif %}
+{%endfor%})
 STORED AS KUDU
-
-
