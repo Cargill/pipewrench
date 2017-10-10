@@ -90,4 +90,40 @@ def test_avro_avsc_with_decimal():
 
     assert actual_json== expected_json
 
+def test_kudu_table_create_sql():
+    type_mappings = {'int': {'kudu': 'decimal'},
+                     'string': { 'kudu': 'string'}}
+    conf_string = '''---
+    source_database:
+      name: sourcedb
+    sqoop_job_name_suffix: unittest
+    staging_database:
+      name: test_db
+      path: /data/
+    source_database.connection_string: jdbc://mydb
+    user_name: myuser
+    sqoop_password_file: mypasswordfile
+    tables:
+      - destination:
+          name: destination
+        source:
+          name: source_table
+        split_by_column: col1
+        check_column: col1
+        kudu:
+          hash_by:
+            - col1
+          num_partitions: 10
+        columns:
+          - name: col1
+            datatype: string
+            comment: column one comment
+          - name: col2
+            datatype: int
+            comment: column two comment'''
 
+    expected = test_util.read_file('kudu-table-create.sql')
+
+    actual = test_util.merge_single(conf_string, type_mappings, '../kudu-table-create.sql')
+    print(actual)
+    assert actual == expected
