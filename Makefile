@@ -14,6 +14,9 @@
 
 test: test-app test-templates test-render-templates ## run all local tests
 
+integration-test:
+	./integration-tests/run-tests.sh
+
 test-templates: FORCE ## Unit test templates
 	./test-templates
 
@@ -62,4 +65,6 @@ FORCE: ## Do nothing, always
 .PHONY: pylint
 
 .PHONY: build
+
+.PHONY: integration-test
 

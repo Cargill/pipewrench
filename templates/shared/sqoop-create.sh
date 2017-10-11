@@ -27,11 +27,10 @@ sqoop job -D 'sqoop.metastore.client.record.password=true' \
     --split-by {{ table.split_by_column }} \
     --check-column {{ table.check_column }} \
     --as-parquetfile \
-    --direct \
     --fetch-size 10000 \
     --compress  \
     --compression-codec snappy \
     -m 1 \
-    --query 'SELECT TOP 1000 {{ table.columns|map(attribute='name')|join(',\n        ')}}
+    --query 'SELECT {{ table.columns|map(attribute='name')|join(',\n\t')}}
         FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
 

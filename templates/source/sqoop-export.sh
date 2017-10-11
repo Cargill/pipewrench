@@ -1,5 +1,5 @@
 #!/bin/bash
-{#  Copyright 2017 Cargill Incorporated
+{#    Copyright 2017 Cargill Incorporated
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -13,6 +13,12 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
-# Remove parquet data from hdfs
+# Create a Sqoop job
 set -euo pipefail
-hdfs dfs -rm -r -f {{ conf.staging_database.path }}/{{ table.destination.name }}/
+sqoop export --connect jdbc:mysql://localhost/{{ conf.source_database.name }} \
+    --username {{ conf.user_name }} \
+    --password-file {{ conf.sqoop_password_file }} \
+    --export-dir {{ conf.sqoop_export_dir }} \
+    --table {{ table.source.name }}
+
+
