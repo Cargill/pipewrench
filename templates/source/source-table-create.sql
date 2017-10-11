@@ -1,4 +1,3 @@
-#!/bin/bash
 {#  Copyright 2017 Cargill Incorporated
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +12,11 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
-# Remove parquet data from hdfs
-set -euo pipefail
-hdfs dfs -rm -r -f {{ conf.staging_database.path }}/{{ table.destination.name }}/
+-- Create a source table
+CREATE TABLE {{ conf.source_database.name }}.{{ table.source.name }} ( 
+{% for column in table.columns %}
+	{{ column.name }} {{ column.datatype }}
+{%- if not loop.last -%}, {% endif %}
+{%- endfor %}
+);
+DESCRIBE {{ conf.source_database.name }}.{{ table.source.name }};
