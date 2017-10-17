@@ -61,6 +61,9 @@ kudu-table: kudu-table-create.sql ## Create Impala Kudu Table
 kudu-insert: tables kudu-table-insert.sql ## Insert data into Kudu table from Parquet
 	$(impala-cmd) kudu-table-insert.sql
 
+compute-stats: compute-stats.sql
+	        $(impala-cmd) compute-stats.sql
+
 kudu-table-clean: kudu-table-drop.sql ## Drop Kudu table
 	$(impala-cmd) kudu-table-drop.sql
 
@@ -74,7 +77,7 @@ tables: parquet-table kudu-table ## Create all tables
 
 update: sqoop-exec kudu-insert parquet-archive ## Insert data from source db into Kudu
 
-first-run: sqoop-create tables update ## Run entire workflow, building all tables and pulling source db data into Kudu
+first-run: sqoop-create tables update compute-stats ## Run entire workflow, building all tables and pulling source db data into Kudu
 
 clean: sqoop-clean kudu-table-clean parquet-table-clean hdfs-clean ## Remove all tables and data
 
