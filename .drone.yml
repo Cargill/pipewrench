@@ -2,13 +2,11 @@ pipeline:
   build:
     image: mappies/centos7-python3.5
     commands:
-      - pwd
-      - yum makecache fast
       - yum -y install make
       - pyvenv-3.5 testenv
       - source testenv/bin/activate
       - python setup.py install
-      - sh test
+      - make test
 
   hipchat-notify:
     image: jmccann/drone-hipchat
@@ -16,6 +14,3 @@ pipeline:
     room: 4033980
     when:
       event: push
-      branch: master
-
-
