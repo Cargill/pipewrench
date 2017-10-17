@@ -38,6 +38,9 @@ sqoop-exec: ## Execute sqoop job
 parquet-table: parquet-table-create.sql #### Create Parquet Impala Table
 	$(impala-cmd) parquet-table-create.sql
 
+compute-stats: compute-stats.sql # Compute impala table stats
+	        $(impala-cmd) compute-stats.sql
+
 test-recordcount: ### Run Integration Tests
 	bash -x test-recordcount.sh
 
@@ -60,7 +63,7 @@ tables: parquet-table ## Create all tables
 
 update: sqoop-exec ## Insert data from source db into Kudu
 
-first-run: sqoop-create tables update ## Run entire workflow, building all tables and pulling source db data into Kudu
+first-run: sqoop-create tables update compute-stats ## Run entire workflow, building all tables and pulling source db data into Kudu
 
 clean: sqoop-clean parquet-table-clean hdfs-clean ## Remove all tables and data
 
