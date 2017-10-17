@@ -7,8 +7,6 @@ pipeline:
       - yum -y install make
       - pyvenv-3.5 testenv
       - source testenv/bin/activate
-      - python setup.py sdist
-      - pip install -r requirements.txt
       - python setup.py install
       - make test
 
