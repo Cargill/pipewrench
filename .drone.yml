@@ -2,9 +2,13 @@ pipeline:
   build:
     image: mappies/centos7-python3.5
     commands:
+      - pwd
+      - yum makecache fast
       - yum -y install make
       - pyvenv-3.5 testenv
       - source testenv/bin/activate
+      - python setup.py sdist
+      - pip install -r requirements.txt
       - python setup.py install
       - make test
 
@@ -14,3 +18,4 @@ pipeline:
     room: 4033980
     when:
       event: push
+      branch: master
