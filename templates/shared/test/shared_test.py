@@ -15,7 +15,7 @@
 from pipewrench import test_util
 import json
 
-def test_sqoop_creat_sh():
+def test_sqoop_create_sh():
     conf_string = '''---
     source_database:
       name: sourcedb
@@ -42,7 +42,6 @@ def test_sqoop_creat_sh():
             comment: column two comment'''
 
     expected = test_util.read_file('sqoop-create.sh')
-
     actual = test_util.merge_single(conf_string, None, '../sqoop-create.sh')
 
     assert actual == expected
@@ -83,8 +82,6 @@ def test_avro_avsc_with_decimal():
 
     actual = test_util.merge_single(conf_string, type_mappings, '../avro.avsc')
 
-    print(actual)
-    print(expected)
     actual_json = json.dumps(json.loads(actual), sort_keys=True)
     expected_json = json.dumps(json.loads(expected), sort_keys=True)
 
@@ -123,7 +120,6 @@ def test_kudu_table_create_sql():
             comment: column two comment'''
 
     expected = test_util.read_file('kudu-table-create.sql')
-
     actual = test_util.merge_single(conf_string, type_mappings, '../kudu-table-create.sql')
-    print(actual)
+
     assert actual == expected
