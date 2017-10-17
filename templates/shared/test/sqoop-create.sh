@@ -15,11 +15,10 @@ sqoop job -D 'sqoop.metastore.client.record.password=true' \
     --split-by col1 \
     --check-column col1 \
     --as-parquetfile \
-    --direct \
     --fetch-size 10000 \
     --compress  \
     --compression-codec snappy \
     -m 1 \
-    --query 'SELECT TOP 1000 col1,
-        col2
+    --query 'SELECT col1,
+	col2
         FROM sourcedb.source_table WHERE $CONDITIONS'
