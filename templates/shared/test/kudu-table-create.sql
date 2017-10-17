@@ -6,8 +6,8 @@ col1 string,
 col2 decimal,
 primary key ())
 PARTITION BY HASH(col1) PARTITIONS 10
-TBLPROPERTIES(
-'col1','column one comment',
-'col2','column two comment'
-)
 STORED AS KUDU
+TBLPROPERTIES(
+'col1'='column one comment',
+'col2'='column two comment'
+)
