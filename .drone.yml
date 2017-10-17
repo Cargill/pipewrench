@@ -1,0 +1,15 @@
+pipeline:
+  build:
+    image: mappies/centos7-python3.5
+    commands:
+      - yum -y install make
+      - pyvenv-3.5 testenv
+      - source testenv/bin/activate
+      - python setup.py install
+      - make -B test
+      - rm -rf testenv
+
+  hipchat:
+    image: jmccann/drone-hipchat
+    secrets: [ HIPCHAT_AUTH_TOKEN ]
+		room: Drone
