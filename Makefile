@@ -46,7 +46,7 @@ clean-render-templates: ## Clean rendered templates from test
 pylint: 
 	pylint pipewrench/merge.py
 
-build: pylint test-templates test-app
+build: test-templates test-app
 
 FORCE: ## Do nothing, always
 
