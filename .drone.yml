@@ -8,8 +8,7 @@ pipeline:
       - pyvenv-3.5 testenv
       - source testenv/bin/activate
       - python setup.py install
-      - make test-templates
-      - make test-app
+      - make build
 
   hipchat-notify:
     image: jmccann/drone-hipchat
