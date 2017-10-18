@@ -12,7 +12,7 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
-impala-cmd= {{ conf.impala }}
+impala-cmd={{ conf.impala }}
 source-db-cmd={{ conf.source_database.cmd }}
 
 source-table: source-table-create.sql ### Create the table in the source database

@@ -8,10 +8,10 @@ primary key ())
 PARTITION BY HASH(col1) PARTITIONS 10
 STORED AS KUDU
 TBLPROPERTIES(
-'SOURCE' = 'upstream.source.location',
-'SECURITY_CLASSIFICATION' = 'OPEN',
-'LOAD_FREQUENCY' = 'STREAMING',
-'CONTACT_INFO' = 'team@company.com',
+  'SOURCE' = '',
+  'SECURITY_CLASSIFICATION' = '',
+  'LOAD_FREQUENCY' = '',
+  'CONTACT_INFO' = '',
 'col1' = 'column one comment',
 'col2' = 'column two comment'
 )
