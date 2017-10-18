@@ -105,6 +105,10 @@ def test_kudu_table_create_sql():
           name: destination
         source:
           name: source_table
+        META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
+        META_LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
+        META_SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
+        META_SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
         split_by_column: col1
         check_column: col1
         kudu:

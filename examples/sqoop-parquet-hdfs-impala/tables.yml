@@ -16,6 +16,10 @@ result_database:
   path: "{{ hdfs_basedir }}/db/clean" # Result database HDFS path
 tables:
   - id: "first_imported_table" # Uniquely identifies this table
+    META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
+    META_LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
+    META_SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
+    META_SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
     source:
       name: "SourceTableName" # Source table name
     destination:
@@ -55,6 +59,10 @@ tables:
         datatype: "int"
         comment: "comment"
   - id: "second_imported_table" # Uniquely identifies this table
+    META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
+    META_LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
+    META_SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
+    META_SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
     source:
       name: "SourceTableName" # Source table name
     destination:

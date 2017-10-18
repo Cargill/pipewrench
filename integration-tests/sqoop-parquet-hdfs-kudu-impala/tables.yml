@@ -20,6 +20,10 @@ result_database:
   path: "{{ hdfs_basedir }}/pipewrench" # Result database HDFS path
 tables:
   - id: "titanic" # Uniquely identifies this table
+    META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
+    META_LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
+    META_SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
+    META_SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
     source:
       name: "titanic" # Source table name
       file: ../../../../../data/Titanic.csv
@@ -59,6 +63,10 @@ tables:
         datatype: "int"
         comment: "comment"
   - id: "vocab" # Uniquely identifies this table
+    META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
+    META_LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
+    META_SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
+    META_SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
     source:
       name: "vocab" # Source table name
       file: ../../../../../data/Vocab.csv
@@ -89,6 +97,10 @@ tables:
         datatype: "int"
         comment: "comment"
   - id: "baseball" # Uniquely identifies this table
+    META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
+    META_LOAD_FREQUENCY: "ON_DEMAND" # Load frequency will be loaded into tblproperties
+    META_SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
+    META_SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
     source:
       name: "baseball" # Source table name
       file: ../../../../../data/Baseball.csv

@@ -23,6 +23,10 @@ primary key ({{ table.primary_keys|join(', ') }}))
 PARTITION BY HASH({{ table.kudu.hash_by|join(', ') }}) PARTITIONS {{ table.kudu.num_partitions }}
 STORED AS KUDU
 TBLPROPERTIES(
+'SOURCE' = '{{ table.META_SOURCE }}',
+'SECURITY_CLASSIFICATION' = '{{ table.META_SECURITY_CLASSIFICATION }}',
+'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',
+'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}',
 {% for column in table.columns -%}
-  '{{ column.name|lower }}'='{{ column.comment }}'{%- if not loop.last -%},{% endif %}
+  '{{ column.name|lower }}' = '{{ column.comment }}'{%- if not loop.last -%},{% endif %}
 {%endfor%})
