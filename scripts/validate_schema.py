@@ -42,9 +42,6 @@ def main(conf_path, env_path):
 
     for table in conf['tables']:
         result = Table().load(table)
-        if table['id']:
-            print('results for: ' + table['id'])
-            print()
         if (result.errors):
             print(yaml.dump({ table['id']: result.errors}))
         else:
