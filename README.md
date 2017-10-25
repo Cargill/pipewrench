@@ -1,3 +1,5 @@
+![Travis build tag](https://travis-ci.org/afoerster/pipewrench.svg?branch=master)
+
 <p align="center">
   <img src="pipewrench.png" alt="pipewrench.png" width="128" height="128"/>
 
