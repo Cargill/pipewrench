@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Create a Sqoop job
+
+ # Create a Sqoop job
 set -euo pipefail
 sqoop job -D 'sqoop.metastore.client.record.password=true' \
     --create sourcedb.source_table.unittest \
@@ -12,6 +13,7 @@ sqoop job -D 'sqoop.metastore.client.record.password=true' \
     --incremental append \
     --temporary-rootdir /data//destination \
     --append \
+    --map-column-java col3=String,col4=String \
     --split-by col1 \
     --check-column col1 \
     --as-parquetfile \
@@ -20,5 +22,7 @@ sqoop job -D 'sqoop.metastore.client.record.password=true' \
     --compression-codec snappy \
     -m 1 \
     --query 'SELECT col1,
-	col2
+	col2,
+	col3,
+	col4
         FROM sourcedb.source_table WHERE $CONDITIONS'
