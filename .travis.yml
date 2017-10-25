@@ -14,5 +14,7 @@ install:
   - python setup.py -q install
 
 script:
-  - make test
+  - make test-app
+  - make test-templates
+
 
