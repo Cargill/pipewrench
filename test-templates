@@ -15,7 +15,7 @@
 
 # Find all template test files, execute pytest in their dir 
 
-set -euo pipefail
+set -eu
 
 # execute a script in its directory
 function execdir {
