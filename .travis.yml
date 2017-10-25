@@ -11,7 +11,7 @@ before_install:
   - pip --version
 
 install:
-  - python setup.py install
+  - sudo python setup.py install
 
 script:
   - make test
