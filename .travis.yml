@@ -16,5 +16,6 @@ install:
 script:
   - make test-app
   - make test-templates
+  - make pylint
 
 
