@@ -250,8 +250,8 @@ def write(string, fpath):
     :param fpath: Path to write to
     :return:
     """
-    with codecs.open(fpath, 'w', 'UTF-8') as out_file:
-        out_file.write(string)
+    with codecs.open(fpath, 'w', 'UTF-8') as f:
+        f.write(string)
         if fpath.endswith('.sh'):
             os.chmod(fpath, 0o750)
 
