@@ -11,7 +11,7 @@ before_install:
   - pip --version
 
 install:
-  - python setup.py install
+  - python setup.py -q install
 
 script:
   - make test
