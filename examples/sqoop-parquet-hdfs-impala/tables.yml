@@ -50,13 +50,13 @@ tables:
         datatype: "varchar"
         comment: "comment"
       - name: "col6"
-        datatype: "varchar"
+        datatype: "clob"
         comment: "comment"
       - name: "tsCol"
         datatype: "datetime"
         comment: "comment"
       - name: "col8"
-        datatype: "int"
+        datatype: "clob"
         comment: "comment"
   - id: "second_imported_table" # Uniquely identifies this table
     META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties

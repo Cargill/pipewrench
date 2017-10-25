@@ -39,11 +39,17 @@ def test_sqoop_create_sh():
             comment: column one comment
           - name: col2
             datatype: int
-            comment: column two comment'''
+            comment: column two comment
+          - name: col3
+            datatype: clob
+            comment: column three comment
+          - name: col4
+            datatype: clob
+            comment: column four comment'''
 
     expected = test_util.read_file('sqoop-create.sh')
     actual = test_util.merge_single(conf_string, None, '../sqoop-create.sh')
-
+    print(actual)
     assert actual == expected
 
 def test_avro_avsc_with_decimal():
