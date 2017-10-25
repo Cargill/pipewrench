@@ -16,7 +16,7 @@
 # Simple test that builds all example pipelines
 # and does some Makefile validation
 
-set -euo pipefail
+set -eu
 
 # execute a script in its directory
 function execdir {

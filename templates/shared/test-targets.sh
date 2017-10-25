@@ -14,7 +14,7 @@
     limitations under the License. #}
 
 # This script verifies all dependencies are met for every target.
-set -euo pipefail
+set -eu
 for target in $(make targets)
 do
     make -n $target
