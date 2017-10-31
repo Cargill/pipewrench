@@ -39,6 +39,7 @@
   * [Creating Templates](#creating-templates)
   * [Importing templates](#importing-templates)
   * [Mapping datatypes](#mapping-datatypes)
+  * [Validating Configuration Schemas](#validating-configuration-schemas)
 - [Using the Logging Script - run-with-logging.sh](#using-the-logging-script---run-with-loggingsh)
 - [Testing](#testing)
 
@@ -311,6 +312,39 @@ or an Avro datatype
 ```snakeyaml
 {{ map_datatypes(column).avro }}
 ```
+
+## Validating Configuration Schemas
+It is often desirable to validate a `tables.yml` before actually creating a pipeline, both to catch errors before anything is run and to validate certain governance requirements are met. 
+
+The script `validate_schmema.py` was created to ensure a configuration has the correct metadata for a table (load frequency, security classification, owner, contact info, source, column comments, etc.).
+
+To run the script on an example configuration:
+
+```bash
+python scripts/validate_schema.py --conf examples/sqoop-parquet-hdfs-impala/tables.yml --env examples/sqoop-parquet-hdfs-impala/env.yml
+```
+
+The script will exit with a '0' code if there are no validation errors. 
+
+Output with validation errors will look like this:
+
+```
+first_imported_table:
+  META_SOURCE: [Missing data for required field.]
+  columns:
+    2:
+      comment: [Missing data for required field.]
+    3:
+      comment: [Missing data for required field.]
+
+second_imported_table:
+  META_LOAD_FREQUENCY: [Missing data for required field.]
+  META_SECURITY_CLASSIFICATION: [Missing data for required field.]
+
+```
+
+Saying that the first table is missing the source database field and several comments, and the second table is missing the load frequency and security classification fields.
+
 
 ## Using the Logging Script - run-with-logging.sh
 
