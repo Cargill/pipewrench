@@ -12,13 +12,13 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-test: test-app test-templates test-render-templates ## run all local tests
+test: test-app test-templates ## run all local tests
+
+integration-test:
+	./integration-tests/run-tests.sh
 
 test-templates: FORCE ## Unit test templates
 	./test-templates
-
-test-render-templates: FORCE ## Render all template examples
-	./test-render-templates
 
 test-app: FORCE ## Run Pipewrench application tests
 	python setup.py test
@@ -35,6 +35,8 @@ clean: ## Remove all files
 	$(RM) -r build
 	$(RM) -r examples/*/output
 
+build: pylint test
+
 clean-render-templates: ## Clean rendered templates from test
 	for example in $$(ls examples); do \
 	    $(RM) examples/$${example}/output; \
@@ -43,15 +45,11 @@ clean-render-templates: ## Clean rendered templates from test
 pylint: 
 	pylint pipewrench/merge.py
 
-build: pylint test 
-
 FORCE: ## Do nothing, always
 
 .PHONY: test
 
 .PHONY: test-templates
-
-.PHONY: test-render-templates
 
 .PHONY: install
 
@@ -62,4 +60,6 @@ FORCE: ## Do nothing, always
 .PHONY: pylint
 
 .PHONY: build
+
+.PHONY: integration-test
 

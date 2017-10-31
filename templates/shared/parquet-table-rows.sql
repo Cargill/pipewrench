@@ -1,4 +1,3 @@
-#!/bin/bash
 {#  Copyright 2017 Cargill Incorporated
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +12,8 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
-# Remove parquet data from hdfs
-set -euo pipefail
-hdfs dfs -rm -r -f {{ conf.staging_database.path }}/{{ table.destination.name }}/
+-- Query Parquet table in Impala
+USE {{ conf.staging_database.name }};
+INVALIDATE METADATA {{ table.destination.name }}_parquet;
+SELECT COUNT(*) FROM {{ table.destination.name }}_parquet;
+

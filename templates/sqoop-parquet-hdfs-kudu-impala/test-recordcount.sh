@@ -1,5 +1,5 @@
 #!/bin/bash
-{#  Copyright 2017 Cargill Incorporated
+{#    Copyright 2017 Cargill Incorporated
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -13,6 +13,11 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
-# Remove parquet data from hdfs
-set -euo pipefail
-hdfs dfs -rm -r -f {{ conf.staging_database.path }}/{{ table.destination.name }}/
+# Check kudu table
+KUDU=$({{ conf.impala }} kudu-table-rows.sql -B 2> /dev/null)
+SOURCE=$({{ conf.source_database.cmd }} source-table-rows.sql -s -r -N -B 2> /dev/null)
+
+if [ "$KUDU" -ne "$SOURCE" ]; then
+	echo ROW COUNTS DO NOT MATCH
+	exit 1
+fi

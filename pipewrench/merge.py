@@ -201,7 +201,7 @@ def render(template, **kwargs):
     :return: The reified template
     """
     template = Template(template)
-    template_functions = [map_datatypes, dumps]
+    template_functions = [map_datatypes, dumps, map_clobs]
 
     for function in template_functions:
         template.globals[function.__name__] = function
@@ -271,8 +271,8 @@ def write(string, fpath):
     :param fpath: Path to write to
     :return:
     """
-    with codecs.open(fpath, 'w', 'UTF-8') as file:
-        file.write(string)
+    with codecs.open(fpath, 'w', 'UTF-8') as out_file:
+        out_file.write(string)
         if fpath.endswith('.sh'):
             os.chmod(fpath, 0o750)
 
@@ -313,6 +313,24 @@ def map_datatypes(column):
     mapped_datatype = type_mappings['type_mapping'].get(datatype)
     logging.debug('mapped %s to %s', datatype, mapped_datatype)
     return mapped_datatype
+
+
+def map_clobs(columns):
+    """
+    The map_clobs function will inject the following if there
+    are clob data types. --map-column-java col6=String,col8=String
+    This is needed as clob columns will not come into Hadoop unless
+    we specifically map them.
+    """
+    hasclobs = False
+    clobs = ""
+    for c in columns:
+        if c.get("datatype") == "clob":
+            if not hasclobs:
+                hasclobs = True
+                clobs = "--map-column-java "
+            clobs = clobs + c.get("name") + "=String,"
+    return clobs[:-1]
 
 
 # Testing Functions
