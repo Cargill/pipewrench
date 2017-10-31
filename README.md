@@ -1,4 +1,4 @@
-![Travis build tag](https://travis-ci.org/cargill/pipewrench.svg?branch=master)
+![Travis build tag](https://travis-ci.org/Cargill/pipewrench.svg?branch=master)
 
 <p align="center">
   <img src="pipewrench.png" alt="pipewrench.png" width="128" height="128"/>
