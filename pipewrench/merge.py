@@ -122,8 +122,11 @@ def merge_templates(template_dir, conf):
                 template = template_file.read()
                 # Remove the '.meta'  file extension from the name of the files
                 file_path = os.path.join(pipeline_out_dir, template_name)[:-5]
-                rendered = render_meta(template, conf, tables)
-                write(rendered, file_path)
+                try:
+                    rendered = render_meta(template, conf, tables)
+                    write(rendered, file_path)
+                except UnicodeDecodeError:
+                    logging.warning("Could not render template, continuing")
 
     for table in tables:
         table_dir = os.path.join(pipeline_out_dir, table['id'])
@@ -153,7 +156,10 @@ def merge_templates(template_dir, conf):
             # Render the rest of the templates
             elif not template_name.endswith(".meta"):
                 template_path = os.path.join(template_dir, template_name)
-                render_write_template(conf, table, table_dir, template_name, template_path)
+                try:
+                    render_write_template(conf, table, table_dir, template_name, template_path)
+                except UnicodeDecodeError:
+                    logging.warning("Could not render template, continuing")
 
 
 def render_write_template(conf, table, table_dir, template_name, template_path):
