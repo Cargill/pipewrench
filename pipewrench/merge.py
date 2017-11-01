@@ -87,6 +87,7 @@ def merge(template_dir, env_path, conf_path):
     merge_templates(template_dir, conf)
 
 # pylint: disable=too-many-locals
+# pylint: disable=too-many-branches
 def merge_templates(template_dir, conf):
     """
      - Apply an `env.yml` to a configuration (`tables.yml`)
@@ -112,7 +113,7 @@ def merge_templates(template_dir, conf):
         os.symlink(templates_dir_abs, templates_symlink)
     tables = conf['tables']
     logging.info('loading %d table(s)', len(tables))
-    # render jinja meta templates
+    # render meta templates
     for template_name in os.listdir(template_dir):
         if template_name.endswith(".meta"):
             template_path = os.path.join(os.path.realpath(template_dir), template_name)
@@ -122,9 +123,13 @@ def merge_templates(template_dir, conf):
                 template = template_file.read()
                 # Remove the '.meta'  file extension from the name of the files
                 file_path = os.path.join(pipeline_out_dir, template_name)[:-5]
-                rendered = render_meta(template, conf, tables)
-                write(rendered, file_path)
+                try:
+                    rendered = render(template, conf=conf, tables=tables)
+                    write(rendered, file_path)
+                except UnicodeDecodeError:
+                    logging.warning("Could not render template, continuing")
 
+    # render standard templates
     for table in tables:
         table_dir = os.path.join(pipeline_out_dir, table['id'])
         if not os.path.exists(table_dir):
@@ -133,15 +138,12 @@ def merge_templates(template_dir, conf):
         logging.debug("type mappings loaded: \n%s", type_mappings)
 
         dir_templates = [os.path.realpath(os.path.join(template_dir, x))
-                         for x in os.listdir(template_dir)]
+                         for x in os.listdir(template_dir)
+                         if not x == 'test' # exclude test directory
+                         and not x.endswith('.meta')] # meta templates are already rendered
 
-        # render jinja table templates
         for template_path in dir_templates:
             template_name = os.path.basename(template_path)
-
-            # Don't try to render directories as templates
-            if os.path.isdir(template_path) or template_name.endswith("test.py"):
-                continue
 
             # Read each line in the 'imports' file and render the template it points to
             if template_name == 'imports':
@@ -151,9 +153,12 @@ def merge_templates(template_dir, conf):
                     render_write_template(conf, table, table_dir, os.path.basename(i), full_path)
 
             # Render the rest of the templates
-            elif not template_name.endswith(".meta"):
+            else:
                 template_path = os.path.join(template_dir, template_name)
-                render_write_template(conf, table, table_dir, template_name, template_path)
+                try:
+                    render_write_template(conf, table, table_dir, template_name, template_path)
+                except UnicodeDecodeError:
+                    logging.warning("Could not render template, continuing")
 
 
 def render_write_template(conf, table, table_dir, template_name, template_path):
@@ -171,7 +176,7 @@ def render_write_template(conf, table, table_dir, template_name, template_path):
 
         template = template_file.read()
         file_path = os.path.join(table_dir, template_name)
-        rendered = render_table(template, conf, table)
+        rendered = render(template, conf=conf, table=table)
         write(rendered, file_path)
 
 
@@ -207,27 +212,6 @@ def render(template, **kwargs):
         template.globals[function.__name__] = function
 
     return template.render(**kwargs)
-
-
-def render_table(template, conf, table):
-    """
-    Render a single table/template pair
-    :param template: The template to render
-    :param conf: The configuration to be passed to the template
-    :param table: The table to pass to the template
-    :return: a rendered template
-    """
-    return render(template, conf=conf, table=table)
-
-
-def render_meta(template, conf, tables):
-    """
-    :param template: The template to render
-    :param conf: The configuration
-    :param tables: A list of tables to render
-    :return: A rendered template
-    """
-    return render(template, conf=conf, tables=tables)
 
 
 def get_conf(path, env):
@@ -346,4 +330,4 @@ def merge_single_template(template_file_path, type_mapping, conf):
     table = conf['tables'][0]
     with codecs.open(template_file_path, 'r', 'UTF-8') as template_file:
         template = template_file.read()
-        return render_table(template, conf, table)
+        return render(template, conf=conf, table=table)
