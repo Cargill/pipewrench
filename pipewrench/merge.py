@@ -105,12 +105,7 @@ def merge_templates(template_dir, conf):
     pipeline_out_dir = os.path.join(OUT_DIR, pipeline_name)
     if not os.path.exists(pipeline_out_dir):
         os.mkdir(pipeline_out_dir)
-    templates_symlink = os.path.join(os.path.abspath(pipeline_out_dir), "templates")
-    if not os.path.exists(templates_symlink):
-        templates_dir_abs = os.path.abspath(template_dir)
-        logging.debug('creating symlink from: %s to %s', templates_dir_abs, templates_symlink)
 
-        os.symlink(templates_dir_abs, templates_symlink)
     tables = conf['tables']
     logging.info('loading %d table(s)', len(tables))
     # render meta templates
