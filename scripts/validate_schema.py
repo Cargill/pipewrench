@@ -44,11 +44,11 @@ def main(conf_path, env_path):
         result = Table().load(table)
         if (result.errors):
             print(yaml.dump({ table['id']: result.errors}))
+            has_errors = True
         else:
             print('ok')
-        has_errors = True
 
-    exit(not has_errors)
+    exit(1 if has_errors else 0)
 
 
 if __name__ == "__main__":
