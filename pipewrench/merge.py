@@ -154,7 +154,6 @@ def merge_templates(template_dir, conf):
 
             # Render the rest of the templates
             else:
-                template_path = os.path.join(template_dir, template_name)
                 try:
                     render_write_template(conf, table, table_dir, template_name, template_path)
                 except UnicodeDecodeError:
@@ -229,6 +228,7 @@ def get_conf(path, env):
 
         # Load the conf yaml into Python data structures
         conf = yaml.load(env_applied)
+        conf.update(env)
         logging.debug('conf: %s', conf)
 
         return conf
