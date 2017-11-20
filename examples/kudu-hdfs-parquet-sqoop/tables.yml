@@ -1,0 +1,43 @@
+---
+name: "sqoop_to_kudu_import" # The name of this configuration
+type: "export"
+user_name: {{ dest_db_user_name }} # Source database user name
+type_mapping: type-mapping.yml # Type mapping used for database type conversion
+sqoop_password_file: {{ password_file}} # Password file for sqoop. Must reside in HDFS
+connection_manager: "com.mysql.jdbc.Driver" # Connection manager fully qualified class
+sqoop_job_name_suffix: test # Suffix added to sqoop jobs. Can be used to differentiate environments
+source_database:
+  name: "default" # Source database name
+  connection_string: {{ connection_string }} # Source database connection string. Should be kept in 'env.yml'
+staging_database:
+  name: "default" # Staging database name.
+  path: "{{ hdfs_basedir }}/db/staging" # Staging database HDFS path
+result_database:
+  name: "employees" # Result database
+  path: "{{ hdfs_basedir }}/db/clean" # Result database HDFS path
+  cli: "mysql -u {{ dest_db_user_name }} -p{{ dest_db_user_pass }} -e"
+tables:
+  - id: "first_imported_table" # Uniquely identifies this table
+    source:
+      name: "employees_kudu" # Source table name
+    destination:
+      name: "employees_sql" # Destination (Impala) table name
+    columns:
+      - name: "emp_no" # Column name in source table
+        datatype: "int" # Column datatype in source table
+        comment: "comment" # Column comment
+      - name: "birth_date"
+        datatype: "bigint"
+        comment: "comment"
+      - name: "first_name"
+        datatype: "varchar"
+        comment: "comment"
+      - name: "last_name"
+        datatype: "varchar"
+        comment: "comment"
+      - name: "gender"
+        datatype: "varchar"
+        comment: "comment"
+      - name: "hire_date"
+        datatype: "bigint"
+        comment: "comment"
