@@ -11,6 +11,9 @@ The tests will spin up a docker container, load data, then run the pipeline usin
 
 ## Running the tests
 
+In each integration test dir, copy the `env.yml.template into `env.yml` and fill it with
+values for your environment (database, path, hostname for connection string)
+
 Tests can be run by calling
 
 ```bash

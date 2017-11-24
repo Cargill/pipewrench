@@ -13,7 +13,7 @@
     limitations under the License. #}
 
 -- Create a source table
-CREATE TABLE {{ conf.source_database.name }}.{{ table.source.name }} ( 
+CREATE TABLE IF NOT EXISTS {{ conf.source_database.name }}.{{ table.source.name }} ( 
 {% for column in table.columns %}
 	{{ column.name }} {{ column.datatype }}
 {%- if not loop.last -%}, {% endif %}

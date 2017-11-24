@@ -12,7 +12,7 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
-impala-cmd= {{ conf.impala_cmd }}
+impala-cmd={{ conf.impala_cmd }}
 source-db-cmd={{ conf.source_database.cmd }}
 
 source-table: source-table-create.sql ### Create the table in the source database
@@ -24,7 +24,17 @@ source-insert: source-table-insert.sql ### Add data to the source table
 source-table-clean: source-table-drop.sql ### Drop the source table
 	$(source-db-cmd) source-table-drop.sql
 
-source-create: source-table source-insert #### Create a new source table with data
+source-create: 
+	$(MAKE) source-table 
+	$(MAKE) source-insert #### Create a new source table with data
+
+integration-test:
+	$(MAKE) clean
+	$(MAKE) source-create
+	$(MAKE) first-run
+	$(MAKE) test-recordcount
+	$(MAKE) source-table-clean
+	$(MAKE) clean
 
 sqoop-create:  #### Create Sqoop job
 	./run-with-logging.sh ./sqoop-create.sh $@
@@ -73,15 +83,21 @@ tables-clean: kudu-table-clean parquet-table-clean ## Drop all tables
 
 tables: parquet-table kudu-table ## Create all tables
 
-update: sqoop-exec kudu-insert parquet-archive ## Insert data from source db into Kudu
+update: 
+	$(MAKE) sqoop-exec 
+	$(MAKE) kudu-insert 
+	$(MAKE) parquet-archive ## Insert data from source db into Kudu
 
-first-run: sqoop-create tables update compute-stats ## Run entire workflow, building all tables and pulling source db data into Kudu
+first-run: 
+	$(MAKE) sqoop-create 
+	$(MAKE) tables 
+	$(MAKE) update 
+	$(MAKE) compute-stats ## Run entire workflow, building all tables and pulling source db data into Kudu
 
 clean: sqoop-clean kudu-table-clean parquet-table-clean hdfs-clean ## Remove all tables and data
 
 targets: ## Print out a list of available targets
 	@fgrep -h ": " $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/:.*//'
-
 
 help:  ## Print help message
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
