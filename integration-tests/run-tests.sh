@@ -12,9 +12,9 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
+set -eu
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cd $SCRIPT_DIR
-set -eu
 sqoop-parquet-hdfs-impala/run.sh
 sqoop-parquet-hdfs-kudu-impala/run.sh
