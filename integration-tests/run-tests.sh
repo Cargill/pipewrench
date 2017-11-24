@@ -13,6 +13,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 function cleanup {
 $SCRIPT_DIR/mysql-docker-container-delete || true
 }
@@ -21,7 +22,6 @@ trap cleanup EXIT
 cd $SCRIPT_DIR
 # Simple test that builds all example pipelines
 # and does some Makefile validation
-source $SCRIPT_DIR/../venv/bin/activate
 ./mysql-docker-container-create
 
 while :;do

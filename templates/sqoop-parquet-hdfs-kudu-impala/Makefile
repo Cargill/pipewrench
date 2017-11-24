@@ -12,7 +12,7 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
-impala-cmd= {{conf.impala }}
+impala-cmd= {{ conf.impala_cmd }}
 source-db-cmd={{ conf.source_database.cmd }}
 
 source-table: source-table-create.sql ### Create the table in the source database
@@ -26,7 +26,7 @@ source-table-clean: source-table-drop.sql ### Drop the source table
 
 source-create: source-table source-insert #### Create a new source table with data
 
-sqoop-create: sqoop-create.sh #### Create Sqoop job
+sqoop-create:  #### Create Sqoop job
 	./run-with-logging.sh ./sqoop-create.sh $@
 
 sqoop-clean: ## Delete Sqoop job
@@ -43,7 +43,6 @@ test-recordcount:  #### Run integration tests
 
 parquet-table-clean: parquet-table-drop.sql ## Drop Parquet impala table
 	$(impala-cmd) parquet-table-drop.sql
-	rm -f parquet-table
 
 parquet-archive: hdfs-archive.sh
 	sh hdfs-archive.sh
@@ -53,7 +52,6 @@ parquet-unarchive: hdfs-unarchive.sh
 
 hdfs-clean: hdfs-delete.sh ## Delete parquet files from HDFS
 	sh hdfs-delete.sh
-	rm -f hdfs-clean
 
 kudu-table: kudu-table-create.sql ## Create Impala Kudu Table
 	$(impala-cmd) kudu-table-create.sql

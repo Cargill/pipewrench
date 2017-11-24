@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e
 MYSQL_USER="pipewrench"
 MYSQL_DATABASE="integration_test"
