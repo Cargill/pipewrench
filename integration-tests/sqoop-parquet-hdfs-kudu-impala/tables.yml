@@ -7,16 +7,16 @@ sqoop_password_file: {{ password_file}} # Password file for sqoop. Must reside i
 sqoop_password: {{ password }} # Password for sqoop. Must reside in HDFS
 connection_manager: "org.apache.sqoop.manager.MySQLManager" # Connection manager fully qualified class
 sqoop_job_name_suffix: test # Suffix added to sqoop jobs. Can be used to differentiate environments
-impala: "/bin/impala-shell -k --ssl -i drona-impala.cargill.com -f"
+impala_cmd: {{ impala_cmd }}
 source_database:
   name: "integration_test" # Source database name
   connection_string: {{ connection_string }} # Source database connection string. Should be kept in 'env.yml'
-  cmd: "mysql -upipewrench -ppipewrench -h 127.0.0.1 <"
+  cmd: "mysql -P 3306 -upipewrench -ppipewrench -h 127.0.0.1 <"
 staging_database:
-  name: "demo" # Staging database name.
+  name: "{{ destination_database }}" # Staging database name.
   path: "{{ hdfs_basedir }}/pipewrench" # Staging database HDFS path
 result_database:
-  name: "demo" # Result database
+  name: "{{ destination_database }}" # Result database
   path: "{{ hdfs_basedir }}/pipewrench" # Result database HDFS path
 tables:
   - id: "titanic" # Uniquely identifies this table
