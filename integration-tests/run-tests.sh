@@ -25,7 +25,7 @@ source $SCRIPT_DIR/../venv/bin/activate
 ./mysql-docker-container-create
 
 while :;do
-    mysql -h 127.0.0.1 -u pipewrench -ppipewrench -e 'show databases;' &> /dev/null
+    mysql -h 127.0.0.1 -P 3306 -u pipewrench -ppipewrench -e 'show databases;' &> /dev/null
     
     if [[ "$?" -eq "0" ]];then
         echo 'service ready'

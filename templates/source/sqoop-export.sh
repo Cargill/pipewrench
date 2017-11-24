@@ -15,7 +15,7 @@
 
 # Create a Sqoop job
 set -euo pipefail
-sqoop export --connect jdbc:mysql://localhost/{{ conf.source_database.name }} \
+sqoop export --connect {{ conf.connection_string }} \
     --username {{ conf.user_name }} \
     --password-file {{ conf.sqoop_password_file }} \
     --export-dir {{ conf.sqoop_export_dir }} \
