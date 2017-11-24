@@ -14,7 +14,6 @@
 #    limitations under the License.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-trap cleanup EXIT
 cd $SCRIPT_DIR
 set -eu
 sqoop-parquet-hdfs-impala/run.sh

@@ -24,8 +24,18 @@ source-insert: source-table-insert.sql ### Add data to the source table
 source-table-clean: source-table-drop.sql ### Drop the source table
 	$(source-db-cmd) source-table-drop.sql
 
-source-create: source-table source-insert ## Create a new source table with data
+source-create: 
+	$(MAKE) source-table 
+	$(MAKE) source-insert ## Create a new source table with data
 
+integration-test:
+	$(MAKE) clean
+	$(MAKE) source-create
+	$(MAKE) first-run
+	$(MAKE) test-recordcount
+	$(MAKE) source-table-clean
+	$(MAKE) clean
+	
 sqoop-create: sqoop-create.sh #### Create Sqoop job
 	./run-with-logging.sh ./sqoop-create.sh $@
 
@@ -63,7 +73,11 @@ tables: parquet-table ## Create all tables
 
 update: sqoop-exec ## Insert data from source db into Kudu
 
-first-run: sqoop-create tables update compute-stats ## Run entire workflow, building all tables and pulling source db data into Kudu
+first-run: 
+	$(MAKE) sqoop-create 
+	$(MAKE) tables 
+	$(MAKE) update 
+	$(MAKE) compute-stats ## Run entire workflow, building all tables and pulling source db data into Kudu
 
 clean: sqoop-clean parquet-table-clean hdfs-clean ## Remove all tables and data
 

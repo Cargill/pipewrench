@@ -33,21 +33,10 @@ while :;do
     echo 'waiting for mysql container to be available'
     sleep 1
 done
-docker ps
-set -euo pipefail
+echo "created container $(docker ps)"
+set -eu
 
 # verify we can generate scripts without error
 ./generate-scripts
-pushd ./output/sqoop-parquet-hdfs-impala
-for table in titanic baseball vocab;do
-   pushd ${table}
-   # Run the test-targets script to ensure all targets are available
-   make clean 
-   make source-create
-   make first-run
-   make test-recordcount
-   make source-table-clean
-   make clean
-   popd
-done
+make -j10 integration-test-all -C output/sqoop-parquet-hdfs-impala
 
