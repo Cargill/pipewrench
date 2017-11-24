@@ -15,4 +15,4 @@
 
 # Delete a Sqoop job
 set -euo pipefail
-sqoop job --delete {{ conf.source_database.name }}.{{ table.source.name }}.{{ conf.sqoop_job_name_suffix }}
+sqoop job --delete {{ conf.source_database.name }}.{{ table.source.name }}.{{ conf.sqoop_job_name_suffix }} || true
