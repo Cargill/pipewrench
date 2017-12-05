@@ -12,7 +12,6 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
--- Query Parquet table in Impala
 USE {{ conf.staging_database.name }};
 INVALIDATE METADATA {{ table.destination.name }}_kudu;
 SELECT COUNT(*) FROM {{ table.destination.name }}_kudu;

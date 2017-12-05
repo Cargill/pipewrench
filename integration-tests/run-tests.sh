@@ -17,13 +17,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 docker-compose exec mysql /data/load-data.sh
 
-pushd $SCRIPT_DIR/sqoop-parquet-hdfs-impala
-./generate-scripts
-popd
-docker-compose exec kimpala /mount/sqoop-parquet-hdfs-impala/run-in-container.sh
+$SCRIPT_DIR/sqoop-parquet-hdfs-impala/run.sh
 
-pushd $SCRIPT_DIR/sqoop-parquet-hdfs-impala/
-./generate-scripts
-popd
+$SCRIPT_DIR/sqoop-parquet-hdfs-impala/run.sh
 
-docker-compose exec kimpala /mount/sqoop-parquet-hdfs-impala/run-in-container.sh

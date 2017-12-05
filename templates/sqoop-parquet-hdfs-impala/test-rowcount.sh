@@ -1,4 +1,5 @@
-{#  Copyright 2017 Cargill Incorporated
+#!/bin/bash
+{#    Copyright 2017 Cargill Incorporated
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -10,8 +11,14 @@
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
-    limitations under the License. -#}
--- kudu table count for simple test
-USE {{ conf.staging_database.name }};
-select count(*) FROM {{ table.destination.name }}_kudu
-
+    limitations under the License. #}
+set -e
+# Check parquet table
+PARQUET=$({{ conf.impala_cmd }} parquet-table-rowcount.sql -B 2> /dev/null)
+SOURCE=$({{ conf.source_database.cmd }} source-table-rowcount.sql -s -r -N -B 2> /dev/null)
+echo "parquet count: $PARQUET"
+echo "source count: $SOURCE"
+if [ "$PARQUET" -ne "$SOURCE" ]; then
+	echo ROW COUNTS DO NOT MATCH
+	exit 1
+fi

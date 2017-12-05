@@ -17,10 +17,8 @@ impala-cmd={{ conf.impala_cmd }}
 integration-test:
 	$(MAKE) clean
 	$(MAKE) first-run
-	$(MAKE) test-recordcount
-	$(MAKE) source-table-clean
-	$(MAKE) clean
-	
+	$(MAKE) test-rowcount
+
 sqoop-create: sqoop-create.sh #### Create Sqoop job
 	./run-with-logging.sh ./sqoop-create.sh $@
 
@@ -36,8 +34,8 @@ parquet-table: parquet-table-create.sql #### Create Parquet Impala Table
 compute-stats: compute-stats.sql # Compute impala table stats
 	        $(impala-cmd) compute-stats.sql
 
-test-recordcount: ### Run Integration Tests
-	bash -x test-recordcount.sh
+test-rowcount:
+	./run-with-logging.sh ./test-rowcount.sh $@
 
 parquet-table-clean: parquet-table-drop.sql ## Drop Parquet impala table
 	$(impala-cmd) parquet-table-drop.sql

@@ -15,7 +15,5 @@
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRIPT_DIR
-# verify we can generate scripts without error
-sudo -u hdfs hdfs dfs -rm -r /user/hive/warehouse/* || true
 make -j1 integration-test-all -C output/sqoop-parquet-hdfs-kudu-impala
 
