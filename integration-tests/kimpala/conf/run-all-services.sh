@@ -45,5 +45,3 @@ sudo -u hdfs hadoop fs -chown -R root:root /user/root
 sudo -u hdfs hadoop fs -chmod -R 1777  /user/root
 sudo -u hdfs hadoop fs -chmod -R 1777  /user
 
-# tail log directory
-tail -n 1000 -f /var/log/hadoop-*/*.out

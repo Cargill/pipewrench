@@ -2,7 +2,7 @@ version: '2'
 
 services:
   mysql:
-    build: mysql-5.7
+    image: mysql:5.7
     ports:
       - 3306:3306
     hostname: mysql
@@ -11,6 +11,8 @@ services:
       MYSQL_DATABASE: integration_test
       MYSQL_ROOT_PASSWORD: pipewrench
       MYSQL_PASSWORD: pipewrench
+    volumes:
+      - ./data:/data
 
   kimpala:
     build: ./kimpala

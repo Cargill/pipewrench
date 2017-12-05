@@ -58,7 +58,8 @@ RUN unzip java-json.jar.zip
 RUN cp java-json.jar /var/lib/sqoop/
 
 RUN echo "--use_hybrid_clock=false" >> /etc/kudu/conf/master.gflagfile \
-    && echo "--use_hybrid_clock=false" >> /etc/kudu/conf/tserver.gflagfile
+    && echo "--default_num_replicas=1" >> /etc/kudu/conf/master.gflagfile \
+    && echo "--use_hybrid_clock=false" >> /etc/kudu/conf/tserver.gflagfile 
 
 COPY conf/run-all-services.sh /run-all-services.sh
 RUN chmod +x /run-all-services.sh
@@ -89,5 +90,4 @@ EXPOSE 18080
 
 # Technical port which can be used for your custom purpose.
 EXPOSE 9999
-
-CMD ["/run-all-services.sh"]
+CMD ["tail", "-f", "/dev/null"]
