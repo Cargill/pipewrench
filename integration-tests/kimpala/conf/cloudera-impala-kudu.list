@@ -1,0 +1,5 @@
+deb [arch=amd64] http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh trusty-cdh5.12.1 contrib
+deb-src http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh trusty-cdh5.12.1 contrib
+
+deb [arch=amd64] http://archive.cloudera.com/kudu/ubuntu/trusty/amd64/kudu trusty-kudu5.12.1 contrib
+deb-src http://archive.cloudera.com/kudu/ubuntu/trusty/amd64/kudu trusty-kudu5.12.1 contrib

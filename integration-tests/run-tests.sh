@@ -12,9 +12,18 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-set -eu
+set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cd $SCRIPT_DIR
-sqoop-parquet-hdfs-impala/run.sh
-sqoop-parquet-hdfs-kudu-impala/run.sh
+docker-compose exec mysql /data/load-data.sh
+
+pushd $SCRIPT_DIR/sqoop-parquet-hdfs-impala
+./generate-scripts
+popd
+docker-compose exec kimpala /mount/sqoop-parquet-hdfs-impala/run-in-container.sh
+
+pushd $SCRIPT_DIR/sqoop-parquet-hdfs-impala/
+./generate-scripts
+popd
+
+docker-compose exec kimpala /mount/sqoop-parquet-hdfs-impala/run-in-container.sh

@@ -2,7 +2,6 @@
 ../shared/.gitignore
 ../shared/type-mapping.yml
 ../shared/sqoop-exec.sh
-../source/sqoop-export.sh
 ../shared/sqoop-delete.sh
 ../shared/run-with-logging.sh
 ../shared/parquet-table-drop.sql
@@ -15,6 +14,3 @@
 ../shared/hdfs-delete.sh
 ../shared/hdfs-archive.sh
 ../shared/test-targets.sh
-../source/source-table-create.sql
-../source/source-table-insert.sql
-../source/source-table-drop.sql
