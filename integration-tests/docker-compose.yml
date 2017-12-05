@@ -15,10 +15,10 @@ services:
       - ./data:/data
 
   kimpala:
-    build: ./kimpala
+    image: amfoerster/hadoop-docker
     volumes:
       - "./:/mount"
-    hostname: kimpala
+    hostname: hadoop
     ports:
       - 7051:7051
       - 7050:7050
