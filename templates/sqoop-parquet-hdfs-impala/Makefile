@@ -13,29 +13,12 @@
     limitations under the License. #}
 
 impala-cmd={{ conf.impala_cmd }}
-source-db-cmd={{ conf.source_database.cmd }}
-
-source-table: source-table-create.sql ### Create the table in the source database
-	$(source-db-cmd) source-table-create.sql
-
-source-insert: source-table-insert.sql ### Add data to the source table
-	$(source-db-cmd) source-table-insert.sql
-
-source-table-clean: source-table-drop.sql ### Drop the source table
-	$(source-db-cmd) source-table-drop.sql
-
-source-create: 
-	$(MAKE) source-table 
-	$(MAKE) source-insert ## Create a new source table with data
 
 integration-test:
 	$(MAKE) clean
-	$(MAKE) source-create
 	$(MAKE) first-run
-	$(MAKE) test-recordcount
-	$(MAKE) source-table-clean
-	$(MAKE) clean
-	
+	$(MAKE) test-rowcount
+
 sqoop-create: sqoop-create.sh #### Create Sqoop job
 	./run-with-logging.sh ./sqoop-create.sh $@
 
@@ -51,8 +34,8 @@ parquet-table: parquet-table-create.sql #### Create Parquet Impala Table
 compute-stats: compute-stats.sql # Compute impala table stats
 	        $(impala-cmd) compute-stats.sql
 
-test-recordcount: ### Run Integration Tests
-	bash -x test-recordcount.sh
+test-rowcount:
+	./run-with-logging.sh ./test-rowcount.sh $@
 
 parquet-table-clean: parquet-table-drop.sql ## Drop Parquet impala table
 	$(impala-cmd) parquet-table-drop.sql

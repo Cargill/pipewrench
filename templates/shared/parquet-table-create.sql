@@ -13,6 +13,7 @@
     limitations under the License. #}
 
 -- Create a Parquet table in Impala
+set sync_ddl=1;
 USE {{ conf.staging_database.name }};
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_parquet (
 {% for column in table.columns %}

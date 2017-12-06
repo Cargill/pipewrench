@@ -7,11 +7,11 @@ sqoop_password_file: {{ password_file}} # Password file for sqoop. Must reside i
 sqoop_password: {{ password }} # Password for sqoop. Must reside in HDFS
 connection_manager: "org.apache.sqoop.manager.MySQLManager" # Connection manager fully qualified class
 sqoop_job_name_suffix: test # Suffix added to sqoop jobs. Can be used to differentiate environments
-impala_cmd: {{ impala_cmd }}
+impala_cmd: "{{ impala_cmd }}"
 source_database:
   name: "integration_test" # Source database name
   connection_string: {{ connection_string }} # Source database connection string. Should be kept in 'env.yml'
-  cmd: "mysql -P 3306 -upipewrench -ppipewrench -h 127.0.0.1 <"
+  cmd: "mysql -P 3306 -upipewrench -ppipewrench -h mysql <"
 staging_database:
   name: "{{ destination_database }}" # Staging database name.
   path: "{{ hdfs_basedir }}/pipewrench" # Staging database HDFS path
@@ -75,11 +75,15 @@ tables:
     split_by_column: "Id" # Sqoop split by column (--split-by)
     kudu:
       hash_by: # List of columns to hash by
-        - Id
+        - id
       num_partitions: 8 # Number of Kudu partitions to create
     check_column: Id # Incrementing timestamp of numeric column used when incrementally pulling data (sqoop --check-column)
     primary_keys: # List of primary keys
-      - Id
+      - id
+      - year
+      - sex
+      - education
+      - vocabulary
     columns:
       - name: "Id" # Column name in source table
         datatype: "int" # Column datatype in source table
@@ -114,6 +118,8 @@ tables:
     check_column: Id # Incrementing timestamp of numeric column used when incrementally pulling data (sqoop --check-column)
     primary_keys: # List of primary keys
       - Id
+      - playerid
+      - year
     columns:
       - name: "Id" # Column name in source table
         datatype: "int" # Column datatype in source table
