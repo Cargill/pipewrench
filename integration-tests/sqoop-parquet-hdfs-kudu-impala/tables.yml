@@ -33,7 +33,7 @@ tables:
     kudu:
       hash_by: # List of columns to hash by
         - Id
-      num_partitions: 8 # Number of Kudu partitions to create
+      num_partitions: 2 # Number of Kudu partitions to create
     check_column: Id # Incrementing timestamp of numeric column used when incrementally pulling data (sqoop --check-column)
     primary_keys: # List of primary keys
       - Id
@@ -76,7 +76,7 @@ tables:
     kudu:
       hash_by: # List of columns to hash by
         - id
-      num_partitions: 8 # Number of Kudu partitions to create
+      num_partitions: 2 # Number of Kudu partitions to create
     check_column: Id # Incrementing timestamp of numeric column used when incrementally pulling data (sqoop --check-column)
     primary_keys: # List of primary keys
       - id
@@ -114,7 +114,7 @@ tables:
     kudu:
       hash_by: # List of columns to hash by
         - Id
-      num_partitions: 8 # Number of Kudu partitions to create
+      num_partitions: 2 # Number of Kudu partitions to create
     check_column: Id # Incrementing timestamp of numeric column used when incrementally pulling data (sqoop --check-column)
     primary_keys: # List of primary keys
       - Id

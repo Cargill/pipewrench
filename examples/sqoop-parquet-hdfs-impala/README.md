@@ -1,0 +1,1 @@
+See [integration-tests/sqoop-parquet-hdfs-impala](integration-tests/sqoop-parquet-hdfs-impala]) for example
