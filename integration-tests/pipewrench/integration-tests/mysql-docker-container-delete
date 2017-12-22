@@ -1,2 +1,0 @@
-docker stop mysql-for-pipewrench
-docker rm -f mysql-for-pipewrench

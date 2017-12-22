@@ -18,3 +18,5 @@ All tests should be passing when running `make test` from the root directory.
 
 Before making a pull request `make build` should exit successfully
 
+`make build` depends on docker and docker-compose. See the [integration test documentation](./integration-tests/README.md)
+for details.

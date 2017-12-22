@@ -34,11 +34,6 @@ clean: ## Remove all files
 
 build: pylint test
 
-clean-render-templates: ## Clean rendered templates from test
-	for example in $$(ls examples); do \
-	    $(RM) examples/$${example}/output; \
-	done
-
 pylint: 
 	pylint pipewrench/merge.py
 

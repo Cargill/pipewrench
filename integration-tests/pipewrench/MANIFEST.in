@@ -1,5 +1,0 @@
-include README.md
-include pipewrench.png
-include pipewrench-merge
-recursive-include templates *
-recursive-include project-scripts *
