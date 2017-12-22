@@ -12,13 +12,13 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License. #}
-
-# Check parquet table
-PARQUET=$({{ conf.impala }} parquet-table-rows.sql -B 2> /dev/null)
-SOURCE=$({{ conf.source_database.cmd }} source-table-rows.sql -s -r -N -B 2> /dev/null)
-
-if [ "$PARQUET" -ne "$SOURCE" ]; then
-	echo ROW COUNTS DO NOT MATCH
+set -eu
+# Check kudu table
+KUDU=$({{ conf.impala_cmd }} kudu-table-rowcount.sql -B 2> /dev/null)
+SOURCE=$({{ conf.source_database.cmd }} source-table-rowcount.sql -s -r -N -B 2> /dev/null)
+echo "kudu count: $KUDU"
+echo "source count: $SOURCE"
+if [ "$KUDU" -ne "$SOURCE" ]; then
+	echo "ROW COUNTS DO NOT MATCH"
 	exit 1
 fi
-

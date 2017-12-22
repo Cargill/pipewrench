@@ -14,5 +14,5 @@
     limitations under the License. #}
 
 # Remove parquet data from hdfs
-set -euo pipefail
+set -eu
 hdfs dfs -rm -r -f {{ conf.staging_database.path }}/{{ table.destination.name }}/

@@ -46,6 +46,9 @@ kudu-select: kudu-table-select.sql ## Insert data into Parquet/Text impala table
 sqldb-create: sqldb-create.sh ## create sqldb schema
 	sh sqldb-create.sh
 
+test-rowcount: ### Run Integration Tests
+	./run-with-logging.sh ./test-rowcount.sh $@
+
 test: ## Run tests (directory diff)
 	$(impala-cmd) kudu-table-count.sql -o test-kudu-rowcount --delimited
 	sh test.sh

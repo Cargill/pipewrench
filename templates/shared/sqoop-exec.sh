@@ -14,5 +14,5 @@
     limitations under the License. #}
 
 # Execute a Sqoop job
-set -euo pipefail
+set -eu
 sqoop job --exec {{ conf.source_database.name }}.{{ table.source.name }}.{{ conf.sqoop_job_name_suffix }}

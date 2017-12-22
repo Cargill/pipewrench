@@ -13,5 +13,5 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
-hdfs dfs -mv {{ conf.staging_database.path }}/{{ table.destination.name }}/archive* \
-    {{ conf.staging_database.path }}/{{ table.destination.name }}//incr/
+hdfs dfs -mv {{ conf.staging_database.path }}/{{ table.destination.name }}/archive/* \
+    {{ conf.staging_database.path }}/{{ table.destination.name }}/incr/

@@ -13,7 +13,7 @@
     limitations under the License. -#}
 #!/bin/bash
 # Run a simple test to compare table counts
-set -euo pipefail
+set -eu
 ACTUAL=$(<test-kudu-rowcount)
 EXPECTED=1000
 

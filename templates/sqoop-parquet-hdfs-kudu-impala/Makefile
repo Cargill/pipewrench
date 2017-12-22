@@ -15,53 +15,40 @@
 impala-cmd={{ conf.impala_cmd }}
 source-db-cmd={{ conf.source_database.cmd }}
 
-source-table: source-table-create.sql ### Create the table in the source database
-	$(source-db-cmd) source-table-create.sql
-
-source-insert: source-table-insert.sql ### Add data to the source table
-	$(source-db-cmd) source-table-insert.sql
-
-source-table-clean: source-table-drop.sql ### Drop the source table
-	$(source-db-cmd) source-table-drop.sql
-
-source-create: 
-	$(MAKE) source-table 
-	$(MAKE) source-insert #### Create a new source table with data
-
 integration-test:
 	$(MAKE) clean
-	$(MAKE) source-create
 	$(MAKE) first-run
-	$(MAKE) test-recordcount
-	$(MAKE) source-table-clean
-	$(MAKE) clean
+#	$(MAKE) test-rowcount @TODO find goo primary key for integration tests (baseball table)
 
 sqoop-create:  #### Create Sqoop job
 	./run-with-logging.sh ./sqoop-create.sh $@
 
 sqoop-clean: ## Delete Sqoop job
-	sh sqoop-delete.sh
+	./run-with-logging.sh ./sqoop-delete.sh $@
 
 sqoop-exec: ## Execute sqoop job
-	sh sqoop-exec.sh
+	./run-with-logging.sh ./sqoop-exec.sh $@
 
 parquet-table: parquet-table-create.sql #### Create Parquet Impala Table
 	$(impala-cmd) parquet-table-create.sql
 
-test-recordcount:  #### Run integration tests
-	bash -x test-recordcount.sh
+test-rowcount:  #### Run integration tests
+	./run-with-logging.sh ./test-rowcount.sh $@
 
 parquet-table-clean: parquet-table-drop.sql ## Drop Parquet impala table
 	$(impala-cmd) parquet-table-drop.sql
 
 parquet-archive: hdfs-archive.sh
-	sh hdfs-archive.sh
+	./run-with-logging.sh ./hdfs-archive.sh $@
 
 parquet-unarchive: hdfs-unarchive.sh
-	sh hdfs-unarchive.sh
+	./run-with-logging.sh ./hdfs-unarchive.sh $@
+
+parquet-refresh:
+	$(impala-cmd) ./parquet-refresh.sql
 
 hdfs-clean: hdfs-delete.sh ## Delete parquet files from HDFS
-	sh hdfs-delete.sh
+	./run-with-logging.sh ./hdfs-delete.sh $@
 
 kudu-table: kudu-table-create.sql ## Create Impala Kudu Table
 	$(impala-cmd) kudu-table-create.sql
@@ -70,21 +57,18 @@ kudu-insert: tables kudu-table-insert.sql ## Insert data into Kudu table from Pa
 	$(impala-cmd) kudu-table-insert.sql
 
 compute-stats: compute-stats.sql
-	        $(impala-cmd) compute-stats.sql
+	$(impala-cmd) compute-stats.sql
 
 kudu-table-clean: kudu-table-drop.sql ## Drop Kudu table
 	$(impala-cmd) kudu-table-drop.sql
-
-test: ## Run tests (directory diff)
-	$(impala-cmd) kudu-table-count.sql -o test-kudu-rowcount --delimited
-	sh test.sh
 
 tables-clean: kudu-table-clean parquet-table-clean ## Drop all tables
 
 tables: parquet-table kudu-table ## Create all tables
 
 update: 
-	$(MAKE) sqoop-exec 
+	$(MAKE) sqoop-exec
+	$(MAKE) parquet-refresh
 	$(MAKE) kudu-insert 
 	$(MAKE) parquet-archive ## Insert data from source db into Kudu
 

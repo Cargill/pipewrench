@@ -11,13 +11,13 @@ impala_cmd: "{{ impala_cmd }}"
 source_database:
   name: "integration_test" # Source database name
   connection_string: {{ connection_string }} # Source database connection string. Should be kept in 'env.yml'
-  cmd: "mysql -P 3306 -upipewrench -ppipewrench -h 127.0.0.1 <"
+  cmd: "mysql -P 3306 -uroot -ppipewrench -h mysql <"
 staging_database:
   name: "{{ destination_database }}" # Staging database name.
-  path: "{{ hdfs_basedir }}/pipewrench" # Staging database HDFS path
+  path: "{{ hdfs_basedir }}/" # Staging database HDFS path
 result_database:
   name: "{{ destination_database }}" # Result database
-  path: "{{ hdfs_basedir }}/pipewrench" # Result database HDFS path
+  path: "{{ hdfs_basedir }}/" # Result database HDFS path
 tables:
   - id: "titanic" # Uniquely identifies this table
     META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties

@@ -12,8 +12,7 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
--- Insert data into source table
-LOAD DATA LOCAL INFILE '{{ table.source.file }}' 
-	INTO TABLE {{ conf.source_database.name }}.{{ table.source.name }}
-	FIELDS TERMINATED BY ','
-	LINES TERMINATED BY'\n';
+-- Create a Parquet table in Impala
+SET SYNC_DDL=1;
+USE {{ conf.staging_database.name }};
+REFRESH {{ table.destination.name }}_parquet;

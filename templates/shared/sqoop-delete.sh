@@ -14,5 +14,5 @@
     limitations under the License. #}
 
 # Delete a Sqoop job
-set -euo pipefail
+set -eu
 sqoop job --delete {{ conf.source_database.name }}.{{ table.source.name }}.{{ conf.sqoop_job_name_suffix }} || true

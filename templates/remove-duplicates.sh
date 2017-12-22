@@ -16,7 +16,7 @@
 
 # Remove duplicate scripts/templates and put into ./shared dir
 # Depends on fdupes: https://github.com/adrianlopezroche/fdupes
-set -euo pipefail
+set -eu
 function move {
   echo "moving $1" >&2
   IMPORTS_FILE=`dirname $1`/imports

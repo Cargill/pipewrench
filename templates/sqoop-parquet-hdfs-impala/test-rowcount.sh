@@ -12,13 +12,13 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License. #}
-
-# Create a Sqoop job
-set -euo pipefail
-sqoop export --connect {{ conf.connection_string }} \
-    --username {{ conf.user_name }} \
-    --password-file {{ conf.sqoop_password_file }} \
-    --export-dir {{ conf.sqoop_export_dir }} \
-    --table {{ table.source.name }}
-
-
+set -e
+# Check parquet table
+PARQUET=$({{ conf.impala_cmd }} parquet-table-rowcount.sql -B 2> /dev/null)
+SOURCE=$({{ conf.source_database.cmd }} source-table-rowcount.sql -s -r -N -B 2> /dev/null)
+echo "parquet count: $PARQUET"
+echo "source count: $SOURCE"
+if [ "$PARQUET" -ne "$SOURCE" ]; then
+	echo ROW COUNTS DO NOT MATCH
+	exit 1
+fi

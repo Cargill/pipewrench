@@ -12,11 +12,7 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
--- Create a source table
-CREATE TABLE IF NOT EXISTS {{ conf.source_database.name }}.{{ table.source.name }} ( 
-{% for column in table.columns %}
-	{{ column.name }} {{ column.datatype }}
-{%- if not loop.last -%}, {% endif %}
-{%- endfor %}
-);
-DESCRIBE {{ conf.source_database.name }}.{{ table.source.name }};
+USE {{ conf.staging_database.name }};
+INVALIDATE METADATA {{ table.destination.name }}_kudu;
+SELECT COUNT(*) FROM {{ table.destination.name }}_kudu;
+

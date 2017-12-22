@@ -12,5 +12,6 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
--- Drop the source table
-DROP TABLE {{ conf.source_database.name }}.{{ table.source.name }};
+USE {{ conf.staging_database.name }};
+INVALIDATE METADATA {{ table.destination.name }}_kudu;
+SELECT COUNT(*) FROM {{ table.destination.name }}_kudu;

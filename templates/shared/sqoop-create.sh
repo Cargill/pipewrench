@@ -17,7 +17,7 @@
    {{ map_clobs(columns) }}
  {%- endmacro -%}
 # Create a Sqoop job
-set -euo pipefail
+set -eu
 sqoop job -D 'sqoop.metastore.client.record.password=true' \
     --create {{ conf.source_database.name }}.{{ table.source.name }}.{{ conf.sqoop_job_name_suffix }} \
     -- import \
