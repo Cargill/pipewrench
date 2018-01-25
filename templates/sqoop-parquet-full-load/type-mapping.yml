@@ -21,7 +21,7 @@ bigint:
 decimal:
   kudu: string
   impala: decimal
-  parquet: double
+  parquet: decimal
   avro: string
 number:
   kudu: string

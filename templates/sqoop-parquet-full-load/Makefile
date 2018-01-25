@@ -27,8 +27,14 @@ parquet-table: parquet-table-create.sql #### Create Parquet Impala Table
 output-table: output-table-create.sql #### Create Parquet Impala Table
 	$(impala-cmd) output-table-create.sql
 
+compute-stats: compute-stats.sh
+	./compute-stats.sh
+
 alter-tables: alter-tables.sh
 	./alter-tables.sh $@
+
+invalidate-metadata: invalidate_metadata.sql
+	$(impala-cmd) invalidate_metadata.sql
 
 hdfs-clean: hdfs-clean.sh
 	./hdfs-clean.sh $@
@@ -38,7 +44,9 @@ tables-drop: tables-drop.sql
 
 update: 
 	$(MAKE) sqoop-import
+	$(MAKE) invalidate-metadata
 	$(MAKE) alter-tables
+	$(MAKE) compute-stats
 
 clean:
 	$(MAKE) hdfs-clean
@@ -49,7 +57,9 @@ first-run:
 	$(MAKE) avro-table
 	$(MAKE) parquet-table
 	$(MAKE) output-table
+	$(MAKE) invalidate-metadata
 	$(MAKE) alter-tables ## Run entire workflow, building all tables and pulling source db data into Kudu
+	$(MAKE) compute-stats
 
 ##clean: sqoop-clean kudu-table-clean parquet-table-clean hdfs-clean
 ## Remove all tables and data
