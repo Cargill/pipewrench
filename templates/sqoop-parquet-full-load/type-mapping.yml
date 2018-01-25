@@ -22,7 +22,7 @@ decimal:
   kudu: string
   impala: decimal
   parquet: double
-  avro: decimal
+  avro: string
 number:
   kudu: string
   impala: decimal

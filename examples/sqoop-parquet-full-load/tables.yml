@@ -35,7 +35,9 @@ tables:
       - emp_no
     columns:
       - name: "emp_no" # Column name in source table
-        datatype: "int" # Column datatype in source table
+        datatype: "decimal" # Column datatype in source table
+        precision: "9"
+        scale: "1"
         comment: "comment" # Column comment
       - name: "birth_date"
         datatype: "bigint"
