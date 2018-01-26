@@ -5,6 +5,7 @@ while [[ $count -lt $2 ]];do
 	count=$((count+1))
 done
 
+echo $qry
 
 /usr/bin/mysql -uroot -pcloudera << eof
 $qry

@@ -7,6 +7,7 @@ sqoop_password_file: {{ password_file}} # Password file for sqoop. Must reside i
 sqoop_password: {{ password }} # Password for sqoop. Must reside in HDFS
 connection_manager: "org.apache.sqoop.manager.MySQLManager" # Connection manager fully qualified class
 sqoop_job_name_suffix: test # Suffix added to sqoop jobs. Can be used to differentiate environments
+sqoop_ops: {{ sqoop_ops }}
 impala_cmd: "impala-shell -f"
 source_database:
   name: "mysql" # Source database name

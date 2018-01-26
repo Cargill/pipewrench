@@ -19,10 +19,12 @@
 # Create a Sqoop job
 set -eu
 
-sqoop import \
+sqoop {{ conf.sqoop_ops }} \
+import \
     --connect {{ conf.source_database.connection_string }} \
     --username {{ conf.user_name }} \
-    --password {{ conf.sqoop_password_file }} \
+    --password-file {{ conf.sqoop_password_file }} \
+    --driver  {{ conf.sqoop_driver }} \
     --delete-target-dir \
     --target-dir {{ conf.staging_database.path }}/{{ table.destination.name }}/ \
     --temporary-rootdir {{ conf.staging_database.path }}/{{ table.destination.name }}/ \

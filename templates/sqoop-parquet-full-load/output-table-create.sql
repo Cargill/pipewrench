@@ -17,7 +17,7 @@ set sync_ddl=1;
 USE {{ conf.final_database.name }};
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }} (
 {% for column in table.columns %}
-{%- if column["datatype"] == "decimal" %}
+{%- if column["datatype"].lower() == "decimal" %}
 {{ column.name }} {{ map_datatypes(column).parquet }}({{column.precision}},{{column.scale}}) COMMENT '{{ column.comment }}'
 {%- else %} {{ column.name }} {{ map_datatypes(column).parquet }} COMMENT '{{ column.comment }}'
 {% endif %}
