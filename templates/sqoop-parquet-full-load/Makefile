@@ -30,6 +30,9 @@ output-table: output-table-create.sql #### Create Parquet Impala Table
 compute-stats: compute-stats.sh
 	./compute-stats.sh
 
+copy-avsc: copy-avsc.sh
+	./copy-avsc.sh
+
 alter-tables: alter-tables.sh
 	./alter-tables.sh $@
 
@@ -54,6 +57,7 @@ clean:
 
 first-run: 
 	$(MAKE) sqoop-import
+	$(MAKE) copy-avsc
 	$(MAKE) avro-table
 	$(MAKE) parquet-table
 	$(MAKE) output-table
