@@ -33,6 +33,6 @@ import \
     --compress  \
     --compression-codec snappy \
     -m 1 \
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '`{}`'.format(column.name) }} {% else %} {{ '`{}`,\t\n'.format(column.name) }} {% endif %} {% endfor %}
+    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",\t\n'.format(column.name) }} {% endif %} {% endfor %}
         FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
 

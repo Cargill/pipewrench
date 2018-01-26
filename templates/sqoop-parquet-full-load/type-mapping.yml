@@ -98,3 +98,23 @@ text:
   impala: string
   parquet: string
   avro: string
+integer:
+  kudu: int
+  parquet: int
+  impala: int
+  avro: int
+nvarchar:
+  kudu: string
+  parquet: string
+  impala: string
+  avro: string
+varbinary:
+  kudu: string
+  parquet: string
+  impala: string
+  avro: string
+smallint:
+  kudu: int
+  parquet: int
+  impala: int
+  avro: int

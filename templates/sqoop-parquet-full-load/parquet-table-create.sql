@@ -18,8 +18,8 @@ USE {{ conf.result_database.name }};
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_parquet (
 {% for column in table.columns %}
 {%- if column["datatype"].lower() == "decimal" %}
-{{ column.name }} {{ map_datatypes(column).parquet }}({{column.precision}},{{column.scale}}) COMMENT '{{ column.comment }}'
-{%- else %} {{ column.name }} {{ map_datatypes(column).parquet }} COMMENT '{{ column.comment }}'
+`{{ column.name }}` {{ map_datatypes(column).parquet }}({{column.precision}},{{column.scale}}) COMMENT '{{ column.comment }}'
+{%- else %} `{{ column.name }}` {{ map_datatypes(column).parquet }} COMMENT '{{ column.comment }}'
 {% endif %}
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
