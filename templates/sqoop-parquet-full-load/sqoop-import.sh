@@ -18,21 +18,33 @@
  {%- endmacro -%}
 # Create a Sqoop job
 set -eu
-
-sqoop {{ conf.sqoop_ops }} \
-import \
+{% set mapcolumn = [] %}
+{%- for column in table.columns -%}
+{%- if column["datatype"].lower() == "varbinary" -%}
+{%- set mapcolumn = mapcolumn.append(column["name"]) -%}
+{%- endif -%}
+{%- endfor -%}
+sqoop import {{ conf.sqoop_ops }} \
     --connect {{ conf.source_database.connection_string }} \
     --username {{ conf.user_name }} \
     --password-file {{ conf.sqoop_password_file }} \
     --driver  {{ conf.sqoop_driver }} \
+    {% if mapcolumn|length > 0 -%}
+    --map-column-java {% for column in mapcolumn -%}
+    {% if loop.last -%}
+     {{ column }}=String \
+    {%- else -%}
+     {{ column }}=String,
+    {%- endif -%}
+    {% endfor %}
+    {% endif -%}
     --delete-target-dir \
     --target-dir {{ conf.staging_database.path }}/{{ table.destination.name }}/ \
     --temporary-rootdir {{ conf.staging_database.path }}/{{ table.destination.name }}/ \
     --as-avrodatafile \
-    --fetch-size 10000 \
+    --fetch-size 5000 \
     --compress  \
     --compression-codec snappy \
     -m 1 \
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",\t\n'.format(column.name) }} {% endif %} {% endfor %}
+    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %}
         FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
-
