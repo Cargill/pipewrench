@@ -32,9 +32,9 @@ sqoop import {{ conf.sqoop_ops }} \
     {% if mapcolumn|length > 0 -%}
     --map-column-java {% for column in mapcolumn -%}
     {% if loop.last -%}
-     {{ column }}=String \
+     {{ '"{}"'.format(column.name) }}=String \
     {%- else -%}
-     {{ column }}=String,
+     {{ '"{}"'.format(column.name) }}=String,
     {%- endif -%}
     {% endfor %}
     {% endif -%}

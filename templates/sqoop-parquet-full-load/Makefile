@@ -31,7 +31,7 @@ compute-stats: compute-stats.sh
 	./compute-stats.sh
 
 delete_avsc: delete_avsc.sh
-  ./delete_avsc.sh
+    ./delete_avsc.sh
 
 copy-avsc: copy-avsc.sh
 	./copy-avsc.sh
@@ -49,7 +49,7 @@ tables-drop: tables-drop.sql
 	$(impala-cmd) tables-drop.sql
 
 update: 
-  $(MAKE) delete_avsc
+    $(MAKE) delete_avsc
 	$(MAKE) sqoop-import
 	$(MAKE) invalidate-metadata
 	$(MAKE) alter-tables
@@ -60,7 +60,7 @@ clean:
 	$(MAKE) tables-drop
 
 first-run: 
-  $(MAKE) delete_avsc
+    $(MAKE) delete_avsc
 	$(MAKE) sqoop-import
 	$(MAKE) copy-avsc
 	$(MAKE) avro-table
