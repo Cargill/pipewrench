@@ -17,7 +17,7 @@ set sync_ddl=1;
 USE {{ conf.staging_database.name }};
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_avro (
 {% for column in table.columns %}
-`{{ column.name }}` {{ map_datatypes(column).avro }} COMMENT '{{ column.comment }}'
+`{{ column.name.replace('/','_') }}` {{ map_datatypes(column).avro }} COMMENT '{{ column.comment }}'
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 STORED AS AVRO
