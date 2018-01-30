@@ -42,7 +42,7 @@ sqoop import {{ conf.sqoop_ops }} \
     --target-dir {{ conf.staging_database.path }}/{{ table.destination.name }}/ \
     --temporary-rootdir {{ conf.staging_database.path }}/{{ table.destination.name }}/ \
     --as-avrodatafile \
-    --fetch-size 5000 \
+    --fetch-size {% if table.columns|length < 30 -%} 10000 {% else %} 5000 {% endif %} \
     --compress  \
     --compression-codec snappy \
     -m 1 \
