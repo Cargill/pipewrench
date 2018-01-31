@@ -45,15 +45,22 @@ invalidate-metadata: invalidate_metadata.sql
 hdfs-clean: hdfs-clean.sh
 	./hdfs-clean.sh $@
 
+drop-parquet: drop-parquet.sql
+	$(impala-cmd) drop-parquet.sql
+
+
 tables-drop: tables-drop.sql
 	$(impala-cmd) tables-drop.sql
 
 update: 
 	$(MAKE) delete_avsc
 	$(MAKE) sqoop-import
+	$(MAKE) copy-avsc
+	$(MAKE) parquet-table
 	$(MAKE) invalidate-metadata
 	$(MAKE) alter-tables
 	$(MAKE) compute-stats
+	$(MAKE) drop-parquet
 
 clean:
 	$(MAKE) hdfs-clean
@@ -69,6 +76,7 @@ first-run:
 	$(MAKE) invalidate-metadata
 	$(MAKE) alter-tables ## Run entire workflow, building all tables and pulling source db data into Kudu
 	$(MAKE) compute-stats
+	$(MAKE) drop-parquet
 
 ##clean: sqoop-clean kudu-table-clean parquet-table-clean hdfs-clean
 ## Remove all tables and data
