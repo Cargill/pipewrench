@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS {{ conf.result_database.name }}.{{ table.destination.name.replace('/','_') }}_parquet;
+DROP TABLE IF EXISTS {{ conf.result_database.name }}.{{ table.destination.name.replace('/','_').replace('.','_') }}_parquet;

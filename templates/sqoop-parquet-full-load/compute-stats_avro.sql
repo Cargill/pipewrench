@@ -14,5 +14,5 @@
 -#}
 -- Compute table statistics for optimized joins
 USE {{ conf.staging_database.name }};
-COMPUTE STATS {{ table.destination.name.replace('/','_') }}_avro;
+COMPUTE STATS {{ table.destination.name.replace('/','_').replace('.','_') }}_avro;
 

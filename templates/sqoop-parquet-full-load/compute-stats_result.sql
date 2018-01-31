@@ -14,5 +14,5 @@
 -#}
 -- Compute table statistics for optimized joins
 USE {{ conf.result_database.name }};
-COMPUTE INCREMENTAL STATS {{ table.destination.name.replace('/','_') }}_parquet PARTITION (mod_val in (${var:val}));
+COMPUTE INCREMENTAL STATS {{ table.destination.name.replace('/','_').replace('.','_') }}_parquet PARTITION (mod_val in (${var:val}));
 

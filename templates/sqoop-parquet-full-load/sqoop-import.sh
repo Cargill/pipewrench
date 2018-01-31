@@ -39,8 +39,8 @@ sqoop import {{ conf.sqoop_ops }} \
     {% endfor %}
     {% endif -%}
     --delete-target-dir \
-    --target-dir {{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_') }}/ \
-    --temporary-rootdir {{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_') }}/ \
+    --target-dir {{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_').replace('.','_') }}/ \
+    --temporary-rootdir {{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_').replace('.','_') }}/ \
     --as-avrodatafile \
     --fetch-size {% if table.columns|length < 30 -%} 10000 {% else %} 5000 {% endif %} \
     --compress  \
