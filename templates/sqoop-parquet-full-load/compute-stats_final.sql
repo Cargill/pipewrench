@@ -14,5 +14,5 @@
 -#}
 -- Compute table statistics for optimized joins
 USE {{ conf.final_database.name }};
-COMPUTE STATS {{ table.destination.name }};
+COMPUTE STATS {{ table.destination.name.replace('/','_') }};
 

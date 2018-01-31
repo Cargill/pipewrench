@@ -1,1 +1,1 @@
-ALTER TABLE {{ conf.final_database.name }}.{{ table.destination.name }} SET LOCATION '{{ conf.result_database.path }}/{{ table.destination.name }}/mod_val=${var:val}/';
+ALTER TABLE {{ conf.final_database.name }}.{{ table.destination.name.replace('/','_') }} SET LOCATION '{{ conf.result_database.path }}/{{ table.destination.name.replace('/','_') }}/mod_val=${var:val}/';

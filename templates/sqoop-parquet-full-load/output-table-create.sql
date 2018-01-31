@@ -15,7 +15,7 @@
 -- Create a Parquet table in Impala
 set sync_ddl=1;
 USE {{ conf.final_database.name }};
-CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }} (
+CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name.replace('/','_') }} (
 {% for column in table.columns %}
 {%- if column["datatype"].lower() == "decimal" %}
 `{{ column.name.replace('/','_') }}` {{ map_datatypes(column).parquet }}({{column.precision}},{{column.scale}}) COMMENT '{{ column.comment }}'
@@ -24,7 +24,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }} (
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 STORED AS PARQUET
-LOCATION '{{ conf.result_database.path }}/{{ table.destination.name }}/mod_val=1/'
+LOCATION '{{ conf.result_database.path }}/{{ table.destination.name.replace('/','_') }}/mod_val=1/'
 TBLPROPERTIES(
   'SOURCE' = '{{ table.META_SOURCE }}',
   'SECURITY_CLASSIFICATION' = '{{ table.META_SECURITY_CLASSIFICATION }}',
