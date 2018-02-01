@@ -21,7 +21,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name.replace('/','_').r
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 STORED AS AVRO
-LOCATION '{{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_') }}/'
+LOCATION '{{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_').replace('.','_') }}/'
 TBLPROPERTIES(
   'avro.schema.url' = '{{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_').replace('.','_') }}/.meta/{{ table.destination.name.replace('/','_').replace('.','_') }}.avsc',
   'SOURCE' = '{{ table.META_SOURCE }}',
