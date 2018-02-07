@@ -20,7 +20,7 @@
 set -eu
 {% set mapcolumn = [] %}
 {%- for column in table.columns -%}
-{%- if column["datatype"].lower() == "varbinary" -%}
+{%- if column["datatype"].lower() == "varbinary"  or column["datatype"].lower() == "binary"  or column["datatype"].lower() == "longvarbinary"  -%}
 {%- set mapcolumn = mapcolumn.append(column["name"]) -%}
 {%- endif -%}
 {%- endfor -%}

@@ -2,22 +2,22 @@ date:
   kudu: bigint
   impala: bigint
   parquet: bigint
-  avro: long
+  avro: bigint
 timestamp:
   kudu: bigint
   impala: timestamp
   parquet: bigint
-  avro: long
+  avro: bigint
 datetime:
   kudu: bigint
   impala: timestamp
   parquet: bigint
-  avro: long
+  avro: bigint
 bigint:
   kudu: bigint
   impala: bigint
   parquet: bigint
-  avro: long
+  avro: bigint
 decimal:
   kudu: string
   impala: decimal
@@ -88,11 +88,16 @@ varchar:
   impala: string
   parquet: string
   avro: string
+char:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
 long:
   kudu: bigint
   parquet: bigint
   impala: bigint
-  avro: long
+  avro: bigint
 text:
   kudu: string
   impala: string
@@ -108,7 +113,22 @@ nvarchar:
   parquet: string
   impala: string
   avro: string
+longnvarchar:
+  kudu: string
+  parquet: string
+  impala: string
+  avro: string
+longvarbinary:
+  kudu: string
+  parquet: string
+  impala: string
+  avro: string
 varbinary:
+  kudu: string
+  parquet: string
+  impala: string
+  avro: string
+binary:
   kudu: string
   parquet: string
   impala: string
