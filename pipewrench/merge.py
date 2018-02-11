@@ -304,7 +304,7 @@ def map_clobs(columns):
     hasclobs = False
     clobs = ""
     for c in columns:
-        if c.get("datatype") == "clob":
+        if c.get("datatype").lower() == "clob":
             if not hasclobs:
                 hasclobs = True
                 clobs = "--map-column-java "
