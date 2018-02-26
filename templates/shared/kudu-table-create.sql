@@ -1,4 +1,4 @@
-{#  Copyright 2017 Cargill Incorporated
+{#-  Copyright 2017 Cargill Incorporated
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 -- Create a Kudu table in Impala
 USE {{ conf.staging_database.name }};
 CREATE TABLE IF NOT EXISTS {{ table.destination.name }}_kudu
-({% for column in table.columns %}
+({%- for column in table.columns %}
 {{ column.name }} {{ map_datatypes(column).kudu }}
 {%- if not loop.last -%},{% endif %}
 {%- endfor %},
@@ -23,10 +23,26 @@ primary key ({{ table.primary_keys|join(', ') }}))
 PARTITION BY HASH({{ table.kudu.hash_by|join(', ') }}) PARTITIONS {{ table.kudu.num_partitions }}
 STORED AS KUDU
 TBLPROPERTIES(
-'SOURCE' = '{{ table.META_SOURCE }}',
-'SECURITY_CLASSIFICATION' = '{{ table.META_SECURITY_CLASSIFICATION }}',
-'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',
-'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}',
-{% for column in table.columns -%}
+{#- table.META_* properties are depercated use table.metadata properties instead. #}
+{%- if table.META_SOURCE %}
+  'SOURCE' = '{{ table.META_SOURCE }}',
+{%- endif %}
+{%- if table.SECURITY_CLASSIFICATION %}
+  'SECURITY_CLASSIFICATION' = '{{ table.META_SECURITY_CLASSIFICATION }}',
+{%- endif %}
+{%- if table.META_LOAD_FREQUENCY %}
+  'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',
+{%- endif %}
+{%- if table.META_CONTACT_INFO  %}
+  'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}'
+{%- endif %}
+{#- End of depercated table.META_* properties #}
+{%- for metadata in table.metadata %}
+  {%- for key, value in metadata.items() %}
+  '{{ key }}' = '{{ value }}'
+  {%- endfor %}
+  {%- if not loop.last -%}, {%- endif %}
+{%- endfor %}
+{%- for column in table.columns -%}
   '{{ column.name|lower }}' = '{{ column.comment }}'{%- if not loop.last -%},{% endif %}
-{%endfor%})
+{%- endfor -%})

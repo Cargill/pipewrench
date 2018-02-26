@@ -1,4 +1,4 @@
-{#  Copyright 2017 Cargill Incorporated
+{#-  Copyright 2017 Cargill Incorporated
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,15 +16,31 @@
 set sync_ddl=1;
 USE {{ conf.staging_database.name }};
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_parquet (
-{% for column in table.columns %}
+{%- for column in table.columns %}
 {{ column.name }} {{ map_datatypes(column).parquet }} COMMENT '{{ column.comment }}'
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 STORED AS Parquet
 LOCATION '{{ conf.staging_database.path }}/{{ table.destination.name }}/incr'
 TBLPROPERTIES(
+{#- table.META_* properties are depercated use table.metadata properties instead. #}
+{%- if table.META_SOURCE %}
   'SOURCE' = '{{ table.META_SOURCE }}',
+{%- endif %}
+{%- if table.SECURITY_CLASSIFICATION %}
   'SECURITY_CLASSIFICATION' = '{{ table.META_SECURITY_CLASSIFICATION }}',
+{%- endif %}
+{%- if table.META_LOAD_FREQUENCY %}
   'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',
+{%- endif %}
+{%- if table.META_CONTACT_INFO %}
   'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}'
+{%- endif %}
+{#- End of depercated table.META_* properties #}
+{%- for metadata in table.metadata %}
+  {%- for key, value in metadata.items() %}
+  '{{ key }}' = '{{ value }}'
+  {%- endfor %}
+  {%- if not loop.last -%}, {% endif %}
+{%- endfor %}
 )
