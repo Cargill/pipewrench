@@ -34,14 +34,13 @@ TBLPROPERTIES(
   'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',
 {%- endif %}
 {%- if table.META_CONTACT_INFO  %}
-  'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}'
+  'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}',
 {%- endif %}
 {#- End of depercated table.META_* properties #}
 {%- for metadata in table.metadata %}
   {%- for key, value in metadata.items() %}
-  '{{ key }}' = '{{ value }}'
+  '{{ key }}' = '{{ value }}',
   {%- endfor %}
-  {%- if not loop.last -%}, {%- endif %}
 {%- endfor %}
 {%- for column in table.columns -%}
   '{{ column.name|lower }}' = '{{ column.comment }}'{%- if not loop.last -%},{% endif %}
