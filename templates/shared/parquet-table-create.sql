@@ -34,7 +34,7 @@ TBLPROPERTIES(
   'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',
 {%- endif %}
 {%- if table.META_CONTACT_INFO %}
-  'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}'
+  'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}',
 {%- endif %}
 {#- End of depercated table.META_* properties #}
 {%- for metadata in table.metadata %}
