@@ -94,6 +94,8 @@ tables:
       - name: "Vocabulary"
         datatype: "int"
         comment: "comment"
+    metadata:
+      SOURCE: vocab
   - id: "baseball" # Uniquely identifies this table
     source:
       name: "baseball" # Source table name
@@ -178,3 +180,5 @@ tables:
       - name: "GIDP"
         datatype: "int"
         comment: "comment"
+    metadata:
+      SOURCE: baseball
