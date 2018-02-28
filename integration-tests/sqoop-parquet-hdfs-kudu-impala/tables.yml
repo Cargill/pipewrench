@@ -62,6 +62,8 @@ tables:
       - name: "SexCode"
         datatype: "int"
         comment: "comment"
+    metadata: # Metadata key values added to tblproperties in table DDL
+      DELETE_RECORDS_AFTER: "1 year"
   - id: "vocab" # Uniquely identifies this table
     META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
     META_LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
