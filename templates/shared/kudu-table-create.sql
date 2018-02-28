@@ -37,11 +37,11 @@ TBLPROPERTIES(
   'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}',
 {%- endif %}
 {#- End of depercated table.META_* properties #}
-{%- for metadata in table.metadata %}
-  {%- for key, value in metadata.items() %}
+{%- if table.metadata %}
+  {%- for key, value in table.metadata.items() %}
   '{{ key }}' = '{{ value }}',
   {%- endfor %}
-{%- endfor %}
+{%- endif %}
 {%- for column in table.columns -%}
   '{{ column.name|lower }}' = '{{ column.comment }}'{%- if not loop.last -%},{% endif %}
 {%- endfor -%})
