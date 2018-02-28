@@ -1,0 +1,8 @@
+val=$(head -c 1 Partition)
+
+if [[ $val -eq 4 ]]
+then
+	echo -n "1" > Partition
+else
+	echo -n $((val+1)) > Partition
+fi

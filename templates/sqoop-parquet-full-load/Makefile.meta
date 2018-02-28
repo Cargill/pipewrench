@@ -12,7 +12,7 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
-first-run-all: {%- for table in tables %} first-run-{{ table.id }} {%- endfor %}
+first-run-all: {%- for table in tables %} first-run-{{ table.id }} {%- endfor %} update-partition
 
 {%- for table in tables %}
 first-run-{{ table.id }}:
@@ -48,3 +48,6 @@ integration-test-all:
 {%- for table in tables %}
 	$(MAKE) integration-test -C {{ table.id }}
 {%- endfor %}
+
+update-partition: update-parition.sh
+	./update-partition.sh

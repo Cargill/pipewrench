@@ -20,15 +20,17 @@
 set -eu
 {% set mapcolumn = [] %}
 {%- for column in table.columns -%}
-{%- if column["datatype"].lower() == "varbinary"  or column["datatype"].lower() == "binary"  or column["datatype"].lower() == "longvarbinary"  -%}
+{%- if column["datatype"].lower() == "varbinary" or column["datatype"].lower() == "binary"  or column["datatype"].lower() == "longvarbinary"  -%}
 {%- set mapcolumn = mapcolumn.append(column["name"]) -%}
 {%- endif -%}
 {%- endfor -%}
 sqoop import {{ conf.sqoop_ops }} \
-    --connect {{ conf.source_database.connection_string }} \
+    --connect '{{ conf.source_database.connection_string }}' \
     --username {{ conf.user_name }} \
     --password-file {{ conf.sqoop_password_file }} \
-    --driver  {{ conf.sqoop_driver }} \
+{%- if conf["sqoop_driver"] is defined %}
+    --driver {{ conf.sqoop_driver }} \
+{%- endif %}
     {% if mapcolumn|length > 0 -%}
     --map-column-java {% for column in mapcolumn -%}
     {% if loop.last -%}
@@ -47,4 +49,4 @@ sqoop import {{ conf.sqoop_ops }} \
     --compression-codec snappy \
     -m 1 \
     --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %}
-        FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
+        FROM {{ table.source.name }} WHERE $CONDITIONS'

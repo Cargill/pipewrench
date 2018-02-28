@@ -16,7 +16,7 @@ impala-cmd={{ conf.impala_cmd }}
 source-db-cmd={{ conf.source_database.cmd }}
 
 sqoop-import:  #### Create Sqoop job
-	./sqoop-import.sh $@
+	./run-with-logging.sh ./sqoop-import.sh $@
 
 avro-table: avro-table-create.sql #### Create Parquet Impala Table
 	$(impala-cmd) avro-table-create.sql
@@ -29,6 +29,9 @@ output-table: output-table-create.sql #### Create Parquet Impala Table
 
 compute-stats: compute-stats.sh
 	./compute-stats.sh
+
+update-partition: update-partition.sh
+	./update-partition.sh
 
 delete_avsc: delete_avsc.sh
 	./delete_avsc.sh
@@ -52,7 +55,7 @@ drop-parquet: drop-parquet.sql
 tables-drop: tables-drop.sql
 	$(impala-cmd) tables-drop.sql
 
-update: 
+update:
 	$(MAKE) delete_avsc
 	$(MAKE) sqoop-import
 	$(MAKE) copy-avsc
@@ -61,12 +64,13 @@ update:
 	$(MAKE) alter-tables
 	$(MAKE) compute-stats
 	$(MAKE) drop-parquet
+	$(MAKE) update-partition
 
 clean:
 	$(MAKE) hdfs-clean
 	$(MAKE) tables-drop
 
-first-run: 
+first-run:
 	$(MAKE) delete_avsc
 	$(MAKE) sqoop-import
 	$(MAKE) copy-avsc
@@ -77,6 +81,7 @@ first-run:
 	$(MAKE) alter-tables ## Run entire workflow, building all tables and pulling source db data into Kudu
 	$(MAKE) compute-stats
 	$(MAKE) drop-parquet
+	$(MAKE) update-partition
 
 ##clean: sqoop-clean kudu-table-clean parquet-table-clean hdfs-clean
 ## Remove all tables and data
