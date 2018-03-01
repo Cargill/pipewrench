@@ -23,20 +23,6 @@ primary key ({{ table.primary_keys|join(', ') }}))
 PARTITION BY HASH({{ table.kudu.hash_by|join(', ') }}) PARTITIONS {{ table.kudu.num_partitions }}
 STORED AS KUDU
 TBLPROPERTIES(
-{#- table.META_* properties are depercated use table.metadata properties instead. #}
-{%- if table.META_SOURCE %}
-  'SOURCE' = '{{ table.META_SOURCE }}',
-{%- endif %}
-{%- if table.SECURITY_CLASSIFICATION %}
-  'SECURITY_CLASSIFICATION' = '{{ table.META_SECURITY_CLASSIFICATION }}',
-{%- endif %}
-{%- if table.META_LOAD_FREQUENCY %}
-  'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',
-{%- endif %}
-{%- if table.META_CONTACT_INFO  %}
-  'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}',
-{%- endif %}
-{#- End of depercated table.META_* properties #}
 {%- if table.metadata %}
   {%- for key, value in table.metadata.items() %}
   '{{ key }}' = '{{ value }}',
