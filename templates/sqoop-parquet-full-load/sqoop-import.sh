@@ -51,7 +51,10 @@ sqoop import {{ conf.sqoop_ops }} \
 {%- if conf["source_server"].lower() == "mssql" %}
     --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %}
         FROM {{ table.source.name }} WHERE $CONDITIONS'
-{%- else %}
+{%- elif conf["source_server"].lower() == "hana" %}
     --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %}
+        FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
+{%- else %}
+    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '`{}`'.format(column.name) }} {% else %} {{ '`{}`,'.format(column.name) }} {% endif %} {% endfor %}
         FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
 {% endif -%}

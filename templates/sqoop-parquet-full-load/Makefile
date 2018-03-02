@@ -19,41 +19,44 @@ sqoop-import:  #### Create Sqoop job
 	./run-with-logging.sh ./sqoop-import.sh $@
 
 avro-table: avro-table-create.sql #### Create Parquet Impala Table
-	$(impala-cmd) avro-table-create.sql
+	$(impala-cmd) avro-table-create.sql 
 
 parquet-table: parquet-table-create.sql #### Create Parquet Impala Table
-	$(impala-cmd) parquet-table-create.sql
+	$(impala-cmd) parquet-table-create.sql 
 
 output-table: output-table-create.sql #### Create Parquet Impala Table
-	$(impala-cmd) output-table-create.sql
+	$(impala-cmd) output-table-create.sql 
 
 compute-stats: compute-stats.sh
 	./compute-stats.sh
 
 update-partition: update-partition.sh
-	./update-partition.sh
+	./run-with-logging.sh ./update-partition.sh $@
 
 delete_avsc: delete_avsc.sh
-	./delete_avsc.sh
+	./run-with-logging.sh ./delete_avsc.sh $@
 
 copy-avsc: copy-avsc.sh
-	./copy-avsc.sh
+	./run-with-logging.sh ./copy-avsc.sh $@
 
 alter-tables: alter-tables.sh
-	./alter-tables.sh $@
+	./run-with-logging.sh ./alter-tables.sh $@
 
 invalidate-metadata: invalidate_metadata.sql
 	$(impala-cmd) invalidate_metadata.sql
 
 hdfs-clean: hdfs-clean.sh
-	./hdfs-clean.sh $@
+	./run-with-logging.sh ./hdfs-clean.sh $@
 
 drop-parquet: drop-parquet.sql
 	$(impala-cmd) drop-parquet.sql
 
 
 tables-drop: tables-drop.sql
-	$(impala-cmd) tables-drop.sql
+	$(impala-cmd) tables-drop.sql 
+
+test-rowcount: test-rowcount.sh
+	./run-with-logging.sh ./test-rowcount.sh $@
 
 update:
 	$(MAKE) delete_avsc
@@ -82,6 +85,11 @@ first-run:
 	$(MAKE) compute-stats
 	$(MAKE) drop-parquet
 	$(MAKE) update-partition
+
+integration-test:
+	$(MAKE) clean
+	$(MAKE) first-run
+	$(MAKE) test-rowcount
 
 ##clean: sqoop-clean kudu-table-clean parquet-table-clean hdfs-clean
 ## Remove all tables and data
