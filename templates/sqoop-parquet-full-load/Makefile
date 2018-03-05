@@ -19,13 +19,13 @@ sqoop-import:  #### Create Sqoop job
 	./run-with-logging.sh ./sqoop-import.sh $@
 
 avro-table: avro-table-create.sql #### Create Parquet Impala Table
-	$(impala-cmd) avro-table-create.sql 
+	$(impala-cmd) avro-table-create.sql
 
 parquet-table: parquet-table-create.sql #### Create Parquet Impala Table
-	$(impala-cmd) parquet-table-create.sql 
+	$(impala-cmd) parquet-table-create.sql
 
 output-table: output-table-create.sql #### Create Parquet Impala Table
-	$(impala-cmd) output-table-create.sql 
+	$(impala-cmd) output-table-create.sql
 
 compute-stats: compute-stats.sh
 	./compute-stats.sh
@@ -53,7 +53,7 @@ drop-parquet: drop-parquet.sql
 
 
 tables-drop: tables-drop.sql
-	$(impala-cmd) tables-drop.sql 
+	$(impala-cmd) tables-drop.sql
 
 test-rowcount: test-rowcount.sh
 	./run-with-logging.sh ./test-rowcount.sh $@

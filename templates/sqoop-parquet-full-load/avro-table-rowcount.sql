@@ -15,4 +15,3 @@
 -- Query Parquet table in Impala
 USE {{ conf.staging_database.name }};
 SELECT COUNT(*) FROM {{ table.destination.name.replace('/','_').replace('.','_') }}_avro;
-

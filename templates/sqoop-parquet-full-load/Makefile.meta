@@ -49,5 +49,5 @@ integration-test-all:
 	$(MAKE) integration-test -C {{ table.id }}
 {%- endfor %}
 
-update-partition: update-parition.sh
+update-partition: update-partition.sh
 	./update-partition.sh
