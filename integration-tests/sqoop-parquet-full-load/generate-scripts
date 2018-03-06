@@ -1,0 +1,2 @@
+#!/bin/bash -e
+pipewrench-merge --conf=tables.yml --debug_level ERROR --env=env.yml --pipeline-templates=../../templates/sqoop-parquet-full-load
