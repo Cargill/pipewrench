@@ -26,8 +26,8 @@ set -eu
 {%- endfor -%}
 sqoop import {{ conf.sqoop_ops }} \
     --connect '{{ conf.source_database.connection_string }}' \
-    --username {{ conf.user_name }} \
-    --password-file {{ conf.sqoop_password_file }} \
+    --username '{{ conf.user_name }}' \
+    --password-file '{{ conf.sqoop_password_file }}' \
 {%- if conf["sqoop_driver"] is defined %}
     --driver {{ conf.sqoop_driver }} \
 {%- endif %}
@@ -41,8 +41,8 @@ sqoop import {{ conf.sqoop_ops }} \
     {% endfor %}
     {% endif -%}
     --delete-target-dir \
-    --target-dir {{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_').replace('.','_') }}/ \
-    --temporary-rootdir {{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_').replace('.','_') }}/ \
+    --target-dir {{ conf.staging_database.path }}/{{ table.destination.clean_name }}/ \
+    --temporary-rootdir {{ conf.staging_database.path }}/{{ table.destination.clean_name }}/ \
     --as-avrodatafile \
     --fetch-size {% if table.columns|length < 30 -%} 10000 {% else %} 5000 {% endif %} \
     --compress  \

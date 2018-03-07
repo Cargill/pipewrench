@@ -14,16 +14,17 @@
 
 -- Create a Parquet table in Impala
 set sync_ddl=1;
+{% set final_table = 'hai' %}
 USE {{ conf.staging_database.name }};
-CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name.replace('/','_').replace('.','_') }}_avro (
+CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.clean_name }}_avro (
 {% for column in table.columns %}
 `{{ column.name.replace('/','_') }}` {{ map_datatypes(column).avro }} COMMENT '{{ column.comment }}'
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 STORED AS AVRO
-LOCATION '{{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_').replace('.','_') }}/'
+LOCATION '{{ conf.staging_database.path }}/{{ table.destination.clean_name }}/'
 TBLPROPERTIES(
-  'avro.schema.url' = '{{ conf.staging_database.path }}/{{ table.destination.name.replace('/','_').replace('.','_') }}/.meta/{{ table.destination.name.replace('/','_').replace('.','_') }}.avsc',
+  'avro.schema.url' = '{{ conf.staging_database.path }}/{{ table.destination.clean_name }}/.meta/{{ table.destination.clean_name }}.avsc',
   'SOURCE' = '{{ table.META_SOURCE }}',
   'SECURITY_CLASSIFICATION' = '{{ table.META_SECURITY_CLASSIFICATION }}',
   'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',

@@ -4,14 +4,14 @@ user_name: {{ source_db_user_name }} # Source database user name
 type_mapping: type-mapping.yml # Type mapping used for database type conversion
 sqoop_export_dir: {{ hdfs_basedir }}/export # Sqoop export data HDFS path
 sqoop_password_file: {{ password_file}} # Password file for sqoop. Must reside in HDFS
-sqoop_password: {{ password }} # Password for sqoop. Must reside in HDFS
+sqoop_password:  {{ password }} # Password for sqoop. Must reside in HDFS
 connection_manager: "org.apache.sqoop.manager.MySQLManager" # Connection manager fully qualified class
 sqoop_job_name_suffix: test # Suffix added to sqoop jobs. Can be used to differentiate environments
 sqoop_ops: {{ sqoop_ops }}
 impala_cmd: "impala-shell -f"
 source_database:
   name: "mysql" # Source database name
-  connection_string: {{ connection_string }} # Source database connection string. Should be kept in 'env.yml'
+  connection_string: "{{ connection_string }}" # Source database connection string. Should be kept in 'env.yml'
   cmd: "mysql -P 3306 -uroot -pcloudera -h mysql <"
 staging_database:
   name: "default" # Staging database name.
@@ -30,7 +30,7 @@ tables:
     source:
       name: "employees_kudu" # Source table name
     destination:
-      name: "employees" # Destination (Impala) table name
+      name: "employees/kudu.test" # Destination (Impala) table name
     split_by_column: "emp_no" # Sqoop split by column (--split-by)
     primary_keys: # List of primary keys
       - emp_no
