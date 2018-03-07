@@ -14,4 +14,4 @@
 
 -- Query Parquet table in Impala
 USE {{ conf.final_database.name }};
-SELECT COUNT(*) FROM {{ table.destination.name.replace('/','_').replace('.','_') }};
+SELECT COUNT(*) FROM {{ table.destination.clean_name }};
