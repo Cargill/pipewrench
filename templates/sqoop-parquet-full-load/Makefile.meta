@@ -36,7 +36,7 @@ tables-clean-{{ table.id }}:
 
 clean-all:
 {%- for table in tables %}
-  $(MAKE) clean -C {{ table.id }}
+	$(MAKE) clean -C {{ table.id }}
 {%- endfor %}
 
 {%- for table in tables %}
@@ -46,6 +46,6 @@ integration-test-{{ table.id }}:
 
 integration-test-all:
 {%- for table in tables %}
-  $(MAKE) integration-test -C {{ table.id }}
+	$(MAKE) integration-test -C {{ table.id }}
 {%- endfor %}
 
