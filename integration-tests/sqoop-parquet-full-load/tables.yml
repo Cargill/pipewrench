@@ -30,6 +30,7 @@ tables:
       name: "titanic" # Source table name
       file: ../../../../../data/Titanic.csv
     destination:
+      clean_name: "titanic"
       name: "titanic" # Destination (Impala) table name
     split_by_column: "Id" # Sqoop split by column (--split-by)
     kudu:
@@ -69,6 +70,7 @@ tables:
       name: "vocab" # Source table name
       file: ../../../../../data/Vocab.csv
     destination:
+      clean_name: "vocab"
       name: "vocab" # Destination (Impala) table name
     split_by_column: "Id" # Sqoop split by column (--split-by)
     kudu:
@@ -99,6 +101,7 @@ tables:
       name: "baseball" # Source table name
       file: ../../../../../data/Baseball.csv
     destination:
+      clean_name: "baseball"
       name: "baseball" # Destination (Impala) table name
     split_by_column: "Id" # Sqoop split by column (--split-by)
     kudu:
