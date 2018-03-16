@@ -5,4 +5,4 @@ cd $SCRIPT_DIR
 ./generate-scripts
 docker-compose exec kimpala bash -c 'chown -R hdfs:hdfs /mount'
 docker-compose exec kimpala bash -c 'chmod -R 777 /root'
-docker-compose exec --user hdfs kimpala /mount/sqoop-parquet-hdfs-kudu-impala/run-in-container.sh
+docker-compose exec kimpala /mount/sqoop-parquet-hdfs-kudu-impala/run-in-container.sh
