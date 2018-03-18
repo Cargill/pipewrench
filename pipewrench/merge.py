@@ -327,23 +327,23 @@ def merge_single_template(template_file_path, type_mapping, conf):
         template = template_file.read()
         return render(template, conf=conf, table=table)
 
-def order_columns(pks,columns):
+def order_columns(pks, columns):
     """
     Orders column list to include primary keys first and then non primary
     key columns
     :param pks: primary key list
     :param columns: columns
-    :return: primary key columns + non primary key columns (ordered) 
+    :return: primary key columns + non primary key columns ordered
     """
-    pk_list=[]
-    non_pk_list=[]
+    pk_list = []
+    non_pk_list = []
 
     for c in columns:
         for pk in pks:
-                if c.get("name")==pk:
-                        pk_list.append(c)
-                        break;
-                elif pks[-1]==pk:
-                        non_pk_list.append(c)
+            if c.get("name") == pk:
+                pk_list.append(c)
+                break
+            elif pks[-1] == pk:
+                non_pk_list.append(c)
 
     return pk_list+non_pk_list
