@@ -17,7 +17,7 @@ USE {{ conf.staging_database.name }};
 CREATE TABLE IF NOT EXISTS {{ table.destination.name }}_kudu
 {%- set ordered_columns = order_columns(table.primary_keys,table.columns) -%}
 ({%- for column in ordered_columns %}
-        {{ column.name }}
+        {{ column.name }} {{ map_datatypes(column).kudu }}
 {%- if not loop.last -%},{% endif %}
 {%- endfor %},
 primary key ({{ table.primary_keys|join(', ') }}))
