@@ -200,7 +200,7 @@ def render(template, **kwargs):
     :return: The reified template
     """
     template = Template(template)
-    template_functions = [map_datatypes, dumps, map_clobs]
+    template_functions = [map_datatypes, dumps, map_clobs, order_columns]
 
     for function in template_functions:
         template.globals[function.__name__] = function
@@ -326,3 +326,24 @@ def merge_single_template(template_file_path, type_mapping, conf):
     with codecs.open(template_file_path, 'r', 'UTF-8') as template_file:
         template = template_file.read()
         return render(template, conf=conf, table=table)
+
+def order_columns(pks,columns):
+    """
+    Orders column list to include primary keys first and then non primary
+    key columns
+    :param pks: primary key list
+    :param columns: columns
+    :return: primary key columns + non primary key columns (ordered) 
+    """
+    pk_list=[]
+    non_pk_list=[]
+
+    for c in columns:
+        for pk in pks:
+                if c.get("name")==pk:
+                        pk_list.append(c)
+                        break;
+                elif pks[-1]==pk:
+                        non_pk_list.append(c)
+
+    return pk_list+non_pk_list

@@ -15,6 +15,10 @@
 USE {{ conf.staging_database.name }};
 REFRESH {{ table.destination.name }}_parquet;
 UPSERT INTO {{ table.destination.name }}_kudu SELECT
-    {{ table.columns|map(attribute='name')|join(',\n    ') }}
+{%- set ordered_columns = order_columns(table.primary_keys,table.columns) -%}
+{%- for column in ordered_columns %}
+        {{ column.name }}
+{%- if not loop.last -%},{% endif %}
+{%- endfor %}
         FROM {{ table.destination.name }}_parquet order by {{ table.check_column }}  asc
 
