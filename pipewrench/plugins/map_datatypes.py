@@ -15,6 +15,8 @@
 import logging
 import pipewrench as p
 
+__all__ = ['map_datatypes'] 
+
 def map_datatypes(column):
     """
     Given a column, extract its datatype and return possible mappings

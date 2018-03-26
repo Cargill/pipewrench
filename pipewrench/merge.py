@@ -25,7 +25,7 @@ import os
 from json import dumps
 from jinja2 import Template
 import yaml
-from plugins import *
+from pipewrench.plugins import map_datatypes, order_columns, map_clobs
 
 
 OUT_DIR = "output"
