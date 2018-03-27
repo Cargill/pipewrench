@@ -11,9 +11,8 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License. -#}
-
 {% macro column_or_cast(conf, column) -%}
-    {% set mapped_type = map_datatypes(column).impala %}
+    {% set mapped_type = map_datatypes(column,template_dir_path,conf.type_mapping).impala %}
     {%- if mapped_type == 'timestamp' %}
         cast({{ column.name }} as timestamp) COMMENT '{{ column.comment }}'
     {%- else %}

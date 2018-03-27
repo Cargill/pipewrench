@@ -16,6 +16,7 @@ Tests for the merge module.
 """
 import unittest
 import merge
+from pipewrench.plugins import map_datatypes 
 
 class MergeTest(unittest.TestCase):
     def test_throw_error_on_undefined(self):
@@ -25,7 +26,6 @@ class MergeTest(unittest.TestCase):
 
     def test_render_with_type_mapping(self):
         global type_mappings
-        merge.type_mappings = {'type_mapping': {'blob': {'kudu': 'string'}}}
+        map_datatypes.type_mappings = {'type_mapping': {'blob': {'kudu': 'string'}}}
         values = {'conf': 'nevermind', 'column': {'datatype': 'blob'}}
-
-        assert 'string' == merge.render("{{ map_datatypes(column).kudu }}", **values)
+        assert 'string' == merge.render("{{ map_datatypes(column,'templates/sqoop-parquet-hdfs-kudu-impala/','type-mapping.yml').kudu }}", **values)

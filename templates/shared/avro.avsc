@@ -12,7 +12,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.-#}
 {% macro create_field(conf, column) -%}
-    {% set mapped_type = map_datatypes(column).avro %}
+    {% set mapped_type = map_datatypes(column,template_dir_path,conf.type_mapping).avro %}
     {%- if mapped_type == 'decimal' %}
        "name": "{{ column.name }}",
         "type": "bytes",

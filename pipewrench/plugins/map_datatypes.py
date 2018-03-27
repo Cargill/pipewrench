@@ -13,11 +13,30 @@
 #    limitations under the License.
 
 import logging
-import pipewrench as p
+import yaml
+import codecs
+import os
 
-__all__ = ['map_datatypes'] 
+type_mappings = {}
 
-def map_datatypes(column):
+def load_mapping_file(mapping, template_dir, type_mapping_file):
+    """
+    Load a type mapping file from disk into a global variable.
+    :param mapping: the name of the mapping
+    :param templates_dir: templates directory
+    :param conf: the configuration
+    :return:
+    """
+    try:
+        with codecs.open(os.path.join(template_dir, type_mapping_file), 'r', 'UTF-8') as mapping_file:
+            logging.debug('mapping file: %s', mapping)
+            type_mappings[mapping] = yaml.load(mapping_file.read())
+            logging.debug("type mappings: %s", type_mappings)
+    except KeyError:
+        logging.warning(
+            "no mapping file found '%s', templates calling this mapping will error.", mapping)
+
+def map_datatypes(column, template_dir, type_mapping_file):
     """
     Given a column, extract its datatype and return possible mappings
      for it from a type-mappings.yml file.
@@ -41,8 +60,9 @@ def map_datatypes(column):
     :param column: The column containing the datatype to map
     :return: The mapped datatype
     """
+    load_mapping_file('type_mapping',template_dir, type_mapping_file)
     datatype = column['datatype'].lower()
     logging.debug('found datatype %s', datatype)
-    mapped_datatype = p.merge.type_mappings['type_mapping'].get(datatype)
+    mapped_datatype = type_mappings['type_mapping'].get(datatype)
     logging.debug('mapped %s to %s', datatype, mapped_datatype)
     return mapped_datatype
