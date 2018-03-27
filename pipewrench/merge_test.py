@@ -28,4 +28,4 @@ class MergeTest(unittest.TestCase):
         global type_mappings
         map_datatypes.type_mappings = {'type_mapping': {'blob': {'kudu': 'string'}}}
         values = {'conf': 'nevermind', 'column': {'datatype': 'blob'}}
-        assert 'string' == merge.render("{{ map_datatypes(column,'templates/sqoop-parquet-hdfs-kudu-impala/','type-mapping.yml').kudu }}", **values)
+        assert 'string' == merge.render("{{ map_datatypes(column, 'templates/sqoop-parquet-hdfs-kudu-impala/', 'type-mapping.yml').kudu }}", **values)
