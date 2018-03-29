@@ -388,6 +388,7 @@ $ make test
 
 Build RPM
 ```bash
+$ yum install -y rpm-build
 $ python setup.py bdist --formats=rpm
 ```
 
