@@ -385,3 +385,9 @@ Run all tests
 ```bash
 $ make test
 ```
+
+Build RPM
+```bash
+$ python setup.py bdist --formats=rpm
+```
+
