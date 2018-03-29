@@ -17,6 +17,7 @@
 from setuptools import setup
 import unittest
 import os
+import sys
 version = '0.1.0'
 
 def pipewrench_test_suite():
@@ -25,12 +26,15 @@ def pipewrench_test_suite():
     return test_suite
 
 def gen_data_files(*dirs):
-    results = []
-
-    for src_dir in dirs:
-        for root,dirs,files in os.walk(src_dir):
-            results.append(("/usr/share/pipewrench/" + root, map(lambda f:root + "/" + f, files)))
-    return results
+    # If we are building an rpm, generate list of data files to include. Otherwise, return none.
+    if '--single-version-externally-managed' in sys.argv:
+        results = []
+        for src_dir in dirs:
+            for root,dirs,files in os.walk(src_dir):
+                results.append(('/usr/share/pipewrench/' + root, map(lambda f:root + "/" + f, files)))
+        return results
+    else:
+        return
 
 setup(name='pipewrench',
       version=version,
@@ -41,6 +45,6 @@ setup(name='pipewrench',
       packages=['pipewrench'],
       test_suite='setup.pipewrench_test_suite',
       scripts=['pipewrench-merge'],
-      data_files = gen_data_files("templates")
+      data_files=gen_data_files('templates')
       )
 
