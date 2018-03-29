@@ -16,12 +16,21 @@
 
 from setuptools import setup
 import unittest
+import os
 version = '0.1.0'
 
 def pipewrench_test_suite():
     test_loader = unittest.TestLoader()
     test_suite = test_loader.discover('pipewrench', pattern='*_test.py')
     return test_suite
+
+def gen_data_files(*dirs):
+    results = []
+
+    for src_dir in dirs:
+        for root,dirs,files in os.walk(src_dir):
+            results.append(("/usr/share/pipewrench/" + root, map(lambda f:root + "/" + f, files)))
+    return results
 
 setup(name='pipewrench',
       version=version,
@@ -31,5 +40,7 @@ setup(name='pipewrench',
       install_requires=['jinja2', 'pyyaml', 'sdctool', 'pytest', 'pylint', 'marshmallow'],
       packages=['pipewrench'],
       test_suite='setup.pipewrench_test_suite',
-      scripts=['pipewrench-merge']
+      scripts=['pipewrench-merge'],
+      data_files = gen_data_files("templates")
       )
+
