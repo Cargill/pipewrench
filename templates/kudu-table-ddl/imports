@@ -1,0 +1,5 @@
+../shared/.gitignore
+../shared/type-mapping.yml
+../shared/run-with-logging.sh
+../shared/kudu-table-drop.sql
+../shared/kudu-table-create.sql
