@@ -1,0 +1,5 @@
+../shared/.gitignore
+../shared/type-mapping.yml
+../shared/sqoop-exec.sh
+../shared/sqoop-delete.sh
+../shared/run-with-logging.sh
