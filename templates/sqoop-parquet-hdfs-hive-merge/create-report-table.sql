@@ -24,7 +24,7 @@ TBLPROPERTIES ('parquet.compression'='SNAPPY',
   'SECURITY_CLASSIFICATION' = '{{ table.META_SECURITY_CLASSIFICATION }}',
   'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',
   'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}')
-AS SELECT * FROM {{ conf.staging_database.name}}.{{ table.destination.name }}_view;
+AS SELECT * FROM {{ conf.staging_database.name}}.{{ table.destination.name }}_merge_view;
 */
 
 -- create table, then insert overwrite --
@@ -43,6 +43,6 @@ TBLPROPERTIES(
   'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}'
 );
 
-insert overwrite {{ table.destination.name }}_report select * from {{ table.destination.name }}_view;
+insert overwrite {{ table.destination.name }}_report select * from {{ table.destination.name }}_merge_view;
 
 COMPUTE STATS {{ table.destination.name }}_report

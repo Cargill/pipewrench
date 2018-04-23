@@ -14,6 +14,6 @@
 
 -- Drop the tables and the view --
 USE {{ conf.staging_database.name }};
-DROP VIEW IF EXISTS {{ table.destination.name }}_view;
+DROP VIEW IF EXISTS {{ table.destination.name }}_merge_view;
 DROP TABLE IF EXISTS {{ table.destination.name }}_base;
 DROP TABLE IF EXISTS {{ table.destination.name }}_incr;
