@@ -23,6 +23,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.clean_name }} (
 {% endif %}
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
+COMMENT '{{ table.comment }}'
 STORED AS PARQUET
 LOCATION '{{ conf.result_database.path }}/{{ table.destination.clean_name }}/mod_val=1/'
 TBLPROPERTIES(

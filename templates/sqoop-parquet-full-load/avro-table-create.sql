@@ -21,6 +21,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.clean_name }}_avro (
 `{{ column.name.replace('/','_') }}` {{ map_datatypes(column).avro }} COMMENT '{{ column.comment }}'
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
+COMMENT '{{ table.comment }}'
 STORED AS AVRO
 LOCATION '{{ conf.staging_database.path }}/{{ table.destination.clean_name }}/'
 TBLPROPERTIES(
