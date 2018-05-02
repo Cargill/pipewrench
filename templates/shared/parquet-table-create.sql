@@ -20,6 +20,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_parquet (
 {{ column.name }} {{ map_datatypes(column).parquet }} COMMENT '{{ column.comment }}'
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
+COMMENT '{{ table.comment }}'
 STORED AS Parquet
 LOCATION '{{ conf.staging_database.path }}/{{ table.destination.name }}/incr'
 {%- if table.metadata %}  

@@ -22,6 +22,7 @@ final_database:
   name: "{{ destination_database }}" # Final database
 tables:
   - id: "titanic" # Uniquely identifies this table
+    comment: "Titanic passenager list"
     META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
     META_LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
     META_SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
@@ -66,6 +67,7 @@ tables:
         datatype: "int"
         comment: "comment"
   - id: "vocab" # Uniquely identifies this table
+    comment: "Vocab table"
     source:
       name: "vocab" # Source table name
       file: ../../../../../data/Vocab.csv
@@ -97,6 +99,7 @@ tables:
         datatype: "int"
         comment: "comment"
   - id: "baseball" # Uniquely identifies this table
+    comment: "Baseball statistics"
     source:
       name: "baseball" # Source table name
       file: ../../../../../data/Baseball.csv
