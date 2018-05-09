@@ -23,8 +23,8 @@ CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.clean_name }}_parquet (
 {% endif %}
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
-COMMENT '{{ table.comment }}'
 PARTITIONED BY (mod_val int)
+COMMENT '{{ table.comment }}'
 STORED AS PARQUET
 LOCATION '{{ conf.result_database.path }}/{{ table.destination.clean_name }}/'
 TBLPROPERTIES(
