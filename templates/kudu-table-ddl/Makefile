@@ -17,7 +17,7 @@ impala-cmd={{ conf.impala_cmd }}
 kudu-table: kudu-table-create.sql ## Create Impala Kudu Table
 	$(impala-cmd) kudu-table-create.sql
 
-compute-stats: compute-stats.sql
+compute-stats: compute-stats.sql ## Compute table stats
 	$(impala-cmd) compute-stats.sql
 
 kudu-table-clean: kudu-table-drop.sql ## Drop Kudu table
@@ -28,8 +28,8 @@ tables-clean: kudu-table-clean  ## Drop all tables
 tables: kudu-table ## Create all tables
 
 integration-test: # Run integration-tests
-        $(MAKE) tables
-        $(MAKE) tables-clean
+	$(MAKE) tables
+	$(MAKE) tables-clean
 
 help:  ## Print help message
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
