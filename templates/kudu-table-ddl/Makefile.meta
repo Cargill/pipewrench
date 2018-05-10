@@ -12,19 +12,11 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 
-first-run-all: {%- for table in tables %} first-run-{{ table.id }} {%- endfor %}
-
-{%- for table in tables %}
-first-run-{{ table.id }}:
-	$(MAKE) first-run -C {{ table.id }}
-{%- endfor %}
-
 tables-all: {%- for table in tables %} tables-{{ table.id }} {%- endfor %}
 
 {%- for table in tables %}
 tables-{{ table.id }}:
 	$(MAKE) tables -C {{ table.id }}
-	$(MAKE) compute-stats -C {{ table.id }}
 {%- endfor %}
 
 tables-clean-all: {%- for table in tables %} tables-clean-{{ table.id }} {%- endfor %}
@@ -34,14 +26,11 @@ tables-clean-{{ table.id }}:
 	$(MAKE) tables-clean -C {{ table.id }}
 {%- endfor %}
 
-clean-all:
-{%- for table in tables %}
-	$(MAKE) clean -C {{ table.id }}
-{%- endfor %}
+tables-compute-stats-all: {%- for table in tables %} tables-compute-stats-{{ table.id }} {%- endfor %}
 
 {%- for table in tables %}
-integration-test-{{ table.id }}:
-	$(MAKE) integration-test -C {{ table.id }}
+tables-compute-stats{{ table.id }}:
+	$(MAKE) compute-stats -C {{ table.id }}
 {%- endfor %}
 
 integration-test-all:
