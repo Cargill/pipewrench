@@ -20,6 +20,7 @@ result_database:
   path: "{{ hdfs_basedir }}/pipewrench" # Result database HDFS path
 tables:
   - id: "titanic" # Uniquely identifies this table
+    comment: "Titanic passenager list"
     source:
       name: "titanic" # Source table name
       file: ../../../../../data/Titanic.csv
@@ -64,6 +65,7 @@ tables:
       SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
       SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
   - id: "vocab" # Uniquely identifies this table
+    comment: "Vocab table"
     source:
       name: "vocab" # Source table name
       file: ../../../../../data/Vocab.csv
@@ -103,6 +105,7 @@ tables:
       SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
       SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
   - id: "baseball" # Uniquely identifies this table
+    comment: "Baseball statistics"
     source:
       name: "baseball" # Source table name
       file: ../../../../../data/Baseball.csv

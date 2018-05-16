@@ -4,34 +4,26 @@ user_name: {{ source_db_user_name }} # Source database user name
 type_mapping: type-mapping.yml # Type mapping used for database type conversion
 sqoop_export_dir: {{ hdfs_basedir }}/export # Sqoop export data HDFS path
 sqoop_password_file: {{ password_file}} # Password file for sqoop. Must reside in HDFS
-#sqoop_password: {{ password }} # Password for sqoop. Must reside in HDFS
+sqoop_password: {{ password }} # Password for sqoop. Must reside in HDFS
 connection_manager: "org.apache.sqoop.manager.MySQLManager" # Connection manager fully qualified class
 sqoop_job_name_suffix: test # Suffix added to sqoop jobs. Can be used to differentiate environments
 impala_cmd: "{{ impala_cmd }}"
 source_database:
   name: "integration_test" # Source database name
   connection_string: {{ connection_string }} # Source database connection string. Should be kept in 'env.yml'
-  cmd: "mysql -P 3306 -uroot -ppipewrench -h mysql <"
+  cmd: "mysql -P 3306 -upipewrench -ppipewrench -h mysql <"
 staging_database:
-  name: "{{ staging_db }}" # Staging database name.
-  path: "{{ hdfs_basedir }}/staging" # Staging database HDFS path
+  name: "{{ destination_database }}" # Staging database name.
+  path: "{{ hdfs_basedir }}/pipewrench" # Staging database HDFS path
 result_database:
   name: "{{ destination_database }}" # Result database
-  path: "{{ hdfs_basedir }}" # Result database HDFS path
-final_database:
-  name: "{{ destination_database }}" # Final database
+  path: "{{ hdfs_basedir }}/pipewrench" # Result database HDFS path
 tables:
   - id: "titanic" # Uniquely identifies this table
-    comment: "Titanic passenager list"
-    META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
-    META_LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
-    META_SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
-    META_SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
     source:
       name: "titanic" # Source table name
       file: ../../../../../data/Titanic.csv
     destination:
-      clean_name: "titanic"
       name: "titanic" # Destination (Impala) table name
     split_by_column: "Id" # Sqoop split by column (--split-by)
     kudu:
@@ -66,22 +58,29 @@ tables:
       - name: "SexCode"
         datatype: "int"
         comment: "comment"
+    metadata: # Metadata key values added to tblproperties in table DDL
+      CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
+      LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
+      SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
+      SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
   - id: "vocab" # Uniquely identifies this table
-    comment: "Vocab table"
     source:
       name: "vocab" # Source table name
       file: ../../../../../data/Vocab.csv
     destination:
-      clean_name: "vocab"
       name: "vocab" # Destination (Impala) table name
     split_by_column: "Id" # Sqoop split by column (--split-by)
     kudu:
       hash_by: # List of columns to hash by
-        - Id
+        - id
       num_partitions: 2 # Number of Kudu partitions to create
     check_column: Id # Incrementing timestamp of numeric column used when incrementally pulling data (sqoop --check-column)
     primary_keys: # List of primary keys
-      - Id
+      - id
+      - year
+      - sex
+      - education
+      - vocabulary
     columns:
       - name: "Id" # Column name in source table
         datatype: "int" # Column datatype in source table
@@ -98,13 +97,16 @@ tables:
       - name: "Vocabulary"
         datatype: "int"
         comment: "comment"
+    metadata:
+      CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
+      LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
+      SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
+      SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
   - id: "baseball" # Uniquely identifies this table
-    comment: "Baseball statistics"
     source:
       name: "baseball" # Source table name
       file: ../../../../../data/Baseball.csv
     destination:
-      clean_name: "baseball"
       name: "baseball" # Destination (Impala) table name
     split_by_column: "Id" # Sqoop split by column (--split-by)
     kudu:
@@ -114,6 +116,8 @@ tables:
     check_column: Id # Incrementing timestamp of numeric column used when incrementally pulling data (sqoop --check-column)
     primary_keys: # List of primary keys
       - Id
+      - playerid
+      - year
     columns:
       - name: "Id" # Column name in source table
         datatype: "int" # Column datatype in source table
@@ -146,8 +150,8 @@ tables:
         datatype: "int"
         comment: "comment"
       - name: "X2b"
-        datatype: "int"
-        comment: "comment"
+        datatype: "int" 
+        comment: "comment" 
       - name: "X3b"
         datatype: "int"
         comment: "comment"
@@ -161,8 +165,8 @@ tables:
         datatype: "int"
         comment: "comment"
       - name: "CS"
-        datatype: "int"
-        comment: "comment"
+        datatype: "int" 
+        comment: "comment" 
       - name: "BB"
         datatype: "int"
         comment: "comment"

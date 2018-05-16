@@ -18,6 +18,7 @@ result_database:
   cli: "mysql -u {{ dest_db_user_name }} -p{{ dest_db_user_pass }} -e"
 tables:
   - id: "first_imported_table" # Uniquely identifies this table
+    comment: "Table comment"
     source:
       name: "employees_kudu" # Source table name
     destination:
