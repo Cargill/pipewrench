@@ -2,24 +2,20 @@
 name: "sqoop_to_parquet_import" # The name of this configuration
 user_name: {{ source_db_user_name }} # Source database user name
 type_mapping: type-mapping.yml # Type mapping used for database type conversion
-sqoop_export_dir: {{ hdfs_basedir }}/export # Sqoop export data HDFS path
 sqoop_password_file: {{ password_file}} # Password file for sqoop. Must reside in HDFS
 #sqoop_password: {{ password }} # Password for sqoop. Must reside in HDFS
 connection_manager: "org.apache.sqoop.manager.MySQLManager" # Connection manager fully qualified class
-sqoop_job_name_suffix: test # Suffix added to sqoop jobs. Can be used to differentiate environments
 impala_cmd: "{{ impala_cmd }}"
 source_database:
   name: "integration_test" # Source database name
   connection_string: {{ connection_string }} # Source database connection string. Should be kept in 'env.yml'
   cmd: "mysql -P 3306 -uroot -ppipewrench -h mysql <"
 staging_database:
-  name: "{{ staging_db }}" # Staging database name.
-  path: "{{ hdfs_basedir }}/staging" # Staging database HDFS path
-result_database:
-  name: "{{ destination_database }}" # Result database
-  path: "{{ hdfs_basedir }}" # Result database HDFS path
-final_database:
-  name: "{{ destination_database }}" # Final database
+  name: "{{ staging_database_name }}" # Staging database name.
+  path: "{{ staging_database_path }}" # Staging database HDFS path
+raw_database:
+  name: "{{ raw_database_name }}" # Raw database
+  path: "{{ raw_database_path }}" # Raw database HDFS path
 tables:
   - id: "titanic" # Uniquely identifies this table
     comment: "Titanic passenager list"

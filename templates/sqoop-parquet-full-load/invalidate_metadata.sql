@@ -1,1 +1,1 @@
-INVALIDATE METADATA {{ conf.staging_database.name }}.{{ table.destination.clean_name }}_avro;
+INVALIDATE METADATA {{ conf.raw_database.name }}.{{ table.destination.name }}_avro;

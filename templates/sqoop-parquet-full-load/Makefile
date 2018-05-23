@@ -24,9 +24,6 @@ avro-table: avro-table-create.sql #### Create Parquet Impala Table
 parquet-table: parquet-table-create.sql #### Create Parquet Impala Table
 	$(impala-cmd) parquet-table-create.sql
 
-output-table: output-table-create.sql #### Create Parquet Impala Table
-	$(impala-cmd) output-table-create.sql
-
 compute-stats: compute-stats.sh
 	./compute-stats.sh
 
@@ -76,7 +73,6 @@ first-run:
 	$(MAKE) copy-avsc
 	$(MAKE) avro-table
 	$(MAKE) parquet-table
-	$(MAKE) output-table
 	$(MAKE) invalidate-metadata
 	$(MAKE) alter-tables ## Run entire workflow, building all tables and pulling source db data into Kudu
 	$(MAKE) compute-stats
