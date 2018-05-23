@@ -24,7 +24,7 @@ set -eu
 {%- set mapcolumn = mapcolumn.append(column["name"]) -%}
 {%- endif -%}
 {%- endfor -%}
-sqoop import {{ conf.sqoop_ops }} \
+sqoop import \
     --connect '{{ conf.source_database.connection_string }}' \
     --username '{{ conf.user_name }}' \
     --password-file '{{ conf.sqoop_password_file }}' \
@@ -41,8 +41,8 @@ sqoop import {{ conf.sqoop_ops }} \
     {% endfor %}
     {% endif -%}
     --delete-target-dir \
-    --target-dir {{ conf.staging_database.path }}/{{ table.destination.clean_name }}/ \
-    --temporary-rootdir {{ conf.staging_database.path }}/{{ table.destination.clean_name }}/ \
+    --target-dir {{ conf.raw_database.path }}/{{ table.destination.name }}/ \
+    --temporary-rootdir {{ conf.raw_database.path }}/{{ table.destination.name }}/ \
     --as-avrodatafile \
     --fetch-size {% if table.columns|length < 30 -%} 10000 {% else %} 5000 {% endif %} \
     --compress  \
