@@ -1,19 +1,29 @@
 #!/usr/bin/env bash
 
-#DAY=$(date +"%-d")
-#val=$((DAY%4))
+set -x
 
-#val=$(head -c 1 partition.txt)
-impala="{{ conf.impala_cmd }}"
-val=$(${impala} get-partition.sql | awk -F'=' ' { print substr ($(NF-0),0,1) } ' | grep -o '[1-4]*')
+IMPALA_CMD="{{ conf.impala_cmd }}"
+PARTITION_FILE="{{ conf.raw_database.path }}/{{ table.destination.name }}_partitioned/latest-partition"
+PARTITION_NUMBER=1
 
-if [[ $val -eq 4 ]]
-then
-        val=1
-else
-        val=$((val+1))
+if $(hdfs dfs -test -e $PARTITION_FILE); then
+	PARTITION_NUMBER=$(hdfs dfs -cat $PARTITION_FILE)
+
+	if [[ $PARTITION_NUMBER -eq 4 ]]; then
+		PARTITION_NUMBER=1
+	else
+		PARTITION_NUMBER=$((PARTITION_NUMBER+1))
+	fi
 fi
 
+${IMPALA_CMD} insert-overwrite.sql --var=val=$PARTITION_NUMBER
 
-${impala} insert_overwrite.sql --var=val=$val
-${impala} alter-location.sql --var=val=$val
+if [ $? -eq 0 ]; then
+	${IMPALA_CMD} alter-location.sql --var=val=$PARTITION_NUMBER
+	
+	if $(hdfs dfs -test -e $PARTITION_FILE); then
+		hdfs dfs -rm -skipTrash $PARTITION_FILE
+	fi
+	
+	echo $PARTITION_NUMBER | hdfs dfs -put - $PARTITION_FILE
+fi
