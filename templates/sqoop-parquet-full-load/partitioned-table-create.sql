@@ -23,7 +23,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_partitioned (
 {% endif %}
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
-PARTITIONED BY (mod_val int)
+PARTITIONED BY (ingest_partition int)
 COMMENT '{{ table.comment }}'
 STORED AS PARQUET
 LOCATION '{{ conf.raw_database.path }}/{{ table.destination.name }}_partitioned/'
