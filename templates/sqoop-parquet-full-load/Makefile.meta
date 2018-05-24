@@ -19,23 +19,24 @@ first-run-{{ table.id }}:
 	$(MAKE) first-run -C {{ table.id }}
 {%- endfor %}
 
-tables-all: {%- for table in tables %} tables-{{ table.id }} {%- endfor %}
+update-all: {%- for table in tables %} update-{{ table.id }} {%- endfor %}
 
 {%- for table in tables %}
-tables-{{ table.id }}:
-	$(MAKE) tables -C {{ table.id }}
+update-{{ table.id }}:
+    $(MAKE) first-run -C {{ table.id }}
+{%- endfor %}
+
+compute-stats-all: {%- for table in tables %} compute-stats-{{ table.id }} {%- endfor %}
+
+{%- for table in tables %}
+compute-stats-{{ table.id }}:
 	$(MAKE) compute-stats -C {{ table.id }}
 {%- endfor %}
 
-tables-clean-all: {%- for table in tables %} tables-clean-{{ table.id }} {%- endfor %}
+clean-all: {%- for table in tables %} clean-{{ table.id }} {%- endfor %}
 
 {%- for table in tables %}
-tables-clean-{{ table.id }}:
-	$(MAKE) tables-clean -C {{ table.id }}
-{%- endfor %}
-
-clean-all:
-{%- for table in tables %}
+clean-{{ table.id }}:
 	$(MAKE) clean -C {{ table.id }}
 {%- endfor %}
 

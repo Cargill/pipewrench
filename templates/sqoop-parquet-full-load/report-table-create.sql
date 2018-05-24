@@ -14,20 +14,22 @@
 
 -- Create a Parquet table in Impala
 set sync_ddl=1;
-USE {{ conf.raw_database.name }};
-CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_avro (
+USE {{ conf.staging_database.name }};
+CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }} (
 {% for column in table.columns %}
-`{{ column.name.replace('/','_') }}` {{ map_datatypes(column).avro }} COMMENT '{{ column.comment }}'
+{%- if column["datatype"].lower() == "decimal" %}
+`{{ column.name.replace('/','_') }}` {{ map_datatypes(column).parquet }}({{column.precision}},{{column.scale}}) COMMENT '{{ column.comment }}'
+{%- else %} `{{ column.name.replace('/','_') }}` {{ map_datatypes(column).parquet }} COMMENT '{{ column.comment }}'
+{% endif %}
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 COMMENT '{{ table.comment }}'
-STORED AS AVRO
-LOCATION '{{ conf.raw_database.path }}/{{ table.destination.name }}_avro/'
+STORED AS PARQUET
+LOCATION '{{ conf.staging_database.path }}/{{ table.destination.name }}/'
+{%- if table.metadata %}  
 TBLPROPERTIES(
-{%- if table.metadata %}
   {%- for key, value in table.metadata.items() %}
-  '{{ key }}' = '{{ value }}',
+  '{{ key }}' = '{{ value }}'{%- if not loop.last -%}, {% endif %}
   {%- endfor %}
-{%- endif %}
-  'avro.schema.url' = '{{ conf.raw_database.path }}/{{ table.destination.name }}_avro/.meta/{{ table.destination.name }}.avsc'
 )
+{%- endif %}

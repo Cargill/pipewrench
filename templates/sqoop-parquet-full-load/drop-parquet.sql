@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS {{ conf.staging_database.name }}.{{ table.destination.name }};

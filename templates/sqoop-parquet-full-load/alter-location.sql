@@ -1,1 +1,1 @@
-ALTER TABLE {{ conf.staging_database.name }}.{{ table.destination.name }} SET LOCATION '{{ conf.raw_database.path }}/{{ table.destination.name }}/mod_val=${var:val}/';
+ALTER TABLE {{ conf.staging_database.name }}.{{ table.destination.name }} SET LOCATION '{{ conf.raw_database.path }}/{{ table.destination.name }}_partitioned/mod_val=${var:val}/';
