@@ -35,8 +35,7 @@ tables:
         - Id
       num_partitions: 2 # Number of Kudu partitions to create
     check_column: Id # Incrementing timestamp of numeric column used when incrementally pulling data (sqoop --check-column)
-    primary_keys: # List of primary keys
-      - Id
+    primary_keys: Id # List of primary keys
     columns:
       - name: "Id" # Column name in source table
         datatype: "int" # Column datatype in source table
@@ -74,8 +73,7 @@ tables:
         - Id
       num_partitions: 2 # Number of Kudu partitions to create
     check_column: Id # Incrementing timestamp of numeric column used when incrementally pulling data (sqoop --check-column)
-    primary_keys: # List of primary keys
-      - Id
+    primary_keys: Id # List of primary keys
     columns:
       - name: "Id" # Column name in source table
         datatype: "int" # Column datatype in source table
@@ -104,8 +102,7 @@ tables:
         - Id
       num_partitions: 2 # Number of Kudu partitions to create
     check_column: Id # Incrementing timestamp of numeric column used when incrementally pulling data (sqoop --check-column)
-    primary_keys: # List of primary keys
-      - Id
+    primary_keys: Id # List of primary keys
     columns:
       - name: "Id" # Column name in source table
         datatype: "int" # Column datatype in source table
