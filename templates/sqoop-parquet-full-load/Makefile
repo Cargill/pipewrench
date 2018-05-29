@@ -21,18 +21,17 @@ sqoop-import:  #### Create Sqoop job
 avro-table: avro-table-create.sql #### Create Parquet Impala Table
 	$(impala-cmd) avro-table-create.sql
 
-parquet-table: parquet-table-create.sql #### Create Parquet Impala Table
-	$(impala-cmd) parquet-table-create.sql
+partitioned-table: partitioned-table-create.sql #### Create Parquet Impala Table
+	$(impala-cmd) partitioned-table-create.sql
 
-output-table: output-table-create.sql #### Create Parquet Impala Table
-	$(impala-cmd) output-table-create.sql
+report-table: report-table-create.sql #### Create Reporting Impala table
+	$(impala-cmd) report-table-create.sql
 
 compute-stats: compute-stats.sh
 	./compute-stats.sh
 
-
-delete_avsc: delete_avsc.sh
-	./run-with-logging.sh ./delete_avsc.sh $@
+delete-avsc: delete-avsc.sh
+	./run-with-logging.sh ./delete-avsc.sh $@
 
 copy-avsc: copy-avsc.sh
 	./run-with-logging.sh ./copy-avsc.sh $@
@@ -40,55 +39,48 @@ copy-avsc: copy-avsc.sh
 alter-tables: alter-tables.sh
 	./run-with-logging.sh ./alter-tables.sh $@
 
-invalidate-metadata: invalidate_metadata.sql
-	$(impala-cmd) invalidate_metadata.sql
+invalidate-metadata: invalidate-metadata.sql
+	$(impala-cmd) invalidate-metadata.sql
 
 hdfs-clean: hdfs-clean.sh
 	./run-with-logging.sh ./hdfs-clean.sh $@
 
-drop-parquet: drop-parquet.sql
-	$(impala-cmd) drop-parquet.sql
-
-
-tables-drop: tables-drop.sql
+drop-tables: tables-drop.sql
 	$(impala-cmd) tables-drop.sql
 
 test-rowcount: test-rowcount.sh
 	./run-with-logging.sh ./test-rowcount.sh $@
 
 update:
-	$(MAKE) delete_avsc
+	$(MAKE) delete-avsc
 	$(MAKE) sqoop-import
 	$(MAKE) copy-avsc
-	$(MAKE) parquet-table
+	$(MAKE) partitioned-table
 	$(MAKE) invalidate-metadata
+	$(MAKE) report-table
 	$(MAKE) alter-tables
 	$(MAKE) compute-stats
-	$(MAKE) drop-parquet
 
 clean:
 	$(MAKE) hdfs-clean
-	$(MAKE) tables-drop
+	$(MAKE) drop-tables
 
 first-run:
-	$(MAKE) delete_avsc
+	$(MAKE) delete-avsc
 	$(MAKE) sqoop-import
 	$(MAKE) copy-avsc
 	$(MAKE) avro-table
-	$(MAKE) parquet-table
-	$(MAKE) output-table
+	$(MAKE) partitioned-table
 	$(MAKE) invalidate-metadata
-	$(MAKE) alter-tables ## Run entire workflow, building all tables and pulling source db data into Kudu
+	$(MAKE) report-table
+	$(MAKE) alter-tables
 	$(MAKE) compute-stats
-	$(MAKE) drop-parquet
 
 integration-test:
 	$(MAKE) clean
 	$(MAKE) first-run
+	$(MAKE) update
 	$(MAKE) test-rowcount
-
-##clean: sqoop-clean kudu-table-clean parquet-table-clean hdfs-clean
-## Remove all tables and data
 
 targets: ## Print out a list of available targets
 	@fgrep -h ": " $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/:.*//'

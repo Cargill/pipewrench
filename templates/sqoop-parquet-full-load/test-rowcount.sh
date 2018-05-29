@@ -15,10 +15,10 @@
 set -e
 # Check parquet table
 AVRO=$({{ conf.impala_cmd }} avro-table-rowcount.sql -B 2> /dev/null)
-PARQUET=$({{ conf.impala_cmd }} parquet-table-rowcount.sql -B 2> /dev/null)
+PARQUET=$({{ conf.impala_cmd }} report-table-rowcount.sql -B 2> /dev/null)
 SOURCE=$({{ conf.source_database.cmd }} source-table-rowcount.sql -s -r -N -B 2> /dev/null)
 echo "avro count: $AVRO"
-echo "parquet count: $PARQUET"
+echo "report count: $PARQUET"
 echo "source count: $SOURCE"
 
 if [ "$AVRO" -ne "$SOURCE" ]; then

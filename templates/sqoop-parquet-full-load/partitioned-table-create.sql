@@ -14,8 +14,8 @@
 
 -- Create a Parquet table in Impala
 set sync_ddl=1;
-USE {{ conf.final_database.name }};
-CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.clean_name }} (
+USE {{ conf.raw_database.name }};
+CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_partitioned (
 {% for column in table.columns %}
 {%- if column["datatype"].lower() == "decimal" %}
 `{{ column.name.replace('/','_') }}` {{ map_datatypes(column).parquet }}({{column.precision}},{{column.scale}}) COMMENT '{{ column.comment }}'
@@ -23,12 +23,14 @@ CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.clean_name }} (
 {% endif %}
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
+PARTITIONED BY (ingest_partition int)
 COMMENT '{{ table.comment }}'
 STORED AS PARQUET
-LOCATION '{{ conf.result_database.path }}/{{ table.destination.clean_name }}/mod_val=1/'
+LOCATION '{{ conf.raw_database.path }}/{{ table.destination.name }}_partitioned/'
+{%- if table.metadata %}  
 TBLPROPERTIES(
-  'SOURCE' = '{{ table.META_SOURCE }}',
-  'SECURITY_CLASSIFICATION' = '{{ table.META_SECURITY_CLASSIFICATION }}',
-  'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',
-  'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}'
+  {%- for key, value in table.metadata.items() %}
+  '{{ key }}' = '{{ value }}'{%- if not loop.last -%}, {% endif %}
+  {%- endfor %}
 )
+{%- endif %}
