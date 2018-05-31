@@ -12,7 +12,7 @@ tinyint:
 decimal:
   kudu: string
   impala: decimal
-  parquet: double
+  parquet: decimal
   avro: decimal
 int:
   kudu: int
@@ -22,7 +22,7 @@ int:
 number:
   kudu: string
   impala: decimal
-  parquet: double
+  parquet: decimal
   avro: decimal
 numeric:
   kudu: string
