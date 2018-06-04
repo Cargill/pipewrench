@@ -23,7 +23,7 @@ number:
   kudu: string
   impala: decimal
   parquet: decimal
-  avro: decimal
+  avro: string
 numeric:
   kudu: string
   impala: string
