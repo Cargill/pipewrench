@@ -24,7 +24,7 @@ set -eu
 {%- set mapcolumn = mapcolumn.append(column["name"]) -%}
 {%- endif -%}
 {%- endfor -%}
-sqoop import {{ conf.sqoop_ops }} \
+sqoop import \
     --connect '{{ conf.source_database.connection_string }}' \
     --username '{{ conf.user_name }}' \
     --password-file '{{ conf.sqoop_password_file }}' \
@@ -41,20 +41,25 @@ sqoop import {{ conf.sqoop_ops }} \
     {% endfor %}
     {% endif -%}
     --delete-target-dir \
-    --target-dir {{ conf.staging_database.path }}/{{ table.destination.clean_name }}/ \
-    --temporary-rootdir {{ conf.staging_database.path }}/{{ table.destination.clean_name }}/ \
+    --target-dir {{ conf.raw_database.path }}/{{ table.destination.name }}_avro/ \
+    --temporary-rootdir {{ conf.raw_database.path }}/{{ table.destination.name }}_avro/ \
     --as-avrodatafile \
     --fetch-size {% if table.columns|length < 30 -%} 10000 {% else %} 5000 {% endif %} \
     --compress  \
     --compression-codec snappy \
     -m 1 \
-{%- if conf["source_server"].lower() == "mssql" %}
+{%- if conf["sqoop_driver"] is defined %}
+    {%- if "sqlserver" in conf["sqoop_driver"].lower() -%}
     --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %}
         FROM {{ table.source.name }} WHERE $CONDITIONS'
-{%- elif conf["source_server"].lower() == "hana" %}
+    {%- elif "sap" in conf["sqoop_driver"].lower() -%}
     --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %}
         FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
+    {%- else -%}
+    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '`{}`'.format(column.name) }} {% else %} {{ '`{}`,'.format(column.name) }} {% endif %} {% endfor %}
+        FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
+    {% endif -%}
 {%- else %}
     --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '`{}`'.format(column.name) }} {% else %} {{ '`{}`,'.format(column.name) }} {% endif %} {% endfor %}
         FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
-{% endif -%}
+{%- endif -%}

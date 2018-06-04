@@ -1,1 +1,1 @@
-ALTER TABLE {{ conf.final_database.name }}.{{ table.destination.clean_name }} SET LOCATION '{{ conf.result_database.path }}/{{ table.destination.clean_name }}/mod_val=${var:val}/';
+ALTER TABLE {{ conf.staging_database.name }}.{{ table.destination.name }} SET LOCATION '{{ conf.raw_database.path }}/{{ table.destination.name }}_partitioned/ingest_partition=${var:val}/';

@@ -10,8 +10,8 @@
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
-    limitations under the License.
--#}
--- Compute table statistics for optimized joins
+    limitations under the License. #}
+
+-- Query Parquet table in Impala
 USE {{ conf.staging_database.name }};
-COMPUTE STATS {{ table.destination.clean_name }}_avro;
+SELECT COUNT(*) FROM {{ table.destination.name }};
