@@ -29,6 +29,6 @@ CREATE VIEW {{ table.destination.name }}_merge_view AS
 	GROUP BY {{ table.primary_keys|join(', ') }}) s
   ON 
 	{% for pk in table.primary_keys %}
-		t1.pk = s.pk AND
+		t1.{{ pk }}= s.{{ pk }} AND
 	{% endfor %}
 	t1.{{ table.check_column }} = s.max_modified;
