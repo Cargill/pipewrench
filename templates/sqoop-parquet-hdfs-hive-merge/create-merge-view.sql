@@ -22,9 +22,13 @@ CREATE VIEW {{ table.destination.name }}_merge_view AS
   FROM (SELECT * FROM {{ table.destination.name }}_base
 	UNION ALL 
 	SELECT * FROM {{ table.destination.name }}_incr) t1
-  JOIN (SELECT {{ table.primary_keys }}, max({{ table.check_column }}) max_modified 
+  JOIN (SELECT {{ table.primary_keys|join(', ') }}, max({{ table.check_column }}) max_modified 
   	FROM (SELECT * FROM {{ table.destination.name }}_base 
 	   UNION ALL
 	SELECT * FROM {{ table.destination.name }}_incr) t2
-	GROUP BY {{ table.primary_keys }}) s
-  ON t1.{{ table.primary_keys }} = s.{{ table.primary_keys }} AND t1.{{ table.check_column }} = s.max_modified;
+	GROUP BY {{ table.primary_keys|join(', ') }}) s
+  ON 
+	{% for pk in table.primary_keys %}
+		t1.pk = s.pk AND
+	{% endfor %}
+	t1.{{ table.check_column }} = s.max_modified;

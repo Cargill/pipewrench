@@ -15,4 +15,4 @@
 
 # Remove parquet data from hdfs
 set -eu
-sudo -u hdfs hdfs dfs -rm -r -f {{ conf.staging_database.path }}/{{ table.destination.name }}_report/
+hdfs dfs -rm -r -f {{ conf.staging_database.path }}/{{ table.destination.name }}_report/

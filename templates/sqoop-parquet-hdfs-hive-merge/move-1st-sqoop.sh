@@ -15,4 +15,4 @@
 
 # Move parquet data from /incr to /base
 set -eu
-sudo -u hdfs hdfs dfs -mv {{ conf.staging_database.path }}/{{ table.destination.name }}/incr/* {{ conf.staging_database.path }}/{{ table.destination.name }}/base 
+hdfs dfs -mv {{ conf.staging_database.path }}/{{ table.destination.name }}/incr/* {{ conf.staging_database.path }}/{{ table.destination.name }}/base 

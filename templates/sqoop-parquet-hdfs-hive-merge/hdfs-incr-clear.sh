@@ -15,4 +15,4 @@
 
 # Remove parquet data from incr
 set -eu
-sudo -u hdfs hdfs dfs -rm -r -f {{ conf.staging_database.path }}/{{ table.destination.name }}/incr/*
+hdfs dfs -rm -r -f {{ conf.staging_database.path }}/{{ table.destination.name }}/incr/*
