@@ -15,9 +15,9 @@
 {% macro column_or_cast(conf, column) -%}
     {% set mapped_type = map_datatypes(column).impala %}
     {%- if mapped_type == 'timestamp' %}
-        cast({{ column.name }} as timestamp) COMMENT '{{ column.comment }}'
+        cast({{ column.name }} as timestamp) COMMENT "{{ column.comment }}"
     {%- else %}
-        {{ column.name }} {{ mapped_type }} COMMENT '{{ column.comment }}'
+        {{ column.name }} {{ mapped_type }} COMMENT "{{ column.comment }}"
     {%- endif -%}
 {%- endmacro -%}
 -- Create a Parquet table in Impala
