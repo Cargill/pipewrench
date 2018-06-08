@@ -31,5 +31,5 @@ TBLPROPERTIES(
   {%- endfor %}
 {%- endif %}
 {%- for column in table.columns -%}
-  '{{ column.name|lower }}' = '{{ column.comment }}'{%- if not loop.last -%},{% endif %}
+  '{{ column.name|lower }}' = "{{ column.comment }}"{%- if not loop.last -%},{% endif %}
 {%- endfor -%})
