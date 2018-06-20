@@ -1,53 +1,29 @@
-date:
-  kudu: bigint
-  impala: bigint
-  parquet: bigint
-  avro: long
-timestamp:
-  kudu: bigint
-  impala: timestamp
-  parquet: bigint
-  avro: long
-datetime:
-  kudu: bigint
-  impala: timestamp
-  parquet: bigint
-  avro: long
+# numerics
 bigint:
   kudu: bigint
   impala: bigint
   parquet: bigint
-  avro: long
+  avro: bigint
+tinyint:
+  kudu: int
+  impala: int
+  parquet: int
+  avro: int
 decimal:
   kudu: string
   impala: decimal
-  parquet: double
-  avro: decimal
-number:
-  kudu: string
-  impala: decimal
-  parquet: double
-  avro: decimal
-string:
-  kudu: string
-  impala: string
-  parquet: string
+  parquet: decimal
   avro: string
 int:
   kudu: int
   impala: int
   parquet: int
   avro: int
-bit:
-  kudu: boolean
-  impala: boolean
-  parquet: boolean
-  avro: boolean
-boolean:
-  kudu: boolean
-  impala: boolean
-  parquet: boolean
-  avro: boolean
+number:
+  kudu: string
+  impala: decimal
+  parquet: decimal
+  avro: string
 numeric:
   kudu: string
   impala: string
@@ -68,6 +44,58 @@ float:
   impala: float
   parquet: float
   avro: float
+long:
+  kudu: bigint
+  parquet: bigint
+  impala: bigint
+  avro: bigint
+smallint:
+  kudu: int
+  impala: int
+  parquet: int
+  avro: int
+integer:
+  kudu: int
+  impala: int
+  parquet: int
+  avro: int
+short:
+  kudu: int
+  impala: int
+  parquet: int
+  avro: int
+# dates
+date:
+  kudu: bigint
+  impala: bigint
+  parquet: bigint
+  avro: bigint
+timestamp:
+  kudu: bigint
+  impala: timestamp
+  parquet: bigint
+  avro: bigint
+datetime:
+  kudu: bigint
+  impala: timestamp
+  parquet: bigint
+  avro: bigint
+time_with_timezone:
+  kudu: bigint
+  impala: timestamp
+  parquet: bigint
+  avro: bigint
+timestamp_with_timezone:
+  kudu: bigint
+  impala: timestamp
+  parquet: bigint
+  avro: bigint
+# text
+string:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
 blob:
   kudu: string
   impala: string
@@ -88,13 +116,59 @@ varchar:
   impala: string
   parquet: string
   avro: string
-long:
-  kudu: bigint
-  parquet: bigint
-  impala: bigint
-  avro: long
 text:
   kudu: string
   impala: string
   parquet: string
   avro: string
+char:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+longvarchar:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+binary:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+varbinary:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+longvarbinary:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+nchar:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+nvarchar:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+longnvarchar:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+# boolean
+bit:
+  kudu: boolean
+  impala: boolean
+  parquet: boolean
+  avro: boolean
+boolean:
+  kudu: boolean
+  impala: boolean
+  parquet: boolean
+  avro: boolean

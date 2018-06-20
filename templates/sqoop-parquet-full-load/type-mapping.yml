@@ -3,7 +3,7 @@ bigint:
   kudu: bigint
   impala: bigint
   parquet: bigint
-  avro: long
+  avro: bigint
 tinyint:
   kudu: int
   impala: int
@@ -48,7 +48,7 @@ long:
   kudu: bigint
   parquet: bigint
   impala: bigint
-  avro: long
+  avro: bigint
 smallint:
   kudu: int
   impala: int
@@ -59,32 +59,37 @@ integer:
   impala: int
   parquet: int
   avro: int
+short:
+  kudu: int
+  impala: int
+  parquet: int
+  avro: int
 # dates
 date:
   kudu: bigint
   impala: bigint
   parquet: bigint
-  avro: long
+  avro: bigint
 timestamp:
   kudu: bigint
   impala: timestamp
   parquet: bigint
-  avro: long
+  avro: bigint
 datetime:
   kudu: bigint
   impala: timestamp
   parquet: bigint
-  avro: long
+  avro: bigint
 time_with_timezone:
   kudu: bigint
   impala: timestamp
   parquet: bigint
-  avro: long
+  avro: bigint
 timestamp_with_timezone:
   kudu: bigint
   impala: timestamp
   parquet: bigint
-  avro: long
+  avro: bigint
 # text
 string:
   kudu: string
