@@ -54,8 +54,8 @@ sqoop import \
     {%- elif "sap" in conf["sqoop_driver"].lower() -%}
     --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
     {%- else -%}
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ column.name }}, {% else %} {{ column.name }} {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
+    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ column.name }} {% else %} {{ column.name }}, {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
     {% endif -%}
 {%- else %}
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ column.name }} {% else %} {{ column.name }} {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
+    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ column.name }} {% else %} {{ column.name }}, {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
 {%- endif -%}
