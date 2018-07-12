@@ -23,7 +23,7 @@ update-all: {%- for table in tables %} update-{{ table.id }} {%- endfor %}
 
 {%- for table in tables %}
 update-{{ table.id }}:
-	$(MAKE) first-run -C {{ table.id }}
+	$(MAKE) update -C {{ table.id }}
 {%- endfor %}
 
 compute-stats-all: {%- for table in tables %} compute-stats-{{ table.id }} {%- endfor %}
