@@ -13,21 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License. #}
 set -e
-# Check parquet table
-AVRO=$({{ conf.impala_cmd }} avro-table-rowcount.sql -B 2> /dev/null)
-PARQUET=$({{ conf.impala_cmd }} report-table-rowcount.sql -B 2> /dev/null)
-SOURCE=$(cat sourceCount.txt)
 
-echo "avro count: $AVRO"
-echo "report count: $PARQUET"
-echo "source count: $SOURCE"
+SOURCE="$({{ conf.source_database.cmd }} 'SELECT count(*) FROM {{ conf.source_database.name }}.{{ table.source.name }} ' | grep -o '\|\s[0-9]*\s\|' | grep -Eo '[[:digit:]]*' )"
+echo -n $SOURCE > sourceCount.txt
 
-if [ "$AVRO" -ne "$SOURCE" ]; then
-        echo STAGING AND SOURCE ROW COUNTS DO NOT MATCH
-        exit 1
-fi
-
-if [ "$PARQUET" -ne "$SOURCE" ]; then
-	echo FINAL TABLE ROW COUNTS DO NOT MATCH
-	exit 1
-fi
