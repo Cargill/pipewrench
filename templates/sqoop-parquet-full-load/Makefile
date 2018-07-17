@@ -51,7 +51,11 @@ drop-tables: tables-drop.sql
 test-rowcount: test-rowcount.sh
 	./run-with-logging.sh ./test-rowcount.sh $@
 
+source-rowcount: source-rowcount.sh #### Get source table rowcount
+	./run-with-logging.sh ./source-rowcount.sh $@
+
 update:
+	$(MAKE) source-rowcount
 	$(MAKE) delete-avsc
 	$(MAKE) sqoop-import
 	$(MAKE) copy-avsc
@@ -60,12 +64,14 @@ update:
 	$(MAKE) report-table
 	$(MAKE) alter-tables
 	$(MAKE) compute-stats
+	$(MAKE) test-rowcount
 
 clean:
 	$(MAKE) hdfs-clean
 	$(MAKE) drop-tables
 
 first-run:
+	$(MAKE) source-rowcount
 	$(MAKE) delete-avsc
 	$(MAKE) sqoop-import
 	$(MAKE) copy-avsc
@@ -75,6 +81,7 @@ first-run:
 	$(MAKE) report-table
 	$(MAKE) alter-tables
 	$(MAKE) compute-stats
+	$(MAKE) test-rowcount
 
 integration-test:
 	$(MAKE) clean
