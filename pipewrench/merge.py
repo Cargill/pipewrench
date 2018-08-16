@@ -330,11 +330,11 @@ def cleanse_column(column):
         column = column.replace('_', "", 1)
 
     # Replace all /,-,(,), blank spaces with _
-    p = re.compile('(/|-|\(|\)|\s)')
+    p = re.compile(r'(/|-|\(|\)|\s)')
     column = p.sub('_', column)
 
     # After replacing values find any multiple _ and replace them with a single underscore
-    p = re.compile('(_{2,})')
+    p = re.compile(r'(_{2,})')
     column = p.sub('_', column)
 
     return column
