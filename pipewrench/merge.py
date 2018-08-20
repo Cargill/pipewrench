@@ -22,6 +22,7 @@ import argparse
 import codecs
 import logging
 import os
+import re
 from json import dumps
 from jinja2 import Template
 import yaml
@@ -200,7 +201,7 @@ def render(template, **kwargs):
     :return: The reified template
     """
     template = Template(template)
-    template_functions = [map_datatypes, dumps, map_clobs, order_columns]
+    template_functions = [map_datatypes, dumps, map_clobs, order_columns, cleanse_column]
 
     for function in template_functions:
         template.globals[function.__name__] = function
@@ -310,6 +311,33 @@ def map_clobs(columns):
                 clobs = "--map-column-java "
             clobs = clobs + c.get("name") + "=String,"
     return clobs[:-1]
+
+
+def cleanse_column(column):
+    """
+    Template function for cleansing column names.
+    Columns beginning with / or _ will have these removed.
+    Columns containing spaces, /, (, ), - will be replaced with underscores.
+    Multiple _ in a row will be replaced with a single _
+    :param column: String column name from source system
+    :return: Cleansed column name
+    """
+    column = column.lower()
+    if column.startswith("/"):
+        column = column.replace("/", "", 1)
+
+    if column.startswith('_'):
+        column = column.replace('_', "", 1)
+
+    # Replace all /,-,(,), blank spaces with _
+    p = re.compile(r'(/|-|\(|\)|\s)')
+    column = p.sub('_', column)
+
+    # After replacing values find any multiple _ and replace them with a single underscore
+    p = re.compile(r'(_{2,})')
+    column = p.sub('_', column)
+
+    return column
 
 
 # Testing Functions
