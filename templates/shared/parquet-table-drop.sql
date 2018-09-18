@@ -14,4 +14,4 @@
 
 -- Drop the Impala Parquet table
 USE {{ conf.staging_database.name }};
-DROP TABLE IF EXISTS {{ table.destination.name }}_parquet;
+DROP TABLE IF EXISTS {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.parquet_suffix is defined %}{{ conf.user_defined.parquet_suffix }}{% endif %};

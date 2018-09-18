@@ -14,17 +14,8 @@
 -#}
 -- Create a Kudu table in Impala
 USE {{ conf.staging_database.name }};
-CREATE TABLE IF NOT EXISTS {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.kudu_suffix is defined %}{{ conf.user_defined.kudu_suffix }}{% endif %}
-{%- set ordered_columns = order_columns(table.primary_keys,table.columns) -%}
-({%- for column in ordered_columns %}
-        `{{ cleanse_column(column.name) }}` {{ map_datatypes(column).kudu }}
-{%- if not loop.last -%},{% endif %}
-{%- endfor %},
-primary key ({{ table.primary_keys|join(', ') }}))
-PARTITION BY HASH({{ table.kudu.hash_by|join(', ') }}) PARTITIONS {{ table.kudu.num_partitions }}
-COMMENT '{{ table.comment }}'
-STORED AS KUDU
-TBLPROPERTIES(
+ALTER TABLE  {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.kudu_suffix is defined %}{{ conf.user_defined.kudu_suffix }}{% endif %}
+SET TBLPROPERTIES(
 {%- if table.metadata %}
   {%- for key, value in table.metadata.items() %}
   '{{ key }}' = '{{ value }}',

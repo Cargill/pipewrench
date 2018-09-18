@@ -15,4 +15,4 @@
 -- Create a Parquet table in Impala
 SET SYNC_DDL=1;
 USE {{ conf.staging_database.name }};
-REFRESH {{ table.destination.name }}_parquet;
+REFRESH {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.parquet_suffix is defined %}{{ conf.user_defined.parquet_suffix }}{% endif %};

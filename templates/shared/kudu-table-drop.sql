@@ -15,4 +15,4 @@
 
 -- Drop the Kudu table
 USE {{ conf.staging_database.name }};
-DROP TABLE IF EXISTS {{ table.destination.name }}_kudu PURGE;
+DROP TABLE IF EXISTS {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.kudu_suffix is defined %}{{ conf.user_defined.kudu_suffix }}{% endif %} PURGE;
