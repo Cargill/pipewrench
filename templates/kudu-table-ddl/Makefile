@@ -25,6 +25,11 @@ kudu-table-clean: kudu-table-drop.sql ## Drop Kudu table
 
 tables-clean: kudu-table-clean  ## Drop all tables
 
+kudu-table-alter: kudu-table-alter.sql ## Alter Kudu table
+	$(impala-cmd) kudu-table-alter.sql
+
+tables-alter: kudu-table-alter  ## Alter all tables
+
 tables: kudu-table ## Create all tables
 
 integration-test: # Run integration-tests

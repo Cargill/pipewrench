@@ -14,5 +14,5 @@
 -#}
 -- Compute table stats for optimized joins
 USE {{ conf.staging_database.name }};
-COMPUTE STATS {{ table.destination.name }}_kudu;
+COMPUTE STATS {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.kudu_suffix is defined %}{{ conf.user_defined.kudu_suffix }}{% endif %};
 
