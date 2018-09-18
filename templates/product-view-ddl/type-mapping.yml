@@ -1,0 +1,169 @@
+# numerics
+bigint:
+  kudu: bigint
+  impala: bigint
+  parquet: bigint
+  avro: long
+tinyint:
+  kudu: int
+  impala: int
+  parquet: int
+  avro: int
+decimal:
+  kudu: string
+  impala: decimal
+  parquet: decimal
+  avro: string
+int:
+  kudu: int
+  impala: int
+  parquet: int
+  avro: int
+number:
+  kudu: string
+  impala: decimal
+  parquet: decimal
+  avro: string
+numeric:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+double:
+  kudu: double
+  impala: double
+  parquet: double
+  avro: string
+real:
+  kudu: string
+  impala: decimal
+  parquet: string
+  avro: string
+float:
+  kudu: float
+  impala: float
+  parquet: float
+  avro: float
+long:
+  kudu: bigint
+  parquet: bigint
+  impala: bigint
+  avro: long
+smallint:
+  kudu: int
+  impala: int
+  parquet: int
+  avro: int
+integer:
+  kudu: int
+  impala: int
+  parquet: int
+  avro: int
+# dates
+date:
+  kudu: bigint
+  impala: bigint
+  parquet: bigint
+  avro: long
+timestamp:
+  kudu: bigint
+  impala: timestamp
+  parquet: bigint
+  avro: long
+datetime:
+  kudu: bigint
+  impala: timestamp
+  parquet: bigint
+  avro: long
+time_with_timezone:
+  kudu: bigint
+  impala: timestamp
+  parquet: bigint
+  avro: long
+timestamp_with_timezone:
+  kudu: bigint
+  impala: timestamp
+  parquet: bigint
+  avro: long
+# text
+string:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+blob:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+clob:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+nclob:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+varchar:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+text:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+char:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+longvarchar:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+binary:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+varbinary:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+longvarbinary:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+nchar:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+nvarchar:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+longnvarchar:
+  kudu: string
+  impala: string
+  parquet: string
+  avro: string
+# boolean
+bit:
+  kudu: boolean
+  impala: boolean
+  parquet: boolean
+  avro: boolean
+boolean:
+  kudu: boolean
+  impala: boolean
+  parquet: boolean
+  avro: boolean
