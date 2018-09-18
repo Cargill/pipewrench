@@ -52,6 +52,8 @@ hdfs-clean: hdfs-delete.sh ## Delete parquet files from HDFS
 
 tables-clean: parquet-table-clean ## Drop all tables
 
+tables-alter: parquet-table-alter ## Alter all tables
+
 tables: parquet-table ## Create all tables
 
 update: sqoop-exec ## Insert data from source db into Kudu

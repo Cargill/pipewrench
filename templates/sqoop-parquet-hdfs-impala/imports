@@ -7,6 +7,7 @@
 ../shared/parquet-table-drop.sql
 ../shared/parquet-table-create.sql
 ../shared/parquet-table-rowcount.sql
+../shared/parquet-table-alter.sql
 ../shared/source-table-rowcount.sql
 ../shared/hdfs-unarchive.sh
 ../shared/hdfs-delete.sh
