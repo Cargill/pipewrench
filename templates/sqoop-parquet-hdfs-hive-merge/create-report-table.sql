@@ -30,7 +30,7 @@ AS SELECT * FROM {{ conf.staging_database.name}}.{{ table.destination.name }}_me
 -- create table, then insert overwrite --
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_report (
   {% for column in table.columns %}
-  {{ column.name }} {{ map_datatypes(column).parquet }} COMMENT "{{ column.comment }}"
+  {{ column.name }} {{ map_datatypes(column, 'parquet') }} COMMENT "{{ column.comment }}"
   {%- if not loop.last -%}, {% endif %}
   {%- endfor %})
 STORED AS Parquet

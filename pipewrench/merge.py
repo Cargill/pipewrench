@@ -264,7 +264,7 @@ if __name__ == '__main__':
 
 # Template functions.
 # These functions are intended to be called from Jinja2 templates.
-def map_datatypes(column):
+def map_datatypes(column, storage_format):
     """
     Given a column, extract its datatype and return possible mappings
      for it from a type-mappings.yml file.
@@ -284,15 +284,21 @@ def map_datatypes(column):
      avro: long
 
     This function is intended to be called directly from templates
-    :param conf: The configuration. Not used but kept for consistency with other functions.
     :param column: The column containing the datatype to map
+    :param storage_format: Table storage format (avro, impala, parquet, kudu, etc)
     :return: The mapped datatype
     """
     datatype = column['datatype'].lower()
     logging.debug('found datatype %s', datatype)
-    mapped_datatype = type_mappings['type_mapping'].get(datatype)
+    mapped_datatype_dic = type_mappings['type_mapping'].get(datatype)
+    mapped_datatype = mapped_datatype_dic.get(storage_format)
+    if mapped_datatype:
+        if mapped_datatype.lower() == 'decimal':
+            mapped_datatype = 'DECIMAL({precision}, {scale})'.format(precision=column['precision'], scale=column['scale'])
+    else:
+        mapped_datatype = 'STRING'
     logging.debug('mapped %s to %s', datatype, mapped_datatype)
-    return mapped_datatype
+    return mapped_datatype.upper()
 
 
 def map_clobs(columns):
