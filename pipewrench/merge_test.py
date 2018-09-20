@@ -28,4 +28,4 @@ class MergeTest(unittest.TestCase):
         merge.type_mappings = {'type_mapping': {'blob': {'kudu': 'string'}}}
         values = {'conf': 'nevermind', 'column': {'datatype': 'blob'}}
 
-        assert 'string' == merge.render("{{ map_datatypes(column).kudu }}", **values)
+        assert 'string' == merge.render("{{ map_datatypes(column, 'kudu') }}", **values)
