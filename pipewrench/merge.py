@@ -294,7 +294,8 @@ def map_datatypes(column, storage_format):
     mapped_datatype = mapped_datatype_dic.get(storage_format)
     if mapped_datatype:
         if mapped_datatype.lower() == 'decimal':
-            mapped_datatype = 'DECIMAL({precision}, {scale})'.format(precision=column['precision'], scale=column['scale'])
+            mapped_datatype = 'DECIMAL({precision}, {scale})'.format(
+                precision=column['precision'], scale=column['scale'])
     else:
         mapped_datatype = 'STRING'
     logging.debug('mapped %s to %s', datatype, mapped_datatype)
