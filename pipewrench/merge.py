@@ -201,7 +201,7 @@ def render(template, **kwargs):
     :return: The reified template
     """
     template = Template(template)
-    template_functions = [map_datatypes, dumps, map_clobs, order_columns, cleanse_column]
+    template_functions = [map_datatypes, dumps, map_clobs, order_columns, cleanse_column, sqoop_map_java_column]
 
     for function in template_functions:
         template.globals[function.__name__] = function
@@ -293,6 +293,33 @@ def map_datatypes(column):
     mapped_datatype = type_mappings['type_mapping'].get(datatype)
     logging.debug('mapped %s to %s', datatype, mapped_datatype)
     return mapped_datatype
+
+
+def sqoop_map_java_column(columns):
+    """
+    The sqoop_map_java_column function maps source system
+    data types to Java data types that are used by Sqoop
+    https://sqoop.apache.org/docs/1.4.2/SqoopUserGuide.html#_controlling_type_mapping
+    :param columns: All column definitions for a given table
+    :return: Either mapped Java datatypes or none if no mapping is needed
+    """
+
+    mapped_columns = False
+    map_java_column = "--map-column-java "
+
+    for column in columns:
+        datatype = column['datatype'].lower()
+        if datatype == "clob" or datatype == 'longvarbinary' or datatype == 'varbinary' or datatype == 'rowid' or datatype == 'blob' or datatype == 'nclob' or datatype == 'text' or datatype == 'binary':
+            mapped_columns = True
+            map_java_column = map_java_column + "'{name}=String',".format(name=cleanse_column(column['name']))
+        elif datatype == 'tinyint' or datatype == 'int' or datatype == 'smallint' or datatype == 'integer' or datatype == 'short':
+            mapped_columns = True
+            map_java_column = map_java_column + "'{name}=Integer',".format(name=cleanse_column(column['name']))
+
+    if mapped_columns:
+        return map_java_column[:-1]
+    else:
+        return None
 
 
 def map_clobs(columns):
