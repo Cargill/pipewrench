@@ -201,7 +201,8 @@ def render(template, **kwargs):
     :return: The reified template
     """
     template = Template(template)
-    template_functions = [map_datatypes, dumps, map_clobs, order_columns, cleanse_column]
+    template_functions = [map_datatypes, map_datatypes_v2, dumps,
+                          map_clobs, order_columns, cleanse_column]
 
     for function in template_functions:
         template.globals[function.__name__] = function
