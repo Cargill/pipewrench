@@ -10,9 +10,13 @@
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
-    limitations under the License.
--#}
--- Compute table stats for optimized joins
-USE {{ conf.staging_database.name }};
-COMPUTE STATS {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.kudu_suffix is defined %}{{ conf.user_defined.kudu_suffix }}{% endif %};
+    limitations under the License. #}
+
+views-all: {%- for table in tables %} views-{{ table.id }} {%- endfor %}
+
+{%- for table in tables %}
+tables-{{ table.id }}:
+	$(MAKE) views -C {{ table.id }}
+{%- endfor %}
+
 

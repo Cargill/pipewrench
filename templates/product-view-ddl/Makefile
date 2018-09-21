@@ -14,27 +14,11 @@
 
 impala-cmd={{ conf.impala_cmd }}
 
-kudu-table: kudu-table-create.sql ## Create Impala Kudu Table
-	$(impala-cmd) kudu-table-create.sql
+product-view: product-view-create.sql ## Create Impala Kudu Table
+	$(impala-cmd) product-view-create.sql
 
-compute-stats: compute-stats.sql ## Compute table stats
-	$(impala-cmd) compute-stats.sql
+views: product-view ## Create all tables
 
-kudu-table-clean: kudu-table-drop.sql ## Drop Kudu table
-	$(impala-cmd) kudu-table-drop.sql
-
-tables-clean: kudu-table-clean  ## Drop all tables
-
-kudu-table-alter: kudu-table-alter.sql ## Alter Kudu table
-	$(impala-cmd) kudu-table-alter.sql
-
-tables-alter: kudu-table-alter  ## Alter all tables
-
-tables: kudu-table ## Create all tables
-
-integration-test: # Run integration-tests
-	$(MAKE) tables
-	$(MAKE) tables-clean
 
 help:  ## Print help message
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'

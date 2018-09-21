@@ -15,16 +15,14 @@
 -- Create a Parquet table in Impala
 set sync_ddl=1;
 USE {{ conf.staging_database.name }};
-CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.parquet_suffix is defined %}{{ conf.user_defined.parquet_suffix }}{% endif %} (
 {%- for column in table.columns %}
-{{ cleanse_column(column.name) }} {{ map_datatypes(column).parquet }} COMMENT "{{ column.comment }}"
-{%- if not loop.last -%}, {% endif %}
+ALTER TABLE {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.parquet_suffix is defined %}{{ conf.user_defined.parquet_suffix }}{% endif %}
+CHANGE {{ cleanse_column(column.name) }} {{ cleanse_column(column.name) }} {{ map_datatypes(column).parquet }} COMMENT "{{ column.comment }}";
 {%- endfor %})
-COMMENT '{{ table.comment }}'
-STORED AS Parquet
-LOCATION '{{ conf.staging_database.path }}/{{ table.destination.name }}/incr'
+
 {%- if table.metadata %}  
-TBLPROPERTIES(
+ALTER TABLE {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.parquet_suffix is defined %}{{ conf.user_defined.parquet_suffix }}{% endif %} 
+SET TBLPROPERTIES (
   {%- for key, value in table.metadata.items() %}
   '{{ key }}' = '{{ value }}'{%- if not loop.last -%}, {% endif %}
   {%- endfor %}

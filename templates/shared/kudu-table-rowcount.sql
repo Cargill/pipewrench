@@ -13,5 +13,5 @@
     limitations under the License. #}
 
 USE {{ conf.staging_database.name }};
-INVALIDATE METADATA {{ table.destination.name }}_kudu;
-SELECT COUNT(*) FROM {{ table.destination.name }}_kudu;
+INVALIDATE METADATA {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.kudu_suffix is defined %}{{ conf.user_defined.kudu_suffix }}{% endif %};
+SELECT COUNT(*) FROM {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.kudu_suffix is defined %}{{ conf.user_defined.kudu_suffix }}{% endif %};

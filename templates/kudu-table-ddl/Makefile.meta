@@ -26,6 +26,13 @@ tables-clean-{{ table.id }}:
 	$(MAKE) tables-clean -C {{ table.id }}
 {%- endfor %}
 
+tables-alter-all: {%- for table in tables %} tables-alter-{{ table.id }} {%- endfor %}
+
+{%- for table in tables %}
+tables-alter-{{ table.id }}:
+	$(MAKE) tables-alter -C {{ table.id }}
+{%- endfor %}
+
 tables-compute-stats-all: {%- for table in tables %} tables-compute-stats-{{ table.id }} {%- endfor %}
 
 {%- for table in tables %}

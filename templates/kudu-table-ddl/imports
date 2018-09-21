@@ -3,3 +3,4 @@
 ../shared/run-with-logging.sh
 ../shared/kudu-table-drop.sql
 ../shared/kudu-table-create.sql
+../shared/kudu-table-alter.sql

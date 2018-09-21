@@ -14,10 +14,10 @@
 -#}
 -- Create a Kudu table in Impala
 USE {{ conf.staging_database.name }};
-CREATE TABLE IF NOT EXISTS {{ table.destination.name }}_kudu
+CREATE TABLE IF NOT EXISTS {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.kudu_suffix is defined %}{{ conf.user_defined.kudu_suffix }}{% endif %}
 {%- set ordered_columns = order_columns(table.primary_keys,table.columns) -%}
 ({%- for column in ordered_columns %}
-        {{ column.name }} {{ map_datatypes(column).kudu }}
+        `{{ cleanse_column(column.name) }}` {{ map_datatypes(column).kudu }}
 {%- if not loop.last -%},{% endif %}
 {%- endfor %},
 primary key ({{ table.primary_keys|join(', ') }}))
@@ -42,5 +42,5 @@ TBLPROPERTIES(
   {%- endfor %}
 {%- endif %}
 {%- for column in table.columns -%}
-  '{{ column.name|lower }}' = "{{ column.comment }}"{%- if not loop.last -%},{% endif %}
+  "{{ cleanse_column(column.name)|lower }}" = "{{ column.comment }}"{%- if not loop.last -%},{% endif %}
 {%- endfor -%})
