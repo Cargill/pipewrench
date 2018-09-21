@@ -17,7 +17,7 @@ set sync_ddl=1;
 USE {{ conf.raw_database.name }};
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_partitioned (
 {%- for column in table.columns %}
-`{{ cleanse_column(column.name) }}` {{ map_datatypes(column, 'parquet') }} COMMENT "{{ column.comment }}" {%- if not loop.last -%}, {% endif %}
+`{{ cleanse_column(column.name) }}` {{ map_datatypes_v2(column, 'parquet') }} COMMENT "{{ column.comment }}" {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 PARTITIONED BY (ingest_partition int)
 COMMENT '{{ table.comment }}'
