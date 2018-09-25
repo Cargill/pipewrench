@@ -268,6 +268,11 @@ $ ../shared/sqoop-create.sh
 ```
 
 ### Mapping datatypes
+
+#### Version 2: map_datatypes_v2(column, storage_format)
+Version 1 of the map_datatypes function does not specify precision and scale when mapping decimal data types.  Version 2 fixes this by returning the string representation (ie DECIMAL(10,2), STRING, etc) of the mapped data type. `storage_format` (kudu, impala, parquet, avro) is used to map the incoming database type with the format specified in the `type-mapping.yml` file.
+
+#### Version 1 (deprecated): map_datatypes(column).format
 Data type mappings from the source to destination database are defined in these configuration properties:
 
 ```snakeyaml
