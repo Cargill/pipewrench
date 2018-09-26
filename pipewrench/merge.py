@@ -202,7 +202,7 @@ def render(template, **kwargs):
     """
     template = Template(template)
     template_functions = [map_datatypes, map_datatypes_v2, dumps,
-                          map_clobs, order_columns, cleanse_column,sqoop_map_java_column]
+                          map_clobs, order_columns, cleanse_column, sqoop_map_java_column]
 
     for function in template_functions:
         template.globals[function.__name__] = function
