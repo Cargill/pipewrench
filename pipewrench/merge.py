@@ -201,7 +201,8 @@ def render(template, **kwargs):
     :return: The reified template
     """
     template = Template(template)
-    template_functions = [map_datatypes, dumps, map_clobs, order_columns, cleanse_column, sqoop_map_java_column]
+    template_functions = [map_datatypes, map_datatypes_v2, dumps,
+                          map_clobs, order_columns, cleanse_column,sqoop_map_java_column]
 
     for function in template_functions:
         template.globals[function.__name__] = function
@@ -261,10 +262,36 @@ def write(string, fpath):
 if __name__ == '__main__':
     main()
 
-
 # Template functions.
 # These functions are intended to be called from Jinja2 templates.
 def map_datatypes(column):
+    """
+    Given a column, extract its datatype and return possible mappings
+     for it from a type-mappings.yml file.
+     For example, a mapping with the datatype 'bigint' may look like:
+    bigint:
+     kudu: bigint
+     impala: bigint
+     parquet: bigint
+     avro: long
+     when given a column with 'bigint' this function will return:
+     kudu: bigint
+     impala: bigint
+     parquet: bigint
+     avro: long
+    This function is intended to be called directly from templates
+    :param conf: The configuration. Not used but kept for consistency with other functions.
+    :param column: The column containing the datatype to map
+    :return: The mapped datatype
+    """
+    datatype = column['datatype'].lower()
+    logging.debug('found datatype %s', datatype)
+    mapped_datatype = type_mappings['type_mapping'].get(datatype)
+    logging.debug('mapped %s to %s', datatype, mapped_datatype)
+    return mapped_datatype
+
+
+def map_datatypes_v2(column, storage_format):
     """
     Given a column, extract its datatype and return possible mappings
      for it from a type-mappings.yml file.
@@ -284,15 +311,22 @@ def map_datatypes(column):
      avro: long
 
     This function is intended to be called directly from templates
-    :param conf: The configuration. Not used but kept for consistency with other functions.
     :param column: The column containing the datatype to map
+    :param storage_format: Table storage format (avro, impala, parquet, kudu, etc)
     :return: The mapped datatype
     """
     datatype = column['datatype'].lower()
     logging.debug('found datatype %s', datatype)
-    mapped_datatype = type_mappings['type_mapping'].get(datatype)
+    mapped_datatype_dic = type_mappings['type_mapping'].get(datatype)
+    mapped_datatype = mapped_datatype_dic.get(storage_format)
+    if mapped_datatype:
+        if mapped_datatype.lower() == 'decimal':
+            mapped_datatype = 'DECIMAL({precision}, {scale})'.format(
+                precision=column['precision'], scale=column['scale'])
+    else:
+        mapped_datatype = 'STRING'
     logging.debug('mapped %s to %s', datatype, mapped_datatype)
-    return mapped_datatype
+    return mapped_datatype.upper()
 
 
 def sqoop_map_java_column(columns):

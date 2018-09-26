@@ -18,7 +18,7 @@ USE {{ conf.staging_database.name }};
 --Create incr table--
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_incr (
   {% for column in table.columns %}
-  {{ column.name }} {{ map_datatypes(column).parquet }} COMMENT "{{ column.comment }}"
+  {{ column.name }} {{ map_datatypes_v2(column, 'parquet') }} COMMENT "{{ column.comment }}"
   {%- if not loop.last -%}, {% endif %}
   {%- endfor %})
 STORED AS Parquet

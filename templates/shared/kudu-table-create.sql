@@ -17,11 +17,22 @@ USE {{ conf.staging_database.name }};
 CREATE TABLE IF NOT EXISTS {{ table.destination.name }}_kudu
 {%- set ordered_columns = order_columns(table.primary_keys,table.columns) -%}
 ({%- for column in ordered_columns %}
-        {{ column.name }} {{ map_datatypes(column).kudu }}
+        {{ column.name }} {{ map_datatypes_v2(column, 'kudu') }}
 {%- if not loop.last -%},{% endif %}
 {%- endfor %},
 primary key ({{ table.primary_keys|join(', ') }}))
-PARTITION BY HASH({{ table.kudu.hash_by|join(', ') }}) PARTITIONS {{ table.kudu.num_partitions }}
+{%- if table.kudu.hash_by or table.kudu.range %}
+  PARTITION BY
+{%- endif %}
+{%- if table.kudu.hash_by %}
+  HASH({{ table.kudu.hash_by|join(', ') }}) PARTITIONS {{ table.kudu.num_partitions }} {%- if table.kudu.range %} ,{%- endif %}
+{%- endif %}
+{%- if table.kudu.range %}
+ RANGE ({{ table.kudu.range|join(', ') }})
+ (
+   {{ table.kudu.ranges|join(', ') }}
+ )
+{%- endif %}
 COMMENT '{{ table.comment }}'
 STORED AS KUDU
 TBLPROPERTIES(
