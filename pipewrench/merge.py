@@ -343,30 +343,22 @@ def sqoop_map_java_column(columns):
 
     for column in columns:
         datatype = column['datatype'].lower()
-        if datatype == "clob" \
-                or datatype == 'longvarbinary'\
-                or datatype == 'varbinary'\
-                or datatype == 'rowid'\
-                or datatype == 'blob'\
-                or datatype == 'nclob'\
-                or datatype == 'text'\
-                or datatype == 'binary':
+        if datatype in ['clob', 'longvarbinary', 'varbinary', 'rowid', 'blob',
+                        'nclob', 'text', 'binary']:
             mapped_columns = True
             map_java_column = map_java_column + "'{name}=String',".format(
                 name=cleanse_column(column['name']))
-        elif datatype == 'tinyint'\
-                or datatype == 'int'\
-                or datatype == 'smallint'\
-                or datatype == 'integer'\
-                or datatype == 'short':
+        elif datatype in ['tinyint', 'int', 'smallint', 'integer', 'short']:
             mapped_columns = True
             map_java_column = map_java_column + "'{name}=Integer',".format(
                 name=cleanse_column(column['name']))
 
     if mapped_columns:
-        return map_java_column[:-1]
+        map_java_column = map_java_column[:-1]
     else:
-        return None
+        map_java_column = None
+
+    return map_java_column
 
 
 def map_clobs(columns):

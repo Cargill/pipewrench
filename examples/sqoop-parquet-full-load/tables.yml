@@ -16,7 +16,7 @@ source_database:
 staging_database:
   name: "default" # Staging database name.
   path: "{{ hdfs_basedir }}/staging" # Staging database HDFS path
-result_database:
+raw_database:
   name: "default" # Result database
   path: "{{ hdfs_basedir }}/result" # Result database HDFS path
 final_database:
@@ -55,4 +55,7 @@ tables:
         comment: "comment"
       - name: "hire_date"
         datatype: "bigint"
+        comment: "comment"
+      - name: "clob"
+        datatype: "clob"
         comment: "comment"
