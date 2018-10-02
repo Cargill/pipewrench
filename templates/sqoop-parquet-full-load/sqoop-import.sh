@@ -12,18 +12,8 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License. #}
-{# This function will put the --map-column-java col=String parameter for any clob data types.#}
- {% macro map_clobs_macro(columns) -%}
-   {{ map_clobs(columns) }}
- {%- endmacro -%}
 # Create a Sqoop job
 set -eu
-{% set mapcolumn = [] %}
-{%- for column in table.columns -%}
-{%- if column["datatype"].lower() == "varbinary" or column["datatype"].lower() == "binary"  or column["datatype"].lower() == "longvarbinary"  -%}
-{%- set mapcolumn = mapcolumn.append(column["name"]) -%}
-{%- endif -%}
-{%- endfor -%}
 sqoop import \
     --connect '{{ conf.source_database.connection_string }}' \
     --username '{{ conf.user_name }}' \
@@ -31,15 +21,10 @@ sqoop import \
 {%- if conf["sqoop_driver"] is defined %}
     --driver {{ conf.sqoop_driver }} \
 {%- endif %}
-    {% if mapcolumn|length > 0 -%}
-    --map-column-java {% for column in mapcolumn -%}
-    {% if loop.last -%}
-     {{ '"{}"'.format(column) }}=String \
-    {%- else -%}
-     {{ '"{}"'.format(column) }}=String,
-    {%- endif -%}
-    {% endfor %}
-    {% endif -%}
+    {%- set map_java_column = sqoop_map_java_column(table.columns) %}
+    {%- if map_java_column %}
+    {{ map_java_column }} \
+    {%- endif %}
     --delete-target-dir \
     --target-dir {{ conf.raw_database.path }}/{{ table.destination.name }}_avro/ \
     --temporary-rootdir {{ conf.raw_database.path }}/{{ table.destination.name }}_avro/ \

@@ -12,10 +12,6 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License. #}
-{# This function will put the --map-column-java col=String parameter for any clob data types.#}
- {% macro map_clobs_macro(columns) -%}
-   {{ map_clobs(columns) }}
- {%- endmacro -%}
 # Create a Sqoop job
 set -eu
 sqoop job -D 'sqoop.metastore.client.record.password=true' \
@@ -28,7 +24,10 @@ sqoop job -D 'sqoop.metastore.client.record.password=true' \
     --incremental append \
     --temporary-rootdir {{ conf.staging_database.path }}/{{ table.destination.name }} \
     --append \
-    {{ map_clobs_macro(table.columns) }} \
+    {%- set map_java_column = sqoop_map_java_column(table.columns) %}
+    {%- if map_java_column %}
+    {{ map_java_column }} \
+    {%- endif %}
     --split-by {{ table.split_by_column }} \
     --check-column {{ table.check_column }} \
     --as-parquetfile \

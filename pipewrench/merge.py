@@ -202,7 +202,7 @@ def render(template, **kwargs):
     """
     template = Template(template)
     template_functions = [map_datatypes, map_datatypes_v2, dumps,
-                          map_clobs, order_columns, cleanse_column]
+                          map_clobs, order_columns, cleanse_column, sqoop_map_java_column]
 
     for function in template_functions:
         template.globals[function.__name__] = function
@@ -327,6 +327,41 @@ def map_datatypes_v2(column, storage_format):
         mapped_datatype = 'STRING'
     logging.debug('mapped %s to %s', datatype, mapped_datatype)
     return mapped_datatype.upper()
+
+
+def sqoop_map_java_column(columns, clean_column=False):
+    """
+    The sqoop_map_java_column function maps source system
+    data types to Java data types that are used by Sqoop
+    https://sqoop.apache.org/docs/1.4.2/SqoopUserGuide.html#_controlling_type_mapping
+    :param columns: All column definitions for a given table
+    :param clean_column: Boolean indicating weather a clean column name should be used in output
+    :return: Either mapped Java datatypes or none if no mapping is needed
+    """
+
+    mapped_columns = False
+    map_java_column = "--map-column-java "
+
+    for column in columns:
+        column_name = column['name']
+        if clean_column:
+            column_name = cleanse_column(column_name)
+
+        datatype = column['datatype'].lower()
+        if datatype in ['clob', 'longvarbinary', 'varbinary', 'rowid', 'blob',
+                        'nclob', 'text', 'binary']:
+            mapped_columns = True
+            map_java_column = map_java_column + "'{name}=String',".format(name=column_name)
+        elif datatype in ['tinyint', 'int', 'smallint', 'integer', 'short']:
+            mapped_columns = True
+            map_java_column = map_java_column + "'{name}=Integer',".format(name=column_name)
+
+    if mapped_columns:
+        map_java_column = map_java_column[:-1]
+    else:
+        map_java_column = None
+
+    return map_java_column
 
 
 def map_clobs(columns):
