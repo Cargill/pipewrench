@@ -335,7 +335,7 @@ def sqoop_map_java_column(columns, clean_column=False):
     data types to Java data types that are used by Sqoop
     https://sqoop.apache.org/docs/1.4.2/SqoopUserGuide.html#_controlling_type_mapping
     :param columns: All column definitions for a given table
-    :param clean_column: Boolean indicating weather a clean column name should be used in mapping output
+    :param clean_column: Boolean indicating weather a clean column name should be used in output
     :return: Either mapped Java datatypes or none if no mapping is needed
     """
 
