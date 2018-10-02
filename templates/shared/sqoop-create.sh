@@ -35,7 +35,7 @@ sqoop job -D 'sqoop.metastore.client.record.password=true' \
     --fetch-size 10000 \
     --compress  \
     --compression-codec snappy \
-    -m 1 \
+    -m {{ table.num_mappers or 1 }} \
     --query 'SELECT {{ table.columns|map(attribute='name')|join(',\n\t')}}
         FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
 

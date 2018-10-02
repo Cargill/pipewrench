@@ -47,7 +47,7 @@ sqoop import \
     --fetch-size {% if table.columns|length < 30 -%} 10000 {% else %} 5000 {% endif %} \
     --compress  \
     --compression-codec snappy \
-    -m 1 \
+    -m {{ table.num_mappers or 1 }} \
 {%- if conf["sqoop_driver"] is defined %}
     {%- if "sqlserver" in conf["sqoop_driver"].lower() -%}
     --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %} FROM {{ table.source.name }} WHERE $CONDITIONS'
