@@ -76,10 +76,10 @@ configuration. [Tutorial](http://docs.ansible.com/ansible/latest/YAMLSyntax.html
 Pipewrench creates and executes pipelines based off of a global yaml configuration file (`tables.yml`). The 
 tables.yml file defines source database, tables, columns, and datatypes.
 
-See [here](examples/sqoop-parquet-hdfs-kudu-impala/tables.yml) for an example tables.yml with documentation
+See [here](integration-tests/sqoop-parquet-hdfs-kudu-impala/tables.yml) for an example tables.yml with documentation
 ### env.yml
 The tables.yml file itself is a jinja template. Variables from the env.yml file are automatically added to the
- tables.yml file before any configuration is generated. See an example env.yml [here](examples/sqoop-parquet-hdfs-kudu-impala/env.yml)
+ tables.yml file before any configuration is generated. See an example env.yml [here](integration-tests/sqoop-parquet-hdfs-kudu-impala/env.yml)
 
 ### Pipeline-template
 A pipeline is a directory of templates. When Pipewrench is executed with a pipeline-template directory and
