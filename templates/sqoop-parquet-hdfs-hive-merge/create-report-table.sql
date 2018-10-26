@@ -35,13 +35,13 @@ CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_report (
   {%- endfor %})
 STORED AS Parquet
 LOCATION '{{ conf.staging_database.path }}/{{ table.destination.name }}/base'
+{%- if table.metadata %}
 TBLPROPERTIES(
-  'parquet.compression'='SNAPPY',
-  'SOURCE' = '{{ table.META_SOURCE }}',
-  'SECURITY_CLASSIFICATION' = '{{ table.META_SECURITY_CLASSIFICATION }}',
-  'LOAD_FREQUENCY' = '{{ table.META_LOAD_FREQUENCY }}',
-  'CONTACT_INFO' = '{{ table.META_CONTACT_INFO }}'
-);
+  {%- for key, value in table.metadata.items() %}
+  '{{ key }}' = '{{ value }}'{%- if not loop.last -%}, {% endif %}
+  {%- endfor %}
+)
+{%- endif %};
 
 insert overwrite {{ table.destination.name }}_report select * from {{ table.destination.name }}_merge_view;
 
