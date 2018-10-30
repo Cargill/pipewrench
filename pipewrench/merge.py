@@ -355,6 +355,9 @@ def sqoop_map_java_column(columns, clean_column=False):
         elif datatype in ['tinyint', 'int', 'smallint', 'integer', 'short']:
             mapped_columns = True
             map_java_column = map_java_column + "'{name}=Integer',".format(name=column_name)
+        elif datatype in ['bigint']:
+            mapped_columns = True
+            map_java_column = map_java_column + "'{name}=Long',".format(name=column_name)
 
     if mapped_columns:
         map_java_column = map_java_column[:-1]
