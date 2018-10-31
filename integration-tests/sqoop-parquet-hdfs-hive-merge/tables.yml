@@ -20,10 +20,11 @@ result_database:
   path: "{{ hdfs_basedir }}" # Result database HDFS path
 tables:
   - id: "titanic" # Uniquely identifies this table
-    META_CONTACT_INFO: "team@company.com" # Contact info will be loaded into tblproperties
-    META_LOAD_FREQUENCY: "STREAMING" # Load frequency will be loaded into tblproperties
-    META_SECURITY_CLASSIFICATION: "OPEN" # Security classification will be loaded into tblproperties
-    META_SOURCE: "upstream.source.location" # Source will be loaded into tblproperties
+    metadata:
+       test1: Daily
+       LOAD_FREQUENCY: Daily
+       CONTACT: developer@company.io
+       SOURCE: employee database
     source:
       name: "titanic" # Source table name
       file: ../../../../../data/Titanic.csv
