@@ -29,8 +29,8 @@ This pipeline will sqoop data into a Avro (staging) table insert data to Parquet
   - Alter location of report(final) table to latest partition file(ingest_partition=1)
   - Remove the partition file named 'latest_partition' if exists
   - Create a partition file named 'latest_partition' with integer 1 in it.
-  - Compute stats on report(final) table
-  - Compare and display row count from source table, avro table, and report table.
+- Compute stats on report(final) table
+- Compare and display row count from source table, avro table, and report table.
 
 `make update` :
 - Get the source table rowcount and save the count in a text file(sourceCount.txt).
