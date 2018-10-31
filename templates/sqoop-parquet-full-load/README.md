@@ -9,7 +9,7 @@ This pipeline will sqoop data into a Avro (staging) table insert data to Parquet
 
 ## Pipeline Flow
 
-![Pipeline flow](docs/images/sqoop-parquet-full-load.png)
+![Pipeline flow](../../docs/images/sqoop-parquet-full-load.png)
 
 ## Running the pipeline
 
