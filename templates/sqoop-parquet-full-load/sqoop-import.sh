@@ -15,6 +15,7 @@
 # Create a Sqoop job
 set -eu
 sqoop import \
+    -D 'mapred.job.name={{ conf.source_database.name }}.{{ table.source.name }}.{{ conf.sqoop_job_name_suffix }}' \
     --connect '{{ conf.source_database.connection_string }}' \
     --username '{{ conf.user_name }}' \
     --password-file '{{ conf.sqoop_password_file }}' \
