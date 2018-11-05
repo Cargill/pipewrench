@@ -389,7 +389,7 @@ def cleanse_column(column):
     """
     Template function for cleansing column names.
     Columns beginning with / or _ will have these removed.
-    Columns containing spaces, /, (, ), - will be replaced with underscores.
+    Columns containing spaces, /, (, ), -, or # will be replaced with underscores.
     Multiple _ in a row will be replaced with a single _
     :param column: String column name from source system
     :return: Cleansed column name
@@ -401,8 +401,8 @@ def cleanse_column(column):
     if column.startswith('_'):
         column = column.replace('_', "", 1)
 
-    # Replace all /,-,(,), blank spaces with _
-    p = re.compile(r'(/|-|\(|\)|\s)')
+    # Replace all /,-,(,), #, blank spaces with _
+    p = re.compile(r'(/|-|\(|\)|\s|#)')
     column = p.sub('_', column)
 
     # After replacing values find any multiple _ and replace them with a single underscore
