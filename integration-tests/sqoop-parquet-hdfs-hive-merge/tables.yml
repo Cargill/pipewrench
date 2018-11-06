@@ -21,7 +21,6 @@ result_database:
 tables:
   - id: "titanic" # Uniquely identifies this table
     metadata:
-       test1: Daily
        LOAD_FREQUENCY: Daily
        CONTACT: developer@company.io
        SOURCE: employee database

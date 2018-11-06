@@ -25,7 +25,6 @@ tables:
   - id: "first_imported_table" # Uniquely identifies this table
     comment: "Table comment" # Table comment
     metadata:
-       test1: Daily
        LOAD_FREQUENCY: Daily
        CONTACT: developer@company.io
        SOURCE: employee database

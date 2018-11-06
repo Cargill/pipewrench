@@ -20,7 +20,6 @@ tables:
   - id: "titanic" # Uniquely identifies this table
     comment: "Titanic passenager list"
     metadata:
-       test1: Daily
        LOAD_FREQUENCY: Daily
        CONTACT: developer@company.io
        SOURCE: employee database
