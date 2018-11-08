@@ -1,7 +1,7 @@
 # Sqoop Parquet HDFS Hive Merge
-This pipeline will perform incremental updates using sqoop and parquet tables 
-Source table must have "modified_date" and "primary_key"
-This template automates the steps defined in the blog post [here](https://hortonworks.com/blog/four-step-strategy-incremental-updates-hive/) 
+- This pipeline will perform incremental updates using sqoop and parquet tables 
+- Source table must have "modified_date" and "primary_key"
+- This template automates the steps defined in the blog post [here](https://hortonworks.com/blog/four-step-strategy-incremental-updates-hive/) 
 
 ## Artifacts Created
 - Base Parquet Table
