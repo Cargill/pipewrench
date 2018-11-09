@@ -401,8 +401,8 @@ def cleanse_column(column):
     if column.startswith('_'):
         column = column.replace('_', "", 1)
 
-    # Replace all /,-,(,), #, blank spaces with _
-    p = re.compile(r'(/|-|\(|\)|\s|#)')
+    # Replace all /,-,(,), #, @, $ blank spaces with _
+    p = re.compile(r'(/|-|\(|\)|\s|#|@|\$)')
     column = p.sub('_', column)
 
     # After replacing values find any multiple _ and replace them with a single underscore
