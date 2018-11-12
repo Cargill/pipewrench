@@ -1,1 +1,1 @@
-See See [integration-tests/sqoop-parquet-hdfs-kudu-impala](integration-tests/sqoop-parquet-hdfs-kudu-impala]) for example
+Example has moved [here](../../../integration-tests/sqoop-parquet-hdfs-kudu-impala]).
