@@ -1,1 +1,1 @@
-See See [integration-tests/sqoop-parquet-hdfs-kudu-impala](integration-tests/sqoop-parquet-hdfs-kudu-impala]) for example
+Examples have moved [here](https://github.com/Cargill/pipewrench/tree/master/integration-tests/sqoop-parquet-hdfs-kudu-impala)
