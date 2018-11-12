@@ -1,1 +1,1 @@
-See [integration-tests/sqoop-parquet-hdfs-impala](integration-tests/sqoop-parquet-hdfs-impala]) for example
+Examples have moved [here](https://github.com/Cargill/pipewrench/tree/afoerster-patch-1/integration-tests/sqoop-parquet-hdfs-impala)
