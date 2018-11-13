@@ -13,5 +13,5 @@
     limitations under the License. #}
 
 -- Query Parquet table in Impala
-USE {{ conf.staging_database.name }};
-SELECT COUNT(*) FROM {{ table.destination.name }};
+USE `{{ conf.staging_database.name }}`;
+SELECT COUNT(*) FROM `{{ table.destination.name }}`;

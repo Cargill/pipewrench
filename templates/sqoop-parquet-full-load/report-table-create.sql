@@ -14,8 +14,8 @@
 
 -- Create a Parquet table in Impala
 set sync_ddl=1;
-USE {{ conf.staging_database.name }};
-CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }} (
+USE `{{ conf.staging_database.name }}`;
+CREATE EXTERNAL TABLE IF NOT EXISTS `{{ table.destination.name }}` (
 {%- for column in table.columns %}
 `{{ cleanse_column(column.name) }}` {{ map_datatypes_v2(column, 'parquet') }} COMMENT "{{ column.comment }}" {%- if not loop.last -%}, {% endif %}
 {%- endfor %})

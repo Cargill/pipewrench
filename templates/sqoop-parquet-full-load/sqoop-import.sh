@@ -34,14 +34,9 @@ sqoop import \
     --compress  \
     --compression-codec snappy \
     -m {{ table.num_mappers or 1 }} \
-{%- if conf["sqoop_driver"] is defined %}
-    {%- if "sqlserver" in conf["sqoop_driver"].lower() -%}
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %} FROM {{ table.source.name }} WHERE $CONDITIONS'
-    {%- elif "sap" in conf["sqoop_driver"].lower() -%}
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
-    {%- else -%}
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ column.name }} {% else %} {{ column.name }}, {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
-    {% endif -%}
-{%- else %}
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ column.name }} {% else %} {{ column.name }}, {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
-{%- endif -%}
+    --query 'SELECT
+{%- for column in table.columns %}
+"{{ column.name }}" AS {{ cleanse_column }} {%- if not loop.last %}, {%- endif %}
+{%- endfor %}
+FROM {{ conf.source_database.name }}.{{ table.source.name }}
+WHERE $CONDITIONS'
