@@ -13,5 +13,5 @@
     limitations under the License.
 -#}
 -- Compute table statistics for optimized joins
-USE {{ conf.raw_database.name }};
-COMPUTE STATS {{ table.destination.name }}_avro;
+USE `{{ conf.raw_database.name }}`;
+COMPUTE STATS `{{ table.destination.name }}_avro`;
