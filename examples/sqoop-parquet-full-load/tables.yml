@@ -26,8 +26,10 @@ tables:
     comment: "Table comment" # Table comment
     metadata:
        LOAD_FREQUENCY: Daily
-       CONTACT: developer@company.io
+       CONTACT_INFO: developer@company.io
        SOURCE: employee database
+       SECURITY_CLASSIFICATION: Public
+       CDP_MANAGED: "TRUE"
     source:
       name: "employees_kudu" # Source table name
     destination:
