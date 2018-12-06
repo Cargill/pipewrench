@@ -403,8 +403,8 @@ def cleanse_column(column):
 
     # Replace @ and # with letters to avoid collisions between similar column names
     # e.g. column# and column@
-    column = column.replace('@','a')
-    column = column.replace('#','p')
+    column = column.replace('@', 'a')
+    column = column.replace('#', 'p')
     # Replace all /,-,(,), $ blank spaces with _
     p = re.compile(r'(/|-|\(|\)|\s|\$)')
     column = p.sub('_', column)
