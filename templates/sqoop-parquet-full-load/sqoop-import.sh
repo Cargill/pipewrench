@@ -12,34 +12,20 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License. #}
-{# This function will put the --map-column-java col=String parameter for any clob data types.#}
- {% macro map_clobs_macro(columns) -%}
-   {{ map_clobs(columns) }}
- {%- endmacro -%}
 # Create a Sqoop job
 set -eu
-{% set mapcolumn = [] %}
-{%- for column in table.columns -%}
-{%- if column["datatype"].lower() == "varbinary" or column["datatype"].lower() == "binary"  or column["datatype"].lower() == "longvarbinary"  -%}
-{%- set mapcolumn = mapcolumn.append(column["name"]) -%}
-{%- endif -%}
-{%- endfor -%}
 sqoop import \
+    -D 'mapred.job.name={{ conf.source_database.name }}.{{ table.source.name }}.{{ conf.sqoop_job_name_suffix }}' \
     --connect '{{ conf.source_database.connection_string }}' \
     --username '{{ conf.user_name }}' \
     --password-file '{{ conf.sqoop_password_file }}' \
 {%- if conf["sqoop_driver"] is defined %}
     --driver {{ conf.sqoop_driver }} \
 {%- endif %}
-    {% if mapcolumn|length > 0 -%}
-    --map-column-java {% for column in mapcolumn -%}
-    {% if loop.last -%}
-     {{ '"{}"'.format(column) }}=String \
-    {%- else -%}
-     {{ '"{}"'.format(column) }}=String,
-    {%- endif -%}
-    {% endfor %}
-    {% endif -%}
+    {%- set map_java_column = sqoop_map_java_column(table.columns, clean_column=true) %}
+    {%- if map_java_column %}
+    {{ map_java_column }} \
+    {%- endif %}
     --delete-target-dir \
     --target-dir {{ conf.raw_database.path }}/{{ table.destination.name }}_avro/ \
     --temporary-rootdir {{ conf.raw_database.path }}/{{ table.destination.name }}_avro/ \
@@ -47,15 +33,17 @@ sqoop import \
     --fetch-size {% if table.columns|length < 30 -%} 10000 {% else %} 5000 {% endif %} \
     --compress  \
     --compression-codec snappy \
-    -m 1 \
-{%- if conf["sqoop_driver"] is defined %}
-    {%- if "sqlserver" in conf["sqoop_driver"].lower() -%}
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %} FROM {{ table.source.name }} WHERE $CONDITIONS'
-    {%- elif "sap" in conf["sqoop_driver"].lower() -%}
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ '"{}"'.format(column.name) }} {% else %} {{ '"{}",'.format(column.name) }} {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
+    {%- if table.num_mappers > 1 %}
+    --split-by {{ table.split_by_column }} \
+    --boundary-query 'SELECT min({{ table.split_by_column }}), max({{ table.split_by_column }}) FROM {{ conf.source_database.name }}.{{ table.source.name }}' \{%- endif %}
+    -m {{ table.num_mappers or 1 }} \
+    {% if conf["sqoop_driver"] is defined %}
+      {%- if "sqlserver" in conf["sqoop_driver"].lower() -%}
+      --query 'SELECT {% for column in table.columns%} "{{ column.name }}" AS "{{ cleanse_column(column.name) }}"{% if loop.last %} {% else %},{% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
+      {%- else -%}
+      --query 'SELECT {% for column in table.columns%} "{{ column.name }}" AS "{{ cleanse_column(column.name) }}"{% if loop.last %} {% else %},{% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
+      {% endif -%}
     {%- else -%}
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ column.name }} {% else %} {{ column.name }}, {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
-    {% endif -%}
-{%- else %}
-    --query 'SELECT {% for column in table.columns%} {% if loop.last %} {{ column.name }} {% else %} {{ column.name }}, {% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
-{%- endif -%}
+    --query 'SELECT {% for column in table.columns%} "{{ column.name }}" AS "{{ cleanse_column(column.name) }}"{% if loop.last %} {% else %},{% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
+    {%- endif -%}
+
