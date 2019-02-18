@@ -73,7 +73,7 @@ date:
 timestamp:
   kudu: bigint
   impala: timestamp
-  parquet: bigint
+  parquet: timestamp
   avro: bigint
 datetime:
   kudu: bigint
