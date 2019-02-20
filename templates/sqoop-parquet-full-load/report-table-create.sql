@@ -14,14 +14,10 @@
 
 -- Create a Parquet table in Impala
 set sync_ddl=1;
-USE {{ conf.staging_database.name }};
-CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }} (
-{% for column in table.columns %}
-{%- if column["datatype"].lower() == "decimal" %}
-`{{ cleanse_column(column.name) }}` {{ map_datatypes(column).parquet }}({{column.precision}},{{column.scale}}) COMMENT '{{ column.comment }}'
-{%- else %} `{{ cleanse_column(column.name) }}` {{ map_datatypes(column).parquet }} COMMENT '{{ column.comment }}'
-{% endif %}
-{%- if not loop.last -%}, {% endif %}
+USE `{{ conf.staging_database.name }}`;
+CREATE EXTERNAL TABLE IF NOT EXISTS `{{ table.destination.name }}` (
+{%- for column in table.columns %}
+`{{ cleanse_column(column.name) }}` {{ map_datatypes_v2(column, 'parquet') }} COMMENT "{{ column.comment }}" {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 COMMENT '{{ table.comment }}'
 STORED AS PARQUET

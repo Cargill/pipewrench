@@ -22,7 +22,7 @@ sqoop import \
 {%- if conf["sqoop_driver"] is defined %}
     --driver {{ conf.sqoop_driver }} \
 {%- endif %}
-    {%- set map_java_column = sqoop_map_java_column(table.columns, clean_column=true) %}
+    {%- set map_java_column = sqoop_map_java_column(table.columns,clean_column=True) %}
     {%- if map_java_column %}
     {{ map_java_column }} \
     {%- endif %}
@@ -46,4 +46,3 @@ sqoop import \
     {%- else -%}
     --query 'SELECT {% for column in table.columns%} "{{ column.name }}" AS "{{ cleanse_column(column.name) }}"{% if loop.last %} {% else %},{% endif %} {% endfor %} FROM {{ conf.source_database.name }}.{{ table.source.name }} WHERE $CONDITIONS'
     {%- endif -%}
-
