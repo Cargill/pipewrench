@@ -17,7 +17,7 @@ USE {{ conf.staging_database.name }};
 CREATE TABLE IF NOT EXISTS {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.kudu_suffix is defined %}{{ conf.user_defined.kudu_suffix }}{% endif %}
 {%- set ordered_columns = order_columns(table.primary_keys,table.columns) -%}
 ({%- for column in ordered_columns %}
-        `{{ cleanse_column(column.name) }}` {{ map_datatypes_v2(column).kudu }}
+        `{{ cleanse_column(column.name) }}` {{ map_datatypes_v2(column, 'kudu') }}
 {%- if not loop.last -%},{% endif %}
 {%- endfor %},
 primary key ({{ table.primary_keys|join(', ') }}))

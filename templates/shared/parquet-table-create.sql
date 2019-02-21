@@ -17,7 +17,7 @@ set sync_ddl=1;
 USE {{ conf.staging_database.name }};
 CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}{% if conf.user_defined is defined and conf.user_defined.parquet_suffix is defined %}{{ conf.user_defined.parquet_suffix }}{% endif %} (
 {%- for column in table.columns %}
-{{ cleanse_column(column.name) }} {{ map_datatypes_v2(column).parquet }} COMMENT "{{ column.comment }}"
+{{ cleanse_column(column.name) }} {{ map_datatypes_v2(column, 'parquet') }} COMMENT "{{ column.comment }}"
 {%- if not loop.last -%}, {% endif %}
 {%- endfor %})
 COMMENT '{{ table.comment }}'
