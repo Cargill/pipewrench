@@ -348,11 +348,11 @@ def sqoop_map_java_column(columns, clean_column=False):
             column_name = cleanse_column(column_name)
 
         datatype = column['datatype'].lower()
-		override = column['map_java_column']
+        override = column['map_java_column']
         if override:
-			mapped_columns = True
-            map_java_column = map_java_column + "'{name}="override"',".format(name=column_name)
-		elif datatype in ['clob', 'longvarbinary', 'varbinary', 'rowid', 'blob',
+            mapped_columns = True
+            map_java_column = map_java_column + "'{name}=".format(name=column_name) + override + "',"
+        elif datatype in ['clob', 'longvarbinary', 'varbinary', 'rowid', 'blob',
                         'nclob', 'text', 'binary']:
             mapped_columns = True
             map_java_column = map_java_column + "'{name}=String',".format(name=column_name)
