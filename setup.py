@@ -19,7 +19,7 @@ import unittest
 import os
 import sys
 
-version = '0.1.12'
+version = '1.0.0'
 
 def pipewrench_test_suite():
     test_loader = unittest.TestLoader()
@@ -42,7 +42,7 @@ setup(name='pipewrench',
       description='Framework for building data pipelines',
       author='Cargill Inc',
       url='https://cargill.github.io/',
-      install_requires=['jinja2<=2.10', 'pyyaml<=3.12', 'pytest<=3.3.1', 'pylint<=1.8.1'],
+      install_requires=['jinja2<=2.10', 'pyyaml>=4.2b1', 'pytest<=3.3.1', 'pylint<=1.8.1'],
       packages=['pipewrench'],
       test_suite='setup.pipewrench_test_suite',
       scripts=['pipewrench-merge'],
