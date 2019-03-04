@@ -19,8 +19,8 @@
 # Create a Sqoop job
 set -eu
 sqoop job -D 'sqoop.metastore.client.record.password=true' \
-    --create {{ conf.source_database.name }}.{{ table.source.name }}.{{ conf.sqoop_job_name_suffix }} \
     -D 'mapred.job.name={{ conf.source_database.name }}.{{ table.source.name }}.{{ conf.sqoop_job_name_suffix }}' \
+    --create {{ conf.source_database.name }}.{{ table.source.name }}.{{ conf.sqoop_job_name_suffix }} \
     -- import \
     --connect {{ conf.source_database.connection_string }} \
     --username {{ conf.user_name }} \
