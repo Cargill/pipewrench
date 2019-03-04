@@ -36,7 +36,7 @@ sqoop import \
     -m {{ table.num_mappers or 1 }} \
     --query 'SELECT
 {%- for column in table.columns %}
-"{{ column.name }}" AS {{ cleanse_column(column.name) }} {%- if not loop.last %}, {%- endif %}
+{{ column.name }} AS {{ cleanse_column(column.name) }} {%- if not loop.last %}, {%- endif %}
 {%- endfor %}
 FROM {{ conf.source_database.name }}.{{ table.source.name }}
 WHERE $CONDITIONS'

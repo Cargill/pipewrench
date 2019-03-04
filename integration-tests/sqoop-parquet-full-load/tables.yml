@@ -9,7 +9,7 @@ impala_cmd: "{{ impala_cmd }}"
 source_database:
   name: "integration_test" # Source database name
   connection_string: {{ connection_string }} # Source database connection string. Should be kept in 'env.yml'
-  cmd: "mysql -P 3306 -uroot -ppipewrench -h mysql <"
+  cmd: "sqoop eval --connect {{ connection_string }} --username {{ source_db_user_name }} --password pipewrench --query " #"mysql -P 3306 -uroot -ppipewrench -h mysql <"
 staging_database:
   name: "{{ staging_database_name }}" # Staging database name.
   path: "{{ staging_database_path }}" # Staging database HDFS path
