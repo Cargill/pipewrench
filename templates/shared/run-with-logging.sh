@@ -43,7 +43,7 @@ table_name=`basename "$PWD"`
 if [ $check_b -ne 0 ]
         then
                 echo -e "$timestamp|$table_name|${RED}FAIL${NC}: $@ " 2>&1 | tee -a  $STATUS_LOG
-		exit 1;
+		exit $check_b;
         else
                 echo -e "$timestamp|$table_name|${GREEN}PASS${NC}: $@" 2>&1 | tee -a   $STATUS_LOG
 fi
