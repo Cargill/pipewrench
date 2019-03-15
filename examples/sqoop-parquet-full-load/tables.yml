@@ -15,10 +15,10 @@ source_database:
   cmd: "mysql -P 3306 -uroot -pcloudera -h mysql <"
 staging_database:
   name: "default" # Staging database name.
-  path: "{{ hdfs_basedir }}/staging" # Staging database HDFS path
+  path: "{{ hdfs_basedir }}/clean" # Staging database HDFS path
 raw_database:
   name: "default" # Result database
-  path: "{{ hdfs_basedir }}/result" # Result database HDFS path
+  path: "{{ hdfs_basedir }}/raw" # Result database HDFS path
 final_database:
   name: "default" # Result database
 tables:
@@ -31,7 +31,7 @@ tables:
     source:
       name: "employees_kudu" # Source table name
     destination:
-      name: "employees/kudu.test" # Destination (Impala) table name
+      name: "employees_kudu_test" # Destination (Impala) table name.  Typically this is the same as the source table
     split_by_column: "emp_no" # Sqoop split by column (--split-by)
     primary_keys: # List of primary keys
       - emp_no
