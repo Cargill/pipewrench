@@ -14,8 +14,8 @@
 
 -- Create a Parquet table in Impala
 set sync_ddl=1;
-USE {{ conf.raw_database.name }};
-CREATE EXTERNAL TABLE IF NOT EXISTS {{ table.destination.name }}_avro (
+USE `{{ conf.raw_database.name }}`;
+CREATE EXTERNAL TABLE IF NOT EXISTS `{{ table.destination.name }}_avro` (
 {%- for column in table.columns %}
 `{{ cleanse_column(column.name) }}` {{ map_datatypes_v2(column, 'avro') }} COMMENT "{{ column.comment }}"{%- if not loop.last -%}, {% endif %}
 {%- endfor %})

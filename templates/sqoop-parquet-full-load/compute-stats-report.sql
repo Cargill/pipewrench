@@ -13,5 +13,5 @@
     limitations under the License.
 -#}
 -- Compute table statistics for optimized joins
-USE {{ conf.staging_database.name }};
-COMPUTE STATS {{ table.destination.name }};
+USE `{{ conf.staging_database.name }}`;
+COMPUTE STATS `{{ table.destination.name }}`;

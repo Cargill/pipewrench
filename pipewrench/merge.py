@@ -348,8 +348,14 @@ def sqoop_map_java_column(columns, clean_column=False):
             column_name = cleanse_column(column_name)
 
         datatype = column['datatype'].lower()
-        if datatype in ['clob', 'longvarbinary', 'varbinary', 'rowid', 'blob',
-                        'nclob', 'text', 'binary']:
+        if 'map_java_column' in column:
+            override = column['map_java_column']
+            logging.debug('Override datatype for %s to %s', column_name, override)
+            mapped_columns = True
+            map_java_column = (map_java_column + "'{name}=".format(name=column_name) +
+                               "{type}".format(type=override) + "',")
+        elif datatype in ['clob', 'longvarbinary', 'varbinary', 'rowid', 'blob',
+                          'nclob', 'text', 'binary']:
             mapped_columns = True
             map_java_column = map_java_column + "'{name}=String',".format(name=column_name)
         elif datatype in ['tinyint', 'int', 'smallint', 'integer', 'short']:
@@ -401,8 +407,12 @@ def cleanse_column(column):
     if column.startswith('_'):
         column = column.replace('_', "", 1)
 
-    # Replace all /,-,(,), #, @, $ blank spaces with _
-    p = re.compile(r'(/|-|\(|\)|\s|#|@|\$)')
+    # Replace @ and # with letters to avoid collisions between similar column names
+    # e.g. column# and column@
+    column = column.replace('@', 'a')
+    column = column.replace('#', 'p')
+    # Replace all /,-,(,), $ blank spaces with _
+    p = re.compile(r'(/|-|\(|\)|\s|\$)')
     column = p.sub('_', column)
 
     # After replacing values find any multiple _ and replace them with a single underscore
