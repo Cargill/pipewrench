@@ -36,5 +36,55 @@ class CleanseColumnTest(unittest.TestCase):
         actual = merge.cleanse_column(column_name)
         self.assertEqual("gluten_conc_overflow", actual)
 
+    def test_dollar_replace(self):
+        column_name = "gluten_conc$overflow"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("gluten_conc_overflow", actual)
+
+    def test_percent_replace(self):
+        column_name = "gluten_conc%overflow"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("gluten_conc_overflow", actual)
+
+    def test_underscore_shortening_replace(self):
+        column_name = "gluten_conc__overflow"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("gluten_conc_overflow", actual)
+
+    def test_remove_initial_lodash(self):
+        column_name = "_gluten_conc_overflow"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("gluten_conc_overflow", actual)
+
+    def test_remove_initial_slash(self):
+        column_name = "/gluten_conc_overflow"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("gluten_conc_overflow", actual)
+
+    def test_at_replace(self):
+        column_name = "gluten_conc@overflow"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("gluten_concaoverflow", actual)
+
+    def test_pound_replace(self):
+        column_name = "gluten_conc#overflow"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("gluten_concpoverflow", actual)
+
+    def test_paren_replace(self):
+        column_name = "slope (rise/run)"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("slope_rise_run_", actual)
+
+    def test_space_replace(self):
+        column_name = "hot dish"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("hot_dish", actual)
+
+    def test_dash_replace(self):
+        column_name = "hot-dish"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("hot_dish", actual)
+
 if __name__ == '__main__':
     unittest.main()
