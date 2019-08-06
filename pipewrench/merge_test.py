@@ -21,7 +21,7 @@ class MergeTest(unittest.TestCase):
     def test_throw_error_on_undefined(self):
         values = {'conf': 'value'}
 
-        self.assertEquals('value', merge.render("{{ conf }}", **values))
+        self.assertEqual('value', merge.render("{{ conf }}", **values))
 
     def test_render_with_type_mapping(self):
         global type_mappings
@@ -29,3 +29,12 @@ class MergeTest(unittest.TestCase):
         values = {'conf': 'nevermind', 'column': {'datatype': 'blob'}}
 
         assert 'string' == merge.render("{{ map_datatypes(column).kudu }}", **values)
+
+class CleanseColumnTest(unittest.TestCase):
+    def test_period_replace(self):
+        column_name = "gluten_conc.overflow"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("gluten_conc_overflow", actual)
+
+if __name__ == '__main__':
+    unittest.main()
