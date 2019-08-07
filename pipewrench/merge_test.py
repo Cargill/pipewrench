@@ -86,5 +86,10 @@ class CleanseColumnTest(unittest.TestCase):
         actual = merge.cleanse_column(column_name)
         self.assertEqual("hot_dish", actual)
 
+    def test_pipe_replace(self):
+        column_name = "hot|dish"
+        actual = merge.cleanse_column(column_name)
+        self.assertEqual("hot_dish", actual)
+
 if __name__ == '__main__':
     unittest.main()
