@@ -19,7 +19,7 @@ import unittest
 import os
 import sys
 
-version = '1.0.2'
+version = '1.0.3'
 
 def pipewrench_test_suite():
     test_loader = unittest.TestLoader()

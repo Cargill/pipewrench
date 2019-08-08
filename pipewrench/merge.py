@@ -412,7 +412,7 @@ def cleanse_column(column):
     column = column.replace('@', 'a')
     column = column.replace('#', 'p')
     # Replace all /,-,(,),$,% blank spaces with _
-    p = re.compile(r'(/|-|\(|\)|\s|\$|%)')
+    p = re.compile(r'(/|-|\(|\)|\s|\$|%|\.|\|)')
     column = p.sub('_', column)
 
     # After replacing values find any multiple _ and replace them with a single underscore
