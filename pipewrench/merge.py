@@ -321,8 +321,16 @@ def map_datatypes_v2(column, storage_format):
     mapped_datatype = mapped_datatype_dic.get(storage_format)
     if mapped_datatype:
         if mapped_datatype.lower() == 'decimal':
+            if 'precision' in column:
+                decimal_precision = column['precision']
+            else:
+                decimal_precision = 9
+            if 'scale' in column:
+                decimal_scale = column['scale']
+            else:
+                decimal_scale = 0
             mapped_datatype = 'DECIMAL({precision}, {scale})'.format(
-                precision=column['precision'], scale=column['scale'])
+                precision=decimal_precision, scale=decimal_scale)
     else:
         mapped_datatype = 'STRING'
     logging.debug('mapped %s to %s', datatype, mapped_datatype)
