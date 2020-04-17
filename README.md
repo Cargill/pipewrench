@@ -398,3 +398,6 @@ $ yum install -y rpm-build
 $ python setup.py bdist --formats=rpm
 ```
 
+## Code of Conduct
+
+Pipewrench operates under the [Cargill Code of Conduct](https://github.com/Cargill/code-of-conduct/blob/master/code-of-conduct.md).
