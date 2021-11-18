@@ -3,7 +3,7 @@
 ## Submitting issues
 Use the github [issue tracker](https://github.com/Cargill/pipewrench/issues) to submit bugs or ask questions.
 
-## Submitting features and fixex
+## Submitting features and fixes
 To contribute features or bug fixes, create a [fork](https://help.github.com/articles/fork-a-repo/) then a
 [pull request](https://help.github.com/articles/creating-a-pull-request/) back to this repository.
 
