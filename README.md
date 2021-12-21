@@ -161,7 +161,6 @@ Generate scripts using the `generate-scripts` helper:
 ```bash
 $ cd project-scripts
 $ ./generate-scripts
-
 ```
 
 Running `pipewrench-merge` from the `examples` directory manually would look like:
