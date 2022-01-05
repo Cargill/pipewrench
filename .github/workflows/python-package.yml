@@ -1,0 +1,27 @@
+sudo: required
+
+services:
+  - docker
+
+language: python
+
+
+python:
+  - "2.7"
+  - "3.5"
+
+before_install:
+  - pip install pylint
+  - pip install --upgrade pip enum34 
+  - python setup.py -q install
+  - make pylint
+  - docker pull amfoerster/hadoop-docker
+  - docker pull mysql:5.7
+  - docker ps -a
+  - sudo /etc/init.d/mysql stop
+  - sudo apt-get -y install make
+  - pip --version
+
+script:
+  - make build
+
