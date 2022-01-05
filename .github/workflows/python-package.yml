@@ -30,7 +30,7 @@ jobs:
         python -m pip install flake8 pytest
         python -m pip install pylint
         python -m pip install --upgrade pip enum34 
-        python -m python setup.py -q install
+        python setup.py -q install
         make pylint
         docker pull amfoerster/hadoop-docker
         docker pull mysql:5.7
