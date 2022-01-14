@@ -24,7 +24,9 @@ cd $SCRIPT_DIR
 # and does some Makefile validation
 docker-compose -f $SCRIPT_DIR/docker-compose.yml up -d
 sleep 3
+echo "Begin while loop"
 while :;do
+    docker ps -a
     docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' &> /dev/null
     
     if [[ "$?" -eq "0" ]];then
