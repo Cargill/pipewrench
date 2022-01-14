@@ -25,8 +25,7 @@ cd $SCRIPT_DIR
 docker-compose -f $SCRIPT_DIR/docker-compose.yml up -d
 sleep 3
 while :;do
-    #docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' &> /dev/null
-    docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;'
+    docker-compose exec mysql mysql -h localhost -P 3306 -u root -p pipewrench -e 'show databases;' &> /dev/null
     
     if [[ "$?" -eq "0" ]];then
         echo 'service ready'
