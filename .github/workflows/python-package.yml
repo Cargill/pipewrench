@@ -34,11 +34,15 @@ jobs:
         python setup.py -q install
         make pylint
         docker pull amfoerster/hadoop-docker
-        docker pull mysql:5.7
+        #docker pull mysql:5.7
         docker ps -a
-        # sudo /etc/init.d/mysql stop
+        sudo /etc/init.d/mysql stop
         sudo apt-get -y install make
         pip --version
+    - name: Set up MySQL
+      run: |
+        sudo /etc/init.d/mysql start
+        mysql -e 'CREATE DATABASE andrew_test;' -uroot -proot
     - name: Test with pytest
       run: |
         make build
