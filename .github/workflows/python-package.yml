@@ -36,7 +36,7 @@ jobs:
         docker pull amfoerster/hadoop-docker
         docker pull mysql:5.7
         docker ps -a
-        sudo /etc/init.d/mysql stop
+        # sudo /etc/init.d/mysql stop
         sudo apt-get -y install make
         pip --version
     - name: Test with pytest
