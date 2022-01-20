@@ -25,18 +25,18 @@ cd $SCRIPT_DIR
 docker-compose -f $SCRIPT_DIR/docker-compose.yml up -d
 sleep 3
 echo "Begin while loop"
-while :;do
-    docker ps -a
+#while :;do
+    #docker ps -a
     #docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' &> /dev/null
     docker-compose exec integration-tests_mysql_1 mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;'
     
-    if [[ "$?" -eq "0" ]];then
-        echo 'service ready'
-        break;
-    fi
+#    if [[ "$?" -eq "0" ]];then
+#        echo 'service ready'
+#        break;
+#    fi
     echo 'waiting for mysql container to be available'
-    sleep 1
-done
+    sleep 100
+#done
 set -e
 docker-compose exec mysql /data/load-data.sh
 docker-compose exec kimpala /run-all-services.sh
