@@ -23,19 +23,19 @@ cd $SCRIPT_DIR
 # Simple test that builds all example pipelines
 # and does some Makefile validation
 docker-compose -f $SCRIPT_DIR/docker-compose.yml up -d
-sleep 3
+sleep 180
 echo "Begin while loop"
 #while :;do
     #docker ps -a
     #docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' &> /dev/null
-    docker-compose exec integration-tests_mysql_1 mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;'
-    
+    docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;'
+    echo $?
 #    if [[ "$?" -eq "0" ]];then
 #        echo 'service ready'
 #        break;
 #    fi
     echo 'waiting for mysql container to be available'
-    sleep 100
+    sleep 1
 #done
 set -e
 docker-compose exec mysql /data/load-data.sh
