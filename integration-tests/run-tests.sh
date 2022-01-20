@@ -27,7 +27,8 @@ sleep 3
 echo "Begin while loop"
 while :;do
     docker ps -a
-    docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' &> /dev/null
+    #docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' &> /dev/null
+    docker-compose exec mysql integration-tests_mysql_1 -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' &> /dev/null
     
     if [[ "$?" -eq "0" ]];then
         echo 'service ready'
