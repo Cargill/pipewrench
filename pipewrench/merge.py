@@ -29,7 +29,6 @@ import yaml
 from yaml.loader import SafeLoader
 
 
-
 OUT_DIR = "output"
 LOGGING_FORMAT = "[%(levelname) s:%(filename)s:%(lineno)s in %(funcName)20s() ] %(message)s"
 
