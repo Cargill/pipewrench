@@ -35,16 +35,10 @@ echo "The database is available!"
 
 set -e
 docker exec mysql /data/load-data.sh
-echo "1"
 docker exec kimpala /run-all-services.sh
-echo "2"
+
 $SCRIPT_DIR/sqoop-parquet-hdfs-impala/run.sh
-echo "3"
 $SCRIPT_DIR/sqoop-parquet-full-load/run.sh
-echo "4"
 $SCRIPT_DIR/sqoop-parquet-hdfs-hive-merge/run.sh
-echo "5"
 $SCRIPT_DIR/kudu-table-ddl/run.sh
-echo "6"
 $SCRIPT_DIR/sqoop-parquet-hdfs-kudu-impala/run.sh
-echo "7"
