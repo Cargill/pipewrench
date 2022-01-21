@@ -23,20 +23,19 @@ cd $SCRIPT_DIR
 # Simple test that builds all example pipelines
 # and does some Makefile validation
 docker-compose -f $SCRIPT_DIR/docker-compose.yml up -d
-sleep 3
-while :;do
-    docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' &> /dev/null
-    
-    if [[ "$?" -eq "0" ]];then
-        echo 'service ready'
-        break;
-    fi
-    echo 'waiting for mysql container to be available'
+sleep 10
+echo 'waiting for mysql container to be available'
+
+until docker exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' 2>&1; do
+    >&2 echo \"Database is unavailable - sleeping\"
     sleep 1
 done
+
+echo "The database is available!"
+
 set -e
-docker-compose exec mysql /data/load-data.sh
-docker-compose exec kimpala /run-all-services.sh
+docker exec mysql /data/load-data.sh
+docker exec kimpala /run-all-services.sh
 
 $SCRIPT_DIR/sqoop-parquet-hdfs-impala/run.sh
 $SCRIPT_DIR/sqoop-parquet-full-load/run.sh
