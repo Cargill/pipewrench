@@ -23,32 +23,28 @@ cd $SCRIPT_DIR
 # Simple test that builds all example pipelines
 # and does some Makefile validation
 docker-compose -f $SCRIPT_DIR/docker-compose.yml up -d
-sleep 180
-echo "Begin while loop"
-#while :;do
-    #docker ps -a
-    #docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' &> /dev/null
-    docker-compose exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;'
-    echo $?
-    docker-compose exec mysql_1 mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;'
-    echo $?
-    docker-compose exec integration-tests_mysql_1 mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;'
-    echo $?
-    docker-compose logs
-    
-#    if [[ "$?" -eq "0" ]];then
-#        echo 'service ready'
-#        break;
-#    fi
-    echo 'waiting for mysql container to be available'
-    sleep 1
-#done
-set -e
-docker-compose exec mysql /data/load-data.sh
-docker-compose exec kimpala /run-all-services.sh
+sleep 10
+echo 'waiting for mysql container to be available'
 
+until docker exec mysql mysql -h localhost -P 3306 -u root -ppipewrench -e 'show databases;' 2>&1; do
+    >&2 echo \"Database is unavailable - sleeping\"
+    sleep 1
+done
+
+echo "The database is available!"
+
+set -e
+docker exec mysql /data/load-data.sh
+echo "1"
+docker exec kimpala /run-all-services.sh
+echo "2"
 $SCRIPT_DIR/sqoop-parquet-hdfs-impala/run.sh
+echo "3"
 $SCRIPT_DIR/sqoop-parquet-full-load/run.sh
+echo "4"
 $SCRIPT_DIR/sqoop-parquet-hdfs-hive-merge/run.sh
+echo "5"
 $SCRIPT_DIR/kudu-table-ddl/run.sh
+echo "6"
 $SCRIPT_DIR/sqoop-parquet-hdfs-kudu-impala/run.sh
+echo "7"
