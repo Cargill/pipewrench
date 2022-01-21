@@ -26,7 +26,7 @@ import re
 from json import dumps
 from jinja2 import Template
 import yaml
-
+from yaml.loader import SafeLoader
 
 
 OUT_DIR = "output"
@@ -186,7 +186,7 @@ def load_mapping_file(mapping, templates_dir, conf):
     try:
         with codecs.open(os.path.join(templates_dir, conf[mapping]), 'r', 'UTF-8') as mapping_file:
             logging.debug('mapping file: %s', mapping)
-            type_mappings[mapping] = yaml.load(mapping_file.read())
+            type_mappings[mapping] = yaml.load(mapping_file.read(), Loader=SafeLoader)
             logging.debug("type mappings: %s", type_mappings)
     except KeyError:
         logging.warning(
@@ -224,7 +224,7 @@ def get_conf(path, env):
         env_applied = render(str_conf, **env)
 
         # Load the conf yaml into Python data structures
-        conf = yaml.load(env_applied)
+        conf = yaml.load(env_applied, Loader=SafeLoader)
         conf.update(env)
         logging.debug('conf: %s', conf)
 
@@ -240,7 +240,7 @@ def get_env(path):
     with codecs.open(path, 'r', 'UTF-8') as env_file:
         conf_string = env_file.read()
 
-        env = yaml.load(conf_string)
+        env = yaml.load(conf_string, Loader=SafeLoader)
         logging.debug('env: %s', env)
         return env
 
@@ -351,7 +351,10 @@ def sqoop_map_java_column(columns, clean_column=False):
     map_java_column = "--map-column-java "
 
     for column in columns:
-        column_name = column['name']
+        if 'target_column_name' in column.keys():
+            column_name = column['target_column_name']
+        else:
+            column_name = column['name']
         if clean_column:
             column_name = cleanse_column(column_name)
 
