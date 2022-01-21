@@ -39,10 +39,6 @@ jobs:
         sudo /etc/init.d/mysql stop
         sudo apt-get -y install make
         pip --version
-#    - name: Set up MySQL
-#      run: |
-#        sudo /etc/init.d/mysql start
-#        mysql -e 'CREATE DATABASE andrew_test;' -uroot -proot
     - name: Test with pytest
       run: |
         make build
